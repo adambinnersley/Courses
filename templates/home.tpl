@@ -96,12 +96,14 @@
                     <img src="{if $course.image}{$courseRoot}images/{$course.url}{else}/images/courses/course-default.png{/if}" alt="{$course.name}" class="d-block mx-auto img-fluid" />
                     <h3>{$course.name}</h3>
                     {if $course.description}<p>{$course.description|strip_tags|substr:0:120}{if $course.description|strip_tags|strlen > 120}...{/if}</p>{/if}
+                </div>
+                <div class="card-footer">
                     <div class="row">
                         {if $userDetails.isHeadOffice}
-                            <div class="col-xs-6"><a href="{$courseRoot}{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View<span class="d-none d-md-inline-block"> Course</span></a></div>
-                            <div class="col-xs-6"><a href="?editcourse={$course.id}" title="Edit Course" class="btn btn-warning btn-block">Edit<span class="d-none d-md-inline-block"> Course</span></a></div>
+                            <div class="col-6"><a href="{$courseRoot}{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View<span class="d-none d-md-inline-block"> Course</span></a></div>
+                            <div class="col-6"><a href="?editcourse={$course.id}" title="Edit Course" class="btn btn-warning btn-block">Edit<span class="d-none d-md-inline-block"> Course</span></a></div>
                         {else}
-                        <div class="col-xs-12"><a href="{$courseRoot}{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View Course</a></div>
+                        <div class="col-12"><a href="{$courseRoot}{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View Course</a></div>
                         {/if}
                     </div>
                 </div>

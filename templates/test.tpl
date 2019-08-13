@@ -5,11 +5,9 @@
     </div>
     <div class="col-12">
         {if $userDetails.isHeadOffice && !$edit && !$add && !$delete && !$submission}<div class="col-12"><a href="tests?addnew=true" title="Add new test" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new test</a></div>{/if}
-        {if !$testdetails || $reviewInfo}<ul class="pager no-margin-t">
-            <li class="previous">
-                <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}tests?submissions={$smarty.get.submissions}{elseif $edit && $questionedit}tests?testid={$questionedit.test_id}&amp;edit=true{else}tests{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="previous">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
-            </li>
-        </ul>{/if}
+        {if !$testdetails || $reviewInfo}
+            <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}tests?submissions={$smarty.get.submissions}{elseif $edit && $questionedit}tests?testid={$questionedit.test_id}&amp;edit=true{else}tests{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="btn btn-default">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
+        {/if}
         {if $tests || $edit || $add || $delete || $submission}
             {if !$edit && !$add && !$delete && !$submission}
                 {if !$testdetails}
@@ -533,11 +531,9 @@ $(document).ready(function(){
         {else}
             <div class="col-md-12 text-center">There are currently no tests for this course</div>
         {/if}
-        {if !$testdetails || $reviewInfo}<ul class="pager no-margin-b">
-            <li class="previous">
-                <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}tests?submissions={$smarty.get.submissions}{elseif $edit && $questionedit}tests?testid={$questionedit.test_id}&amp;edit=true{else}tests{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="previous">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
-            </li>
-        </ul>{/if}
+        {if !$testdetails || $reviewInfo}
+            <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}tests?submissions={$smarty.get.submissions}{elseif $edit && $questionedit}tests?testid={$questionedit.test_id}&amp;edit=true{else}tests{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}"  class="btn btn-default">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
+        {/if}
     </div>
 </div>
 {/strip}

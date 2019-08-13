@@ -8,11 +8,7 @@
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Course</small></span></h1>
     </div>
     <div class="col-12">
-        <ul class="pager no-margin-t">
-            <li class="previous">
-                <a href="{if !$add && !$edit && !$delete && !$smarty.get.pageid}./{else}info{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="previous">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.pageid}course home{else}page list{/if}</a>
-            </li>
-        </ul>
+        <a href="{if !$add && !$edit && !$delete && !$smarty.get.pageid}./{else}info{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.pageid}course home{else}page list{/if}</a>
         {if $userDetails.isHeadOffice && !$add && !$edit && !$delete && !$smarty.get.pageid}<div class="row"><div class="col-12"><a href="info?addnew=true" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new page</a></div><p>&nbsp;</p></div>{/if}
         {if $pages && !$add && !$delete}
             {if $pages}
@@ -65,11 +61,9 @@
         {elseif $page && !$delete}
             {if !$edit && !$delete && !$add}
             <div class="row">
-                <div class="col-xs-12">
-                    <ul class="pager no-margin">
-                        {if $page.prev_page}<li><a href="info?pageid={$page.prev_page}" title="Previous Page"><span class="fa fa-angle-left fa-fw"></span> Previous<span class="d-none d-sm-inline-block"> Page</span></a></li>&nbsp;{/if}
-                        {if $page.next_page}<li><a href="info?pageid={$page.next_page}" title="Next Page">Next<span class="d-none d-sm-inline-block"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a></li>{/if}
-                    </ul>
+                <div class="col-12">
+                        {if $page.prev_page}<a href="info?pageid={$page.prev_page}" title="Previous Page" class="btn btn-default"><span class="fa fa-angle-left fa-fw"></span> Previous<span class="d-none d-sm-inline-block"> Page</span></a>&nbsp;{/if}
+                        {if $page.next_page}<a href="info?pageid={$page.next_page}" title="Next Page" class="btn btn-default float-right">Next<span class="d-none d-sm-inline-block"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a>{/if}
                 </div>
             </div>
             {/if}
@@ -102,11 +96,9 @@
                 <em><small class="float-right">Last updated: {$page.last_updated|date_format:"d/m/Y H:i:s"}</small></em>
             {/if}
             {if !$edit && !$delete && !$add}<div class="row">
-                <div class="col-xs-12">
-                    <ul class="pager no-margin">
-                        {if $page.prev_page}<li><a href="info?pageid={$page.prev_page}" title="Previous Page"><span class="fa fa-angle-left fa-fw"></span> Previous<span class="hidden-xs"> Page</span></a></li>&nbsp;{/if}
-                        {if $page.next_page}<li><a href="info?pageid={$page.next_page}" title="Next Page">Next<span class="hidden-xs"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a></li>{/if}
-                    </ul>
+                <div class="col-12">
+                    {if $page.prev_page}<a href="info?pageid={$page.prev_page}" title="Previous Page" class="btn btn-default"><span class="fa fa-angle-left fa-fw"></span> Previous<span class="hidden-xs"> Page</span></a>{/if}
+                    {if $page.next_page}<a href="info?pageid={$page.next_page}" title="Next Page" class="btn btn-default float-right">Next<span class="hidden-xs"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a>{/if}
                 </div>
             </div>{/if}
             {if !$userDetails.isHeadOffice}<script type="text/javascript">
@@ -177,11 +169,7 @@
         {else}
             <p class="text-center">There is currently no course content, please check back later or contact the course administrator</p>
         {/if}
-        <ul class="pager no-margin-b">
-            <li class="previous">
-                <a href="{if !$add && !$edit && !$delete && !$smarty.get.pageid}./{else}info{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="previous">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.pageid}course home{else}page list{/if}</a>
-            </li>
-        </ul>
+            <a href="{if !$add && !$edit && !$delete && !$smarty.get.pageid}./{else}info{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.pageid}course home{else}page list{/if}</a>
     </div>
 </div>
 {if ($edit || $add) && $userDetails.isHeadOffice}

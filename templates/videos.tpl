@@ -4,11 +4,7 @@
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Videos</small></span></h1>
     </div>
     <div class="col-12">
-        <ul class="pager no-margin-t">
-            <li class="previous">
-                <a href="{if !$add && !$edit && !$delete}./{else}videos{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}" class="previous">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}</a>
-            </li>
-        </ul>
+        <a href="{if !$add && !$edit && !$delete}./{else}videos{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}</a>
     </div>
     <div class="col-12">
     {if $smarty.get.itemdeleted}<div class="alert alert-success">The video has successfully been removed from the course</div>{/if}
@@ -50,11 +46,7 @@
     {/if}
     </div>
     <div class="col-12">
-        <ul class="pager no-margin-t">
-            <li class="previous">
-                <a href="{if !$add && !$edit && !$delete}./{else}videos{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}" class="previous">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}</a>
-            </li>
-        </ul>
+        <a href="{if !$add && !$edit && !$delete}./{else}videos{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}</a>
     </div>
 </div>
 {/strip}

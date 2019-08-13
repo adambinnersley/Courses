@@ -5,11 +5,7 @@
     </div>
     <div class="col-12">
         {if $userDetails.isHeadOffice && !$add && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}<div class="row"><div class="col-12"><a href="course-documents?addnew=true" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new document</a></div></div>{/if}
-        <ul class="pager no-margin-t">
-            <li class="previous">
-                <a href="{if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}./{else}course-documents{/if}" title="Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}" class="previous">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}</a>
-            </li>
-        </ul>
+                <a href="{if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}./{else}course-documents{/if}" title="Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}</a>
         {if $add || $edit || $smarty.get.editgroup || $smarty.get.deletegroup}
             <div class="row">
                 {if $doc_groups}
@@ -130,11 +126,7 @@
                 </div>
             </div>
         {/if}
-        <ul class="pager no-margin-b">
-            <li class="previous">
-                <a href="{if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}./{else}course-documents{/if}" title="Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}" class="previous">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}</a>
-            </li>
-        </ul>
+        <a href="{if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}./{else}course-documents{/if}" title="Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}</a>
     </div>
 </div>
 {/strip}
