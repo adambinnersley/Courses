@@ -25,7 +25,7 @@
                         <a href="?pageid={$page.page_id}" title="{$page.title}"{if !$userDetails.isHeadOffice} class="list-group-item{if $page.progress} list-group-item-success{/if}"{/if}>{$page.order}) {$page.title}</a>
                         {if $userDetails.isHeadOffice}
                             <div class="float-right">
-                                <a href="info?pageid={$page.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil fa-fw"></span> Edit</a>
+                                <a href="info?pageid={$page.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a>
                                 {if !$page.subpages} &nbsp; <a href="info?pageid={$page.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>{/if}
                             </div>
                         {/if}
@@ -39,7 +39,7 @@
                                     <a href="?pageid={$subpage.page_id}" title="{$subpage.title}"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$subpage.order}) {$subpage.title}</a>
                                     {if $userDetails.isHeadOffice}
                                         <div class="float-right">
-                                            <a href="info?pageid={$subpage.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil fa-fw"></span> Edit</a> &nbsp; <a href="info?pageid={$subpage.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>
+                                            <a href="info?pageid={$subpage.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> &nbsp; <a href="info?pageid={$subpage.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>
                                         </div>
                                     {/if}
                                 {if $userDetails.isHeadOffice}</li>{/if}
@@ -68,7 +68,7 @@
             </div>
             {/if}
             {if $userDetails.isHeadOffice && !$edit && !$delete && !$add}
-                <div class="row"><div class="col-12"><div class="float-right"><a href="info?pageid={$page.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil fa-fw"></span> Edit</a> <a href="info?pageid={$page.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></div></div></div>
+                <div class="row"><div class="col-12"><div class="float-right"><a href="info?pageid={$page.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="info?pageid={$page.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></div></div></div>
             {/if}
             {if $edit}<form method="post" action="" class="form-horizontal">{/if}
                 
