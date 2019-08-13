@@ -20,13 +20,15 @@ class Test extends Questions{
             $where['course_id'] = $courseID;
             if($active){$where['active'] = 1;}
             $tests = $this->db->selectAll(self::TESTS_TABLE, $where);
-            foreach($tests as $i => $test){
-                $tests[$i]['max_score'] = $this->getMaxScore($test['test_id']);
-                $tests[$i]['no_questions'] = $this->db->count(self::QUESTIONS_TABLE, array('test_id' => $test['test_id']));
-                $tests[$i]['results'] = $this->getTestStatus($test['test_id'], $userID, $userType);
-                if(!$active){$tests[$i]['submissions'] = $this->countSubmissionsByTest($test['test_id']);}
+            if(is_array($tests)) {
+                foreach($tests as $i => $test) {
+                    $tests[$i]['max_score'] = $this->getMaxScore($test['test_id']);
+                    $tests[$i]['no_questions'] = $this->db->count(self::QUESTIONS_TABLE, array('test_id' => $test['test_id']));
+                    $tests[$i]['results'] = $this->getTestStatus($test['test_id'], $userID, $userType);
+                    if(!$active){$tests[$i]['submissions'] = $this->countSubmissionsByTest($test['test_id']);}
+                }
+                return $tests;
             }
-            return $tests;
         }
         return false;
     }

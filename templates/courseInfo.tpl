@@ -4,16 +4,16 @@
     {assign var="extrascript" value='<script type="text/javascript" src="/js/student/summernote.min.js"></script>' scope="global"}
 {/if}
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-12">
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Course</small></span></h1>
     </div>
-    <div class="col-lg-12">
+    <div class="col-12">
         <ul class="pager no-margin-t">
             <li class="previous">
                 <a href="{if !$add && !$edit && !$delete && !$smarty.get.pageid}./{else}info{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="previous">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.pageid}course home{else}page list{/if}</a>
             </li>
         </ul>
-        {if $userDetails.isHeadOffice && !$add && !$edit && !$delete && !$smarty.get.pageid}<div class="row"><div class="col-lg-12"><a href="info?addnew=true" title="Add new item" class="btn btn-success pull-right"><span class="fa fa-plus fa-fw"></span> Add new page</a></div><p>&nbsp;</p></div>{/if}
+        {if $userDetails.isHeadOffice && !$add && !$edit && !$delete && !$smarty.get.pageid}<div class="row"><div class="col-12"><a href="info?addnew=true" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new page</a></div><p>&nbsp;</p></div>{/if}
         {if $pages && !$add && !$delete}
             {if $pages}
                 <div id="coursePages"{if $userDetails.isHeadOffice} class="course-admin"{/if}>
@@ -21,14 +21,14 @@
                     {foreach $pages as $page}
                         {if $userDetails.isHeadOffice}
                             <li class="list-group-item{if $page.subpages} has-sub-list{/if}">
-                                <div class="pull-left page-order">
+                                <div class="float-left page-order">
                                     {if $page.has_prev}<a href="?move={$page.page_id}&amp;dir=up" title="Move up" class="btn btn-success btn-xs"><span class="fa fa-angle-up"></span></a> {/if}
                                     {if $page.has_next}<a href="?move={$page.page_id}&amp;dir=down" title="Move down" class="btn btn-success btn-xs"><span class="fa fa-angle-down"></span></a>{/if}
                                 </div>
                         {/if}
                         <a href="?pageid={$page.page_id}" title="{$page.title}"{if !$userDetails.isHeadOffice} class="list-group-item{if $page.progress} list-group-item-success{/if}"{/if}>{$page.order}) {$page.title}</a>
                         {if $userDetails.isHeadOffice}
-                            <div class="pull-right">
+                            <div class="float-right">
                                 <a href="info?pageid={$page.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil fa-fw"></span> Edit</a>
                                 {if !$page.subpages} &nbsp; <a href="info?pageid={$page.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>{/if}
                             </div>
@@ -36,13 +36,13 @@
                         {if $page.subpages}{if $userDetails.isHeadOffice}<ul class="list-group">{/if}
                             {foreach $page.subpages as $subpage}
                                 {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}
-                                    {if $userDetails.isHeadOffice}<div class="pull-left page-order">
+                                    {if $userDetails.isHeadOffice}<div class="float-left page-order">
                                             {if $subpage.has_prev}<a href="?move={$subpage.page_id}&amp;dir=up" title="Move up" class="btn btn-default btn-xs"><span class="fa fa-angle-up"></span></a> {/if}
                                             {if $subpage.has_next}<a href="?move={$subpage.page_id}&amp;dir=down" title="Move down" class="btn btn-default btn-xs"><span class="fa fa-angle-down"></span></a>{/if}
                                     </div>{/if}
                                     <a href="?pageid={$subpage.page_id}" title="{$subpage.title}"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$subpage.order}) {$subpage.title}</a>
                                     {if $userDetails.isHeadOffice}
-                                        <div class="pull-right">
+                                        <div class="float-right">
                                             <a href="info?pageid={$subpage.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil fa-fw"></span> Edit</a> &nbsp; <a href="info?pageid={$subpage.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>
                                         </div>
                                     {/if}
@@ -67,14 +67,14 @@
             <div class="row">
                 <div class="col-xs-12">
                     <ul class="pager no-margin">
-                        {if $page.prev_page}<li><a href="info?pageid={$page.prev_page}" title="Previous Page"><span class="fa fa-angle-left fa-fw"></span> Previous<span class="hidden-xs"> Page</span></a></li>&nbsp;{/if}
-                        {if $page.next_page}<li><a href="info?pageid={$page.next_page}" title="Next Page">Next<span class="hidden-xs"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a></li>{/if}
+                        {if $page.prev_page}<li><a href="info?pageid={$page.prev_page}" title="Previous Page"><span class="fa fa-angle-left fa-fw"></span> Previous<span class="d-none d-sm-inline-block"> Page</span></a></li>&nbsp;{/if}
+                        {if $page.next_page}<li><a href="info?pageid={$page.next_page}" title="Next Page">Next<span class="d-none d-sm-inline-block"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a></li>{/if}
                     </ul>
                 </div>
             </div>
             {/if}
             {if $userDetails.isHeadOffice && !$edit && !$delete && !$add}
-                <div class="row"><div class="col-lg-12"><div class="pull-right"><a href="info?pageid={$page.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil fa-fw"></span> Edit</a> <a href="info?pageid={$page.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></div></div></div>
+                <div class="row"><div class="col-12"><div class="float-right"><a href="info?pageid={$page.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil fa-fw"></span> Edit</a> <a href="info?pageid={$page.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></div></div></div>
             {/if}
             {if $edit}<form method="post" action="" class="form-horizontal">{/if}
                 
@@ -99,7 +99,7 @@
                 <div class="text-center"><input type="submit" name="submit" id="submit" value="Update Page" class="btn btn-success btn-lg" /></div>
                 </form>
             {else}
-                <em><small class="pull-right">Last updated: {$page.last_updated|date_format:"d/m/Y H:i:s"}</small></em>
+                <em><small class="float-right">Last updated: {$page.last_updated|date_format:"d/m/Y H:i:s"}</small></em>
             {/if}
             {if !$edit && !$delete && !$add}<div class="row">
                 <div class="col-xs-12">

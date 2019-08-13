@@ -1,11 +1,11 @@
 {strip}
 <div class="row" id="course-list">
-    <div class="col-lg-12">
+    <div class="col-12">
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {if !$userDetails.isHeadOffice}My {/if}Courses</span></h1>
     </div>
 {if $userDetails.isHeadOffice && !$add && !$edit}
-    <div class="col-lg-12">
-        <a href="?addnew=true" title="Add Course" class="btn btn-success pull-right"><span class="fa fa-plus"></span> Add Course</a>
+    <div class="col-12">
+        <a href="?addnew=true" title="Add Course" class="btn btn-success float-right"><span class="fa fa-plus"></span> Add Course</a>
     </div>
 </div>
 <div class="row" id="course-list">
@@ -91,15 +91,15 @@
 {elseif $courses}
     {foreach $courses as $course}
         <div class="col-md-4 col-sm-6">
-            <div class="panel panel-default course-module">
-                <div class="panel-body">
-                    <img src="{if $course.image}/learning/images/{$course.url}{else}/images/courses/course-default.png{/if}" alt="{$course.name}" class="img-responsive center-block" />
+            <div class="card course-module">
+                <div class="card-body">
+                    <img src="{if $course.image}/learning/images/{$course.url}{else}/images/courses/course-default.png{/if}" alt="{$course.name}" class="d-block mx-auto img-fluid" />
                     <h3>{$course.name}</h3>
                     {if $course.description}<p>{$course.description|strip_tags|substr:0:120}{if $course.description|strip_tags|strlen > 120}...{/if}</p>{/if}
                     <div class="row">
                         {if $userDetails.isHeadOffice}
-                            <div class="col-xs-6"><a href="/learning/{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View<span class="hidden-md hidden-sm"> Course</span></a></div>
-                            <div class="col-xs-6"><a href="?editcourse={$course.id}" title="Edit Course" class="btn btn-warning btn-block">Edit<span class="hidden-md hidden-sm"> Course</span></a></div>
+                            <div class="col-xs-6"><a href="/learning/{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View<span class="d-none d-md-inline-block"> Course</span></a></div>
+                            <div class="col-xs-6"><a href="?editcourse={$course.id}" title="Edit Course" class="btn btn-warning btn-block">Edit<span class="d-none d-md-inline-block"> Course</span></a></div>
                         {else}
                         <div class="col-xs-12"><a href="/learning/{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View Course</a></div>
                         {/if}

@@ -26,6 +26,14 @@ class Course extends FileUpload{
     }
     
     /**
+     * Returns the path of the template dir
+     * @return string
+     */
+    public function getTemplateDir(){
+        return dirname(__DIR__).DIRECTORY_SEPARATOR.'templates';
+    }
+    
+    /**
      * Return a list of all of the available courses
      * @param int $active If active is set to 1 will only return the active courses else will return all of them
      * @return array Return a array of all of the available courses

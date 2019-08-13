@@ -1,10 +1,10 @@
 {strip}
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-12">
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Course Documents</small></span></h1>
     </div>
-    <div class="col-lg-12">
-        {if $userDetails.isHeadOffice && !$add && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}<div class="row"><div class="col-lg-12"><a href="course-documents?addnew=true" title="Add new item" class="btn btn-success pull-right"><span class="fa fa-plus fa-fw"></span> Add new document</a></div></div>{/if}
+    <div class="col-12">
+        {if $userDetails.isHeadOffice && !$add && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}<div class="row"><div class="col-12"><a href="course-documents?addnew=true" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new document</a></div></div>{/if}
         <ul class="pager no-margin-t">
             <li class="previous">
                 <a href="{if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}./{else}course-documents{/if}" title="Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}" class="previous">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}</a>
@@ -14,9 +14,9 @@
             <div class="row">
                 {if $doc_groups}
                 <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">{if $edit}Edit{else}Add{/if} document</div>
-                        <div class="panel-body">
+                    <div class="card">
+                        <div class="card-header">{if $edit}Edit{else}Add{/if} document</div>
+                        <div class="card-body">
                             <form method="post" action="" enctype="multipart/form-data" class="form-horizontal">
                                 <div class="form-group form-inline">
                                     <label for="document" class="col-md-3 control-label">Document</label>
@@ -51,9 +51,9 @@
                 </div>
                 {/if}
                 <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Add Document Group</div>
-                        <div class="panel-body">
+                    <div class="card">
+                        <div class="card-header">Add Document Group</div>
+                        <div class="card-body">
                             <form method="post" action="" class="form-horizontal">
                                 <div class="form-group{if $error && !$smarty.post.group_name} has-error{/if}">
                                     <label for="group_name" class="col-md-3 control-label"><span class="text-danger">*</span> Name:</label>
@@ -65,18 +65,18 @@
                             </form>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Edit Document Groups</div>
+                    <div class="card">
+                        <div class="card-header">Edit Document Groups</div>
                             <ul class="list-group">
                             {foreach $doc_groups as $group}
-                                <li class="list-group-item">{$group.name}<div class="pull-right"><a href="course-documents?editgroup={$group.id}#editgroup" title="Edit group" class="btn btn-warning btn-xs"><span class="fa fa-pencil fa-fw"></span> Edit</a>{if $group.items == 0} <a href="course-documents?deletegroup={$group.id}#deletegroup" title="Delete group" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>{/if}</div></li>
+                                <li class="list-group-item">{$group.name}<div class="float-right"><a href="course-documents?editgroup={$group.id}#editgroup" title="Edit group" class="btn btn-warning btn-xs"><span class="fa fa-pencil fa-fw"></span> Edit</a>{if $group.items == 0} <a href="course-documents?deletegroup={$group.id}#deletegroup" title="Delete group" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>{/if}</div></li>
                             {/foreach}
                             </ul>
                     </div>
                     {if $smarty.get.editgroup >= 1 && $groupinfo && $userDetails.isHeadOffice}
-                    <div class="panel panel-warning" id="editgroup">
-                        <div class="panel-heading">Edit Group</div>
-                        <div class="panel-body">
+                    <div class="card border-warning" id="editgroup">
+                        <div class="card-header">Edit Group</div>
+                        <div class="card-body">
                             <form method="post" action="" class="form-horizontal">
                                 <div class="form-group{if $error && !$smarty.post.group_name} has-error{/if}">
                                     <label for="edit_group_name" class="col-md-3 control-label"><span class="text-danger">*</span> Name:</label>
@@ -90,9 +90,9 @@
                     </div>
                     {/if}
                     {if $smarty.get.deletegroup >= 1 && $groupinfo && $userDetails.isHeadOffice}
-                    <div class="panel panel-danger" id="deletegroup">
-                        <div class="panel-heading">Delete Group</div>
-                        <div class="panel-body">
+                    <div class="card border-danger" id="deletegroup">
+                        <div class="card-header">Delete Group</div>
+                        <div class="card-body">
                             <h4 class="text-center">Confirm Delete</h4>
                             <p class="text-center">Are you sure that you want to delete the <strong>{$group.name}</strong> group?</p>
                             <div class="text-center">
@@ -119,10 +119,10 @@
             <div class="row">
                 {assign var="first" value=1}
                 {foreach $documents as $doc}
-                    {if $group != $doc.group && $doc.group}{if !$first}</ul></div></div>{/if}<div class="col-md-4 col-sm-6"><div class="panel panel-default"><div class="panel-heading">{$doc.group}</div>{if $userDetails.isHeadOffice}<ul class="list-group">{/if}{/if}
+                    {if $group != $doc.group && $doc.group}{if !$first}</ul></div></div>{/if}<div class="col-md-4 col-sm-6"><div class="card"><div class="card-header">{$doc.group}</div>{if $userDetails.isHeadOffice}<ul class="list-group">{/if}{/if}
                     
                     {assign var="group" value=$doc.group}
-                    {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}<a href="/learning/documents/{$doc.course_id}/{$doc.file}" title="{$doc.link_text}" target="_blank"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$doc.link_text}</a>{if $userDetails.isHeadOffice}<div class="pull-right"><a href="course-documents?edit={$doc.id}" title="Edit item" class="btn btn-warning btn-xs"><span class="fa fa-pencil fa-fw"></span> Edit</a> <a href="course-documents?delete={$doc.id}" title="Delete item" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a></div></li>{/if}
+                    {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}<a href="/learning/documents/{$doc.course_id}/{$doc.file}" title="{$doc.link_text}" target="_blank"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$doc.link_text}</a>{if $userDetails.isHeadOffice}<div class="float-right"><a href="course-documents?edit={$doc.id}" title="Edit item" class="btn btn-warning btn-xs"><span class="fa fa-pencil fa-fw"></span> Edit</a> <a href="course-documents?delete={$doc.id}" title="Delete item" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a></div></li>{/if}
                     {assign var="first" value=false}
                 {/foreach}
                 {if $userDetails.isHeadOffice}</ul>{/if}

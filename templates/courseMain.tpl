@@ -1,6 +1,6 @@
 {strip}
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-12">
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name}</span></h1>
     </div>
     <div class="col-xs-12">
@@ -8,7 +8,7 @@
         {if $courseInfo.description}<p>{$courseInfo.description}</p>{/if}
     </div>
     <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 text-center">
-        <div class="panel course-panel">
+        <div class="card course-panel">
             <a href="/learning/{$courseInfo.url}/info">
                 <span class="fa fa-fw fa-list fa-3x"></span><br />
                 Course Info
@@ -16,7 +16,7 @@
         </div>
     </div>
     {if $readingList || $userDetails.isHeadOffice}<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 text-center">
-        <div class="panel course-panel">
+        <div class="card course-panel">
             <a href="/learning/{$courseInfo.url}/reading-list">
                 <span class="fa fa-fw fa-book fa-3x"></span><br />
                 Reading List
@@ -24,7 +24,7 @@
         </div>
     </div>{/if}
     {if $CourseVideos || $userDetails.isHeadOffice}<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 text-center">
-        <div class="panel course-panel">
+        <div class="card course-panel">
             <a href="/learning/{$courseInfo.url}/videos">
                 <span class="fa fa-fw fa-play-circle-o fa-3x"></span><br />
                 Videos
@@ -32,7 +32,7 @@
         </div>
     </div>{/if}
     {if $courseDocs || $userDetails.isHeadOffice}<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 text-center">
-        <div class="panel course-panel">
+        <div class="card course-panel">
             <a href="/learning/{$courseInfo.url}/course-documents">
                 <span class="fa fa-fw fa-files-o fa-3x"></span><br />
                 Course Documents
@@ -40,7 +40,7 @@
         </div>
     </div>{/if}
     {if $courseTests || $userDetails.isHeadOffice}<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 text-center">
-        <div class="panel course-panel">
+        <div class="card course-panel">
             <a href="/learning/{$courseInfo.url}/tests">
                 <span class="fa fa-fw fa-pencil-square-o fa-3x"></span><br />
                 My Tests{if $userDetails.isHeadOffice && $submissionCount.unmarked > 1} <span class="badge badge-danger">{$submissionCount.unmarked}</span>{/if}
@@ -49,7 +49,7 @@
     </div>{/if}
     {if $userDetails.isHeadOffice}
         <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 text-center">
-            <div class="panel course-panel">
+            <div class="card course-panel">
                 <a href="/learning/{$courseInfo.url}/pupils">
                     <span class="fa fa-fw fa-users fa-3x"></span><br />
                     Course Pupils

@@ -1,10 +1,10 @@
 {strip}
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-12">
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Tests</small></span></h1>
     </div>
-    <div class="col-lg-12">
-        {if $userDetails.isHeadOffice && !$edit && !$add && !$delete && !$submission}<div class="col-lg-12"><a href="tests?addnew=true" title="Add new test" class="btn btn-success pull-right"><span class="fa fa-plus fa-fw"></span> Add new test</a></div>{/if}
+    <div class="col-12">
+        {if $userDetails.isHeadOffice && !$edit && !$add && !$delete && !$submission}<div class="col-12"><a href="tests?addnew=true" title="Add new test" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new test</a></div>{/if}
         {if !$testdetails || $reviewInfo}<ul class="pager no-margin-t">
             <li class="previous">
                 <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}tests?submissions={$smarty.get.submissions}{elseif $edit && $questionedit}tests?testid={$questionedit.test_id}&amp;edit=true{else}tests{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="previous">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
@@ -161,7 +161,7 @@ $("input[type='checkbox']").click(function(){
                             {foreach $testedit.questions as $question}
                                 <div class="row">
                                     <div class="col-md-12">
-                                <div class="pull-right">
+                                <div class="float-right">
                                     <a href="tests?questionid={$question.question_id}&amp;edit=true" title="Edit Page" class="text-warning"><span class="fa fa-pencil fa-fw"></span> Edit</a> &nbsp; <a href="tests?questionid={$question.question_id}&amp;delete=true" title="Delete Page" class="text-danger"><span class="fa fa-trash fa-fw"></span> Delete</a>
                                 </div>
                                     </div>
@@ -438,8 +438,8 @@ $(document).ready(function(){
             {elseif $submission}
                 {if $unmarked || $testSubmissions}
                     {if $unmarked}
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><span class="fa fa-pencil fa-fw"></span> Unmarked test submissions</div>
+                        <div class="card">
+                            <div class="card-header"><span class="fa fa-pencil fa-fw"></span> Unmarked test submissions</div>
                             <table class="table table-bordered table-hover">
                                 <tr>
                                     <th></th>
@@ -459,8 +459,8 @@ $(document).ready(function(){
                         </div>
                     {/if}
                     {if $testSubmissions}
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><span class="fa fa-check fa-fw"></span> Test submissions</div>
+                        <div class="card">
+                            <div class="card-header"><span class="fa fa-check fa-fw"></span> Test submissions</div>
                             <table class="table table-bordered table-hover">
                                 <tr>
                                     <th></th>

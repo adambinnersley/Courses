@@ -1,11 +1,11 @@
 {strip}
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-12">
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Reading List</small></span></h1>
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-12">
         <ul class="pager no-margin-t">
             <li class="previous">
                 <a href="{if !$add && !$edit && !$delete}./{else}reading-list{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}reading list{/if}" class="previous">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}reading list{/if}</a>
@@ -15,7 +15,7 @@
 </div>
 <div class="row">
     {if !$add && !$edit && !$delete}
-        {if $userDetails.isHeadOffice}<div class="col-lg-12"><a href="reading-list?addnew=true" title="Add new item" class="btn btn-success pull-right"><span class="fa fa-plus fa-fw"></span> Add new item</a></div>{/if}
+        {if $userDetails.isHeadOffice}<div class="col-12"><a href="reading-list?addnew=true" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new item</a></div>{/if}
         {if $readingList}
         {foreach $readingList as $item}
             {if !$readingtype}
@@ -31,7 +31,7 @@
                     <div class="list-group">
             {/if}
             {if $item.link && $item.resource_type == 2 && !$userDetails.isHeadOffice}<a href="{$item.link}" title="{$item.title}" target="_blank" class="list-group-item">{else}<div class="list-group-item">{/if}
-                {if $userDetails.isHeadOffice}<div class="pull-right"><a href="reading-list?edit={$item.id}" title="Edit item" class="btn btn-warning"><span class="fa fa-pencil fa-fw"></span> Edit</a> <a href="reading-list?delete={$item.id}" title="Delete item" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></div>{/if}
+                {if $userDetails.isHeadOffice}<div class="float-right"><a href="reading-list?edit={$item.id}" title="Edit item" class="btn btn-warning"><span class="fa fa-pencil fa-fw"></span> Edit</a> <a href="reading-list?delete={$item.id}" title="Delete item" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></div>{/if}
                 <span class="fa fa-{if $item.resource_type == 1}book{elseif $item.resource_type == 2}link{/if} fa-fw"></span> {if $item.resource_type == 1}<strong>{/if}{$item.title}{if $item.resource_type == 1}</strong>{/if}
                 {if $userDetails.isHeadOffice && $item.link && $item.resource_type == 2}<br /><small>{$item.link}</small>{/if}
                 {if $item.description}<br /><small>{$item.description}</small>{/if}
@@ -49,7 +49,7 @@
         </div>
         {/if}
     {elseif !$delete}
-    <div class="col-lg-12">
+    <div class="col-12">
         <form method="post" action="" class="form-horizontal">
             <div class="form-group form-inline">
                 <label for="type" class="col-md-3 control-label">Type: <span class="text-danger">*</span></label>
@@ -105,7 +105,7 @@
     {/if}
 </div>
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-12">
         <ul class="pager no-margin">
             <li class="previous">
                 <a href="{if !$add && !$edit && !$delete}./{else}reading-list{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}reading list{/if}" class="previous">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}reading list{/if}</a>
