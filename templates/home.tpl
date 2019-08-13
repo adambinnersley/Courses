@@ -100,8 +100,8 @@
                 <div class="card-footer">
                     <div class="row">
                         {if $userDetails.isHeadOffice}
-                            <div class="col-6"><a href="{$courseRoot}{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View<span class="d-none d-md-inline-block"> Course</span></a></div>
-                            <div class="col-6"><a href="?editcourse={$course.id}" title="Edit Course" class="btn btn-warning btn-block">Edit<span class="d-none d-md-inline-block"> Course</span></a></div>
+                            <div class="col-6"><a href="{$courseRoot}{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View<span class="d-none d-md-inline-block">&nbsp;Course</span></a></div>
+                            <div class="col-6"><a href="?editcourse={$course.id}" title="Edit Course" class="btn btn-warning btn-block">Edit<span class="d-none d-md-inline-block">&nbsp;Course</span></a></div>
                         {else}
                         <div class="col-12"><a href="{$courseRoot}{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View Course</a></div>
                         {/if}

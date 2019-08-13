@@ -28,7 +28,7 @@
     {if $CourseVideos || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
         <div class="card course-panel">
             <a href="{$courseRoot}{$courseInfo.url}/videos">
-                <span class="fa fa-fw fa-play-circle-o fa-3x"></span><br />
+                <span class="fa fa-fw fa-film fa-3x"></span><br />
                 Videos
             </a>
         </div>
@@ -36,7 +36,7 @@
     {if $courseDocs || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
         <div class="card course-panel">
             <a href="{$courseRoot}{$courseInfo.url}/course-documents">
-                <span class="fa fa-fw fa-files-o fa-3x"></span><br />
+                <span class="fa fa-fw fa-file-download fa-3x"></span><br />
                 Course Documents
             </a>
         </div>
@@ -44,7 +44,7 @@
     {if $courseTests || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
         <div class="card course-panel">
             <a href="{$courseRoot}{$courseInfo.url}/tests">
-                <span class="fa fa-fw fa-pencil-square-o fa-3x"></span><br />
+                <span class="fa fa-fw fa-pencil-alt fa-3x"></span><br />
                 My Tests{if $userDetails.isHeadOffice && $submissionCount.unmarked > 1} <span class="badge badge-danger">{$submissionCount.unmarked}</span>{/if}
             </a>
         </div>
