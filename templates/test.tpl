@@ -41,7 +41,7 @@
                                 {else}
                                 <td class="text-center">{if $test.submissions.total > 0}{$test.submissions.total} Total{else}None{/if}{if $test.submissions.unmarked >= 1} <div class="badge">{$test.submissions.unmarked} Unmarked</div>{/if}</td>
                                 <td class="text-center">{if $test.submissions.total >= 1}<a href="tests?submissions={$test.test_id}" title="Submissions" class="btn btn-info">View Submissions</a>{/if}</td>
-                                <td class="text-center"><a href="tests?testid={$test.test_id}&amp;edit=true" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil fa-fw"></span> Edit</a> <a href="tests?testid={$test.test_id}&amp;delete=true" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></td>{/if}
+                                <td class="text-center"><a href="tests?testid={$test.test_id}&amp;edit=true" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="tests?testid={$test.test_id}&amp;delete=true" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></td>{/if}
                             </tr>    
                         {/foreach}
                     </table>
@@ -160,7 +160,7 @@ $("input[type='checkbox']").click(function(){
                                 <div class="row">
                                     <div class="col-md-12">
                                 <div class="float-right">
-                                    <a href="tests?questionid={$question.question_id}&amp;edit=true" title="Edit Page" class="text-warning"><span class="fa fa-pencil fa-fw"></span> Edit</a> &nbsp; <a href="tests?questionid={$question.question_id}&amp;delete=true" title="Delete Page" class="text-danger"><span class="fa fa-trash fa-fw"></span> Delete</a>
+                                    <a href="tests?questionid={$question.question_id}&amp;edit=true" title="Edit Page" class="text-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> &nbsp; <a href="tests?questionid={$question.question_id}&amp;delete=true" title="Delete Page" class="text-danger"><span class="fa fa-trash fa-fw"></span> Delete</a>
                                 </div>
                                     </div>
                                 </div>
@@ -437,7 +437,7 @@ $(document).ready(function(){
                 {if $unmarked || $testSubmissions}
                     {if $unmarked}
                         <div class="card">
-                            <div class="card-header"><span class="fa fa-pencil fa-fw"></span> Unmarked test submissions</div>
+                            <div class="card-header"><span class="fa fa-pencil-alt fa-fw"></span> Unmarked test submissions</div>
                             <table class="table table-bordered table-hover">
                                 <tr>
                                     <th></th>

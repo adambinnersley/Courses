@@ -27,7 +27,7 @@
                     <div class="list-group">
             {/if}
             {if $item.link && $item.resource_type == 2 && !$userDetails.isHeadOffice}<a href="{$item.link}" title="{$item.title}" target="_blank" class="list-group-item">{else}<div class="list-group-item">{/if}
-                {if $userDetails.isHeadOffice}<div class="float-right"><a href="reading-list?edit={$item.id}" title="Edit item" class="btn btn-warning"><span class="fa fa-pencil fa-fw"></span> Edit</a> <a href="reading-list?delete={$item.id}" title="Delete item" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></div>{/if}
+                {if $userDetails.isHeadOffice}<div class="float-right"><a href="reading-list?edit={$item.id}" title="Edit item" class="btn btn-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="reading-list?delete={$item.id}" title="Delete item" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></div>{/if}
                 <span class="fa fa-{if $item.resource_type == 1}book{elseif $item.resource_type == 2}link{/if} fa-fw"></span> {if $item.resource_type == 1}<strong>{/if}{$item.title}{if $item.resource_type == 1}</strong>{/if}
                 {if $userDetails.isHeadOffice && $item.link && $item.resource_type == 2}<br /><small>{$item.link}</small>{/if}
                 {if $item.description}<br /><small>{$item.description}</small>{/if}

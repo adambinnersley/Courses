@@ -65,7 +65,7 @@
                         <div class="card-header">Edit Document Groups</div>
                             <ul class="list-group">
                             {foreach $doc_groups as $group}
-                                <li class="list-group-item">{$group.name}<div class="float-right"><a href="course-documents?editgroup={$group.id}#editgroup" title="Edit group" class="btn btn-warning btn-xs"><span class="fa fa-pencil fa-fw"></span> Edit</a>{if $group.items == 0} <a href="course-documents?deletegroup={$group.id}#deletegroup" title="Delete group" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>{/if}</div></li>
+                                <li class="list-group-item">{$group.name}<div class="float-right"><a href="course-documents?editgroup={$group.id}#editgroup" title="Edit group" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a>{if $group.items == 0} <a href="course-documents?deletegroup={$group.id}#deletegroup" title="Delete group" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>{/if}</div></li>
                             {/foreach}
                             </ul>
                     </div>
@@ -118,7 +118,7 @@
                     {if $group != $doc.group && $doc.group}{if !$first}</ul></div></div>{/if}<div class="col-md-4 col-sm-6"><div class="card"><div class="card-header">{$doc.group}</div>{if $userDetails.isHeadOffice}<ul class="list-group">{/if}{/if}
                     
                     {assign var="group" value=$doc.group}
-                    {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}<a href="{$courseRoot}documents/{$doc.course_id}/{$doc.file}" title="{$doc.link_text}" target="_blank"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$doc.link_text}</a>{if $userDetails.isHeadOffice}<div class="float-right"><a href="course-documents?edit={$doc.id}" title="Edit item" class="btn btn-warning btn-xs"><span class="fa fa-pencil fa-fw"></span> Edit</a> <a href="course-documents?delete={$doc.id}" title="Delete item" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a></div></li>{/if}
+                    {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}<a href="{$courseRoot}documents/{$doc.course_id}/{$doc.file}" title="{$doc.link_text}" target="_blank"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$doc.link_text}</a>{if $userDetails.isHeadOffice}<div class="float-right"><a href="course-documents?edit={$doc.id}" title="Edit item" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="course-documents?delete={$doc.id}" title="Delete item" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a></div></li>{/if}
                     {assign var="first" value=false}
                 {/foreach}
                 {if $userDetails.isHeadOffice}</ul>{/if}
