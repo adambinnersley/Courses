@@ -2,6 +2,7 @@
 namespace Courses;
 
 use DBAL\Database;
+use DBAL\Modifiers\Modifier;
 use DateTime;
 
 class Pupils{
@@ -12,7 +13,7 @@ class Pupils{
     
     protected $pupils_table = 'course_access';
     
-    public $bulkUserTypes = array(1 => "Learner Drivers", 2 => "PDIs", 3 => "Instructors", 4 => "Tutors");
+    public $bulkUserTypes = [1 => "Learner Drivers", 2 => "PDIs", 3 => "Instructors", 4 => "Tutors"];
 
     /**
      * Pass an instance of the database to the class
@@ -25,17 +26,17 @@ class Pupils{
     /**
      * Adds a pupil to a given course
      * @param int $pupilID This should be the users unique ID
-     * @param int|boolean $isPupilInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
+     * @param int|boolean $isInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
      * @param int $courseID This need to be the course that you are assigning the pupil to
      * @param datetime The date in which the user will have access until, If set to NULL no expiry is set
      * @return boolean If the information has been successfully added will return true else will return false
      */
-    public function addPupilAccess($pupilID, $isPupilInstructor, $courseID, $expiry = NULL) {
+    public function addPupilAccess($pupilID, $isInstructor, $courseID, $expiry = NULL) {
         if($expiry !== NULL && DateTime::createFromFormat('Y-m-d H:i:s', $expiry) !== false) {
             $expiry = date('Y-m-d H:i:s', strtotime($expiry));
         }
-        if(is_numeric($pupilID) && (is_numeric($isPupilInstructor) || is_bool($isPupilInstructor)) && is_numeric($courseID)) {
-            return $this->db->insert($this->pupils_table, array('user_id' => $pupilID, 'is_instructor' => intval($isPupilInstructor), 'course_id' => $courseID, 'expiry_date' => $expiry));
+        if(is_numeric($pupilID) && (is_numeric($isInstructor) || is_bool($isInstructor)) && is_numeric($courseID)) {
+            return $this->db->insert($this->pupils_table, ['user_id' => Modifier::setNullOnEmpty(boolval($isInstructor) === false ? $pupilID : NULL), 'instructor_id' => Modifier::setNullOnEmpty(boolval($isInstructor) === false ? NULL : $pupilID), 'course_id' => $courseID, 'expiry_date' => $expiry]);
         }
         return false;
     }
@@ -49,7 +50,7 @@ class Pupils{
         $users = $this->getUsersByType($type);
         if(is_array($users) && is_numeric($courseID)){
             foreach($users as $user){
-                $this->addPupilAccess($user['user_id'], $user['is_instructor'], $courseID);
+                $this->addPupilAccess($user['id'], $user['is_instructor'], $courseID);
             }
         }
     }
@@ -60,34 +61,34 @@ class Pupils{
      * @return array|boolean If any users exist for the given type they will be returned as an array else will return false 
      */
     protected function getUsersByType($type){
-        if($type == 1){return $this->db->query("SELECT `cust_id` as `user_id`, 0 as `is_instructor` FROM `{$this->users_table}` WHERE `student` = 1 AND `student_type` => 1;");}
-        elseif($type == 2){return $this->db->query("SELECT `cust_id` as `user_id`, 0 as `is_instructor` FROM `{$this->users_table}` WHERE `student` = 1 AND `student_type` => 2;");}
-        elseif($type == 3){return $this->db->query("SELECT `fino` as `user_id`, 1 as `is_instructor` FROM `{$this->instructors_table}` WHERE `disabled` = 0;");}
-        elseif($type == 4){return $this->db->query("SELECT `fino` as `user_id`, 1 as `is_instructor` FROM `{$this->instructors_table}` WHERE `disabled` = 0 AND `tutor` = 1;");}
+        if($type == 1){return $this->db->query("SELECT `id`, 0 as `is_instructor` FROM `{$this->users_table}` WHERE `student` = 1 AND `student_type` => 1;");}
+        elseif($type == 2){return $this->db->query("SELECT `id`, 0 as `is_instructor` FROM `{$this->users_table}` WHERE `student` = 1 AND `student_type` => 2;");}
+        elseif($type == 3){return $this->db->query("SELECT `id`, 1 as `is_instructor` FROM `{$this->instructors_table}` WHERE `disabled` = 0;");}
+        elseif($type == 4){return $this->db->query("SELECT `id`, 1 as `is_instructor` FROM `{$this->instructors_table}` WHERE `disabled` = 0 AND `tutor` = 1;");}
         return false;
     }
     
     /**
      * Checks to see if the user has access to the given course
      * @param type $pupilID This should be the users unique ID
-     * @param int|boolean $isPupilInstructor
+     * @param int|boolean $isInstructor
      * @param int $courseID This need to be the course that you are checking access for
      * @return boolean If the user has access to the course will return true else will return false
      */
-    public function getPupilAccess($pupilID, $isPupilInstructor, $courseID){
-        return boolval($this->db->count($this->pupils_table, array('user_id' => $pupilID, 'is_instructor' => intval($isPupilInstructor), 'course_id' => $courseID)));
+    public function getPupilAccess($pupilID, $isInstructor, $courseID){
+        return boolval($this->db->count($this->pupils_table, ['user_id' => $pupilID, 'is_instructor' => $isInstructor, 'course_id' => $courseID]));
     }
     
     /**
      * Remove a given pupil from the given course
      * @param int $pupilID This should be the users unique ID
-     * @param int|boolean $isPupilInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
+     * @param int|boolean $isInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
      * @param int $courseID This need to be the course that you are removing the pupil from
      * @return boolean If the record has been removed will return true else will return false
      */
-    public function removePupilAccess($pupilID, $isPupilInstructor, $courseID){
-        if(is_numeric($pupilID) && (is_numeric($isPupilInstructor) || is_bool($isPupilInstructor)) && is_numeric($courseID)){
-            return $this->db->delete($this->pupils_table, array('user_id' => $pupilID, 'is_instructor' => intval($isPupilInstructor), 'course_id' => $courseID));
+    public function removePupilAccess($pupilID, $isInstructor, $courseID){
+        if(is_numeric($pupilID) && (is_numeric($isInstructor) || is_bool($isInstructor)) && is_numeric($courseID)){
+            return $this->db->delete($this->pupils_table, ['user_id' => $pupilID, 'is_instructor' => $isInstructor, 'course_id' => $courseID]);
         }
         return false;
     }
@@ -95,12 +96,12 @@ class Pupils{
     /**
      * Checks to see if the user has access to the given course
      * @param type $pupilID This should be the users unique ID
-     * @param int|boolean $isPupilInstructor
+     * @param int|boolean $isInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
      * @param int $courseID This need to be the course that you are checking access for
      * @return boolean If the user has access to the course will return true else will return false
      */
-    public function checkPupilAccess($pupilID, $isPupilInstructor, $courseID){
-        return $this->getPupilAccess($pupilID, $isPupilInstructor, $courseID);
+    public function checkPupilAccess($pupilID, $isInstructor, $courseID){
+        return $this->getPupilAccess($pupilID, $isInstructor, $courseID);
     }
     
     /**
