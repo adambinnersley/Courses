@@ -71,12 +71,12 @@ class Pupils{
     /**
      * Checks to see if the user has access to the given course
      * @param type $pupilID This should be the users unique ID
-     * @param int|boolean $isInstructor
+     * @param int|boolean $isInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
      * @param int $courseID This need to be the course that you are checking access for
      * @return boolean If the user has access to the course will return true else will return false
      */
     public function getPupilAccess($pupilID, $isInstructor, $courseID){
-        return boolval($this->db->count($this->pupils_table, ['user_id' => $pupilID, 'is_instructor' => $isInstructor, 'course_id' => $courseID]));
+        return boolval($this->db->count($this->pupils_table, array_merge($this->getUserWhere($pupilID, $isInstructor), ['course_id' => $courseID])));
     }
     
     /**
@@ -87,8 +87,8 @@ class Pupils{
      * @return boolean If the record has been removed will return true else will return false
      */
     public function removePupilAccess($pupilID, $isInstructor, $courseID){
-        if(is_numeric($pupilID) && (is_numeric($isInstructor) || is_bool($isInstructor)) && is_numeric($courseID)){
-            return $this->db->delete($this->pupils_table, ['user_id' => $pupilID, 'is_instructor' => $isInstructor, 'course_id' => $courseID]);
+        if(is_numeric($pupilID) && is_numeric($courseID)){
+            return $this->db->delete($this->pupils_table, array_merge($this->getUserWhere($pupilID, $isInstructor), ['course_id' => $courseID]));
         }
         return false;
     }
@@ -111,7 +111,7 @@ class Pupils{
      */
     public function getPupilsOnCourse($courseID){
         if(is_numeric($courseID)){
-            return $this->db->query("SELECT * FROM ((SELECT CONCAT(`{$this->users_table}`.`firstname`, ' ', `{$this->users_table}`.`lastname`) as `name`, `{$this->users_table}`.`email`, `{$this->users_table}`.`cust_id` as `user_id`, 0 as `is_instructor` FROM `{$this->users_table}` WHERE `{$this->pupils_table}`.`course_id` = :courseid AND `{$this->pupils_table}`.`is_instructor` = 0 AND `{$this->pupils_table}`.`user_id` = `{$this->users_table}`.`user_id`) UNION (SELECT `{$this->instructors_table}`.`ldiname` as `name`, CONCAT('info@', `{$this->instructors_table}`.`website`) as `email`, `{$this->instructors_table}`.`fino` as `user_id`, 1 as `is_instructor` FROM `{$this->users_table}` WHERE `{$this->pupils_table}`.`course_id` = :courseid AND `{$this->pupils_table}`.`is_instructor` = 1 AND `{$this->pupils_table}`.`user_id` = `{$this->instructors_table}`.`fino`)) ORDER BY `name` ASC;", array(':courseid' => intval($courseID)));
+            return $this->db->query("SELECT * FROM ((SELECT CONCAT(`{$this->users_table}`.`firstname`, ' ', `{$this->users_table}`.`lastname`) as `name`, `{$this->users_table}`.`email`, `{$this->users_table}`.`id`, 0 as `is_instructor` FROM `{$this->users_table}` WHERE `{$this->pupils_table}`.`course_id` = :courseid AND `{$this->pupils_table}`.`user_id` = `{$this->users_table}`.`user_id`) UNION (SELECT CONCAT(`{$this->instructors_table}`.`firstname`, ' ', `{$this->instructors_table}`.`lastname`) as `name`, `{$this->instructors_table}`.`email`, `{$this->instructors_table}`.`id`, 1 as `is_instructor` FROM `{$this->users_table}` WHERE `{$this->pupils_table}`.`course_id` = :courseid AND `{$this->pupils_table}`.`is_instructor` = 1 AND `{$this->pupils_table}`.`instructor_id` = `{$this->instructors_table}`.`id`)) ORDER BY `name` ASC;", [':courseid' => intval($courseID)]);
         }
         return false;
     }
@@ -119,10 +119,15 @@ class Pupils{
     /**
      * Lists all of the course IDs that the pupil given is enrolled onto
      * @param int $pupilID This should be the pupils ID
-     * @param int|boolean $isPupilInstructor If the pupil is an instructor set this as true/1 else set to false/0 is just a standard learner 
+     * @param int|boolean $isInstructor If the pupil is an instructor set this as true/1 else set to false/0 is just a standard learner 
      * @return array|false If the pupil is list on any courses will return an array of the enrolled course ID else will return false
      */
-    public function getPupilsCoursesList($pupilID, $isPupilInstructor){
-        return $this->db->selectAll($this->pupils_table, array('user_id' => $pupilID, 'is_instructor' => intval($isPupilInstructor)), array('course_id'));
+    public function getPupilsCoursesList($pupilID, $isInstructor){
+        return $this->db->selectAll($this->pupils_table, $this->getUserWhere($pupilID, $isInstructor), ['course_id']);
+    }
+    
+    protected function getUserWhere($pupilID, $isInstructor){
+        if(boolval($isInstructor) !== true){return ['user_id' => $pupilID];}
+        else{return ['instructor_id' => $pupilID];}
     }
 }
