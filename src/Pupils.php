@@ -126,6 +126,12 @@ class Pupils{
         return $this->db->selectAll($this->pupils_table, $this->getUserWhere($pupilID, $isInstructor), ['course_id']);
     }
     
+    /**
+     * Returns the correct field and value to check user access from the database
+     * @param int $pupilID This should be the pupils ID
+     * @param int|boolean $isInstructor If the pupil is an instructor set this as true/1 else set to false/0 is just a standard learner 
+     * @return array
+     */
     protected function getUserWhere($pupilID, $isInstructor){
         if(boolval($isInstructor) !== true){return ['user_id' => $pupilID];}
         else{return ['instructor_id' => $pupilID];}
