@@ -45,7 +45,7 @@ class Videos{
      * @return array|boolean If the video exists will return the video information else will return the information as an array else will return false
      */
     public function getVideoInfo($videoID){
-        $videoInfo = self::$db->select($this->video_table, array('id' => $videoID));
+        $videoInfo = self::$db->select($this->video_table, ['id' => $videoID]);
         $videoInfo['information'] = unserialize($videoInfo['information']);
         return $videoInfo;
     }
@@ -57,7 +57,7 @@ class Videos{
      */
     public function getVideos($courseID = false){
         if(is_numeric($courseID)){
-            $where = array('course_id' => $courseID);
+            $where = ['course_id' => $courseID];
         }
         $videos = self::$db->selectAll($this->video_table, $where);
         if(is_array($videos)){
@@ -72,17 +72,17 @@ class Videos{
      * Adds a video and its information to the database
      * @param int $courseID This should be the unique course ID you are assigning the videos to
      * @param string $videoURL This need to be the YouTube video URL
-     * @param array $information This should be any additional information in the form of an array with array('fieldname' => $value); 
+     * @param array $information This should be any additional information in the form of an array with ['fieldname' => $value]; 
      * @return boolean If the video has been successfully added will return true else return false
      */
-    public function addVideo($courseID, $videoURL, $information = array()){
+    public function addVideo($courseID, $videoURL, $information = []){
         $videoID = $this->getVideoIDFromURL($videoURL);
         if($videoID !== false){
             $insert = array_filter(
                 array_merge(
-                    array('course_id' => intval($courseID), 'video_url' => $videoID),
+                    ['course_id' => intval($courseID), 'video_url' => $videoID],
                     $information,
-                    array('information' => serialize($this->getYouTubeInfo($videoID)))
+                    ['information' => serialize($this->getYouTubeInfo($videoID))]
                 )
             );
             return self::$db->insert($this->video_table, $insert);
@@ -96,16 +96,16 @@ class Videos{
      * @param array $information This should be any information that you wish to update in the form of variable_name => value, any unchanged variable can also be passed
      * @return boolean If the information is updated will return true else will return false
      */
-    public function editVideo($videoID, $information = array()){
+    public function editVideo($videoID, $information = []){
         if($information['video_url']){
             $information = array_filter(
                 array_merge(
                     $information,
-                    array('information' => serialize($this->getYouTubeInfo($information['video_url'])))
+                    ['information' => serialize($this->getYouTubeInfo($information['video_url']))]
                 )
             );
         }
-        return self::$db->update($this->video_table, $information, array('id' => $videoID));
+        return self::$db->update($this->video_table, $information, ['id' => $videoID]);
     }
     
     /**
@@ -114,7 +114,7 @@ class Videos{
      * @return boolean If the video information is deleted will return true else return false
      */
     public function deleteVideo($videoID){
-        return self::$db->delete($this->video_table, array('id' => $videoID));
+        return self::$db->delete($this->video_table, ['id' => $videoID]);
     }
     
     /**
@@ -123,7 +123,7 @@ class Videos{
      * @return object If the video exists will return the video information as an object
      */
     protected function getYouTubeInfo($videoID){
-        $youTube = new Youtube(array('key' => $this->getYouTubeAPIKey()));
+        $youTube = new Youtube(['key' => $this->getYouTubeAPIKey()]);
         return $youTube->getVideoInfo($videoID);
     }
     
@@ -133,7 +133,7 @@ class Videos{
      * @return string|false The video ID will be returned if it's detected else will return false
      */
     protected function getVideoIDFromURL($url){
-        $matches = array();
+        $matches = [];
         preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $url, $matches);
         if(!empty($matches)){
             return $matches[1];

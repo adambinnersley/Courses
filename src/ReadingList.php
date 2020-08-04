@@ -23,7 +23,7 @@ class ReadingList{
      * @return array|boolean If the course has any reading list item they will be returned as an array else will return false
      */
     public function getReadingList($courseID){
-        return $this->db->selectAll(self::READING_TABLE, array('course_id' => $courseID), '*', array('resource_type' => 'ASC'));
+        return $this->db->selectAll(self::READING_TABLE, ['course_id' => $courseID], '*', ['resource_type' => 'ASC']);
     }
     
     /**
@@ -34,7 +34,7 @@ class ReadingList{
      */
     public function getItemDetails($courseID, $linkID){
         if(is_numeric($courseID) && is_numeric($linkID)){
-            return $this->db->select(self::READING_TABLE, array('id' => $linkID, 'course_id' => $courseID));
+            return $this->db->select(self::READING_TABLE, ['id' => $linkID, 'course_id' => $courseID]);
         }
         return false;
     }
@@ -60,7 +60,7 @@ class ReadingList{
         if(empty($isbn)){$isbn = NULL;}
         if(empty($publisher)){$publisher = NULL;}
         if(empty($publishDate)){$publishDate = NULL;}
-        return $this->db->insert(self::READING_TABLE, array('course_id' => intval($courseID), 'title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link));
+        return $this->db->insert(self::READING_TABLE, ['course_id' => intval($courseID), 'title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link]);
     }
     
     /**
@@ -83,7 +83,7 @@ class ReadingList{
         if(empty($isbn)){$isbn = NULL;}
         if(empty($publisher)){$publisher = NULL;}
         if(empty($publishDate)){$publishDate = NULL;}
-        return $this->db->update(self::READING_TABLE, array('title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link), array('id' => $linkID), 1);
+        return $this->db->update(self::READING_TABLE, ['title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link], ['id' => $linkID], 1);
     }
     
     /**
@@ -93,7 +93,7 @@ class ReadingList{
      */
     public function deleteItem($linkID){
         if(is_numeric($linkID)){
-            return $this->db->delete(self::READING_TABLE, array('id' => $linkID), 1);
+            return $this->db->delete(self::READING_TABLE, ['id' => $linkID], 1);
         }
         return false;
     }
@@ -105,7 +105,7 @@ class ReadingList{
      */
     public function deleteCourseItems($courseID){
         if(is_numeric($courseID)){
-            return $this->db->delete(self::READING_TABLE, array('course_id' => $courseID)); 
+            return $this->db->delete(self::READING_TABLE, ['course_id' => $courseID]); 
         }
         return false;
     }

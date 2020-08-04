@@ -23,7 +23,7 @@ class Questions{
      * @return array|boolean If the question exists the details will be returned as a multi-dimensional array else will return false
      */
     public function getQuestionInfo($questionID){
-        $question = $this->db->select(self::QUESTIONS_TABLE, array('question_id' => $questionID));
+        $question = $this->db->select(self::QUESTIONS_TABLE, ['question_id' => $questionID]);
         if($question){
             if(intval($question['question_type']) === 2){
                 $question['answers'] = unserialize($question['answers']);
@@ -40,7 +40,7 @@ class Questions{
      */
     public function getTestQuestions($testID){
         if(is_numeric($testID)){
-            $questions = $this->db->selectAll(self::QUESTIONS_TABLE, array('test_id' => $testID), '*', array('question_order' => 'ASC'));
+            $questions = $this->db->selectAll(self::QUESTIONS_TABLE, ['test_id' => $testID], '*', ['question_order' => 'ASC']);
             foreach($questions as $i => $question){
                 if(intval($question['question_type']) === 2){
                     $questions[$i]['answers'] = unserialize($question['answers']);
@@ -64,7 +64,7 @@ class Questions{
         if(empty(trim($questionInfo['explanation']))){$questionInfo['explanation'] = 'NULL';}
         
         if(is_numeric($order)){$questionOrder = intval($order);}else{$questionOrder = $this->getNextAvailableOrder($testID);}// Get the next order num for this test
-        return $this->db->insert(self::QUESTIONS_TABLE, array('test_id' => $testID, 'question_order' => $questionOrder, 'question' => trim($questionInfo['q']), 'answers' => $answers, 'question_type' => intval($questionInfo['type']), 'max_score' => intval($questionInfo['score']), 'allow_partial' => intval($questionInfo['partial']), 'explanation' => $questionInfo['explanation']));
+        return $this->db->insert(self::QUESTIONS_TABLE, ['test_id' => $testID, 'question_order' => $questionOrder, 'question' => trim($questionInfo['q']), 'answers' => $answers, 'question_type' => intval($questionInfo['type']), 'max_score' => intval($questionInfo['score']), 'allow_partial' => intval($questionInfo['partial']), 'explanation' => $questionInfo['explanation']]);
     }
     
     /**
@@ -78,7 +78,7 @@ class Questions{
         else{$answers = $this->serializeAnswers($questionInfo['answers']);}
         if(empty(trim($questionInfo['explanation']))){$questionInfo['explanation'] = 'NULL';}
         
-        return $this->db->update(self::QUESTIONS_TABLE, array('question' => $questionInfo['q'], 'answers' => $answers, 'question_type' => $questionInfo['type'], 'max_score' => $questionInfo['score'], 'allow_partial' => $questionInfo['partial'], 'explanation' => $questionInfo['explanation']), array('question_id' => $questionID));
+        return $this->db->update(self::QUESTIONS_TABLE, ['question' => $questionInfo['q'], 'answers' => $answers, 'question_type' => $questionInfo['type'], 'max_score' => $questionInfo['score'], 'allow_partial' => $questionInfo['partial'], 'explanation' => $questionInfo['explanation']], ['question_id' => $questionID]);
     }
     
     /**
@@ -88,10 +88,10 @@ class Questions{
      */
     public function deleteQuestion($questionID){
         if(is_numeric($questionID)){
-            $questionInfo = $this->db->select(self::QUESTIONS_TABLE, array('question_id' => $questionID));
-            if($this->db->delete(self::QUESTIONS_TABLE, array('question_id' => $questionID), 1)){
-                foreach($this->db->selectAll(self::QUESTIONS_TABLE, array('test_id' => $questionInfo['test_id'], 'question_order' => array('>=', $questionInfo['question_order'])), '*', array('question_order' => 'ASC')) as $question){
-                    $this->db->update(self::QUESTIONS_TABLE, array('question_order' => intval($question['question_order'] - 1)), array('question_id' => $question['question_id']), 1);
+            $questionInfo = $this->db->select(self::QUESTIONS_TABLE, ['question_id' => $questionID]);
+            if($this->db->delete(self::QUESTIONS_TABLE, ['question_id' => $questionID], 1)){
+                foreach($this->db->selectAll(self::QUESTIONS_TABLE, ['test_id' => $questionInfo['test_id'], 'question_order' => ['>=', $questionInfo['question_order']]], '*', ['question_order' => 'ASC']) as $question){
+                    $this->db->update(self::QUESTIONS_TABLE, ['question_order' => intval($question['question_order'] - 1)], ['question_id' => $question['question_id']], 1);
                 }
                 return true;
             }
@@ -105,7 +105,7 @@ class Questions{
      * @return int This will be the maximum possible score available for the test
      */
     public function getMaxScore($testID){
-        $score = $this->db->query("SELECT SUM(`max_score`) as `max_mark` FROM `".self::QUESTIONS_TABLE."` WHERE `test_id` = ?;", array($testID));
+        $score = $this->db->query("SELECT SUM(`max_score`) as `max_mark` FROM `".self::QUESTIONS_TABLE."` WHERE `test_id` = ?;", [$testID]);
         return $score[0]['max_mark'];
     }
 
@@ -116,7 +116,7 @@ class Questions{
      * @return int|boolean If a next question id will be return if a next question exists else will return false
     public function getNextQuestionID($testID, $currentQuestion){
         if(is_numeric($testID) && is_numeric($currentQuestion)){
-            $questionInfo = $this->db->select(self::QUESTIONS_TABLE, array('test_id' => $testID, 'question_order' => ($currentQuestion + 1)));
+            $questionInfo = $this->db->select(self::QUESTIONS_TABLE, ['test_id' => $testID, 'question_order' => ($currentQuestion + 1)]);
             return $questionInfo['question_id'];
         }
         return false;
@@ -129,7 +129,7 @@ class Questions{
      * @return int|boolean If a next question id will be return if a previous question exists else will return false
     public function getPrevQuestionID($testID, $currentQuestion){
         if(is_numeric($testID) && is_numeric($currentQuestion)){
-            $questionInfo = $this->db->select(self::QUESTIONS_TABLE, array('test_id' => $testID, 'question_order' => ($currentQuestion - 1)));
+            $questionInfo = $this->db->select(self::QUESTIONS_TABLE, ['test_id' => $testID, 'question_order' => ($currentQuestion - 1)]);
             return $questionInfo['question_id'];
         }
         return false;
@@ -151,7 +151,7 @@ class Questions{
      */
     private function getNextAvailableOrder($testID){
         if(is_numeric($testID)){
-            $order = $this->db->select(self::QUESTIONS_TABLE, array('test_id' => $testID), array('question_order'), array('question_order' => 'DESC'));
+            $order = $this->db->select(self::QUESTIONS_TABLE, ['test_id' => $testID], ['question_order'], ['question_order' => 'DESC']);
             return intval($order['question_order'] + 1);
         }
         return 1;

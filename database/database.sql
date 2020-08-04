@@ -32,8 +32,8 @@ DROP TABLE IF EXISTS `course_access`;
 CREATE TABLE IF NOT EXISTS `course_access` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `course_id` smallint(6) UNSIGNED NOT NULL,
-  `user_id` int(11) UNSIGNED NOT NULL,
-  `is_instructor` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `user_id` int(11) UNSIGNED DEFAULT NULL,
+  `instructor_id` int(11) UNSIGNED DEFAULT NULL,
   `expiry_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_user_course` (`course_id`,`user_id`,`is_instructor`)

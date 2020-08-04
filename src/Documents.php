@@ -16,7 +16,7 @@ class Documents extends FileUploadDBAL{
      * @return array|false If the document exists will return an array of the document information else will return false
      */
     public function getDocumentByID($documentID){
-        return $this->db->select($this->upload_database, array('id' => intval($documentID)));
+        return $this->db->select($this->upload_database, ['id' => intval($documentID)]);
     }
     
     /**
@@ -26,7 +26,7 @@ class Documents extends FileUploadDBAL{
      * @return array|false If the document exists will return an array of the document information else will return false
      */
     public function getDocumentByFilename($file, $courseID){
-        return $this->db->select($this->upload_database, array('course_id' => intval($courseID), 'file' => $file));
+        return $this->db->select($this->upload_database, ['course_id' => intval($courseID), 'file' => $file]);
     }
     
     /**
@@ -50,9 +50,9 @@ class Documents extends FileUploadDBAL{
      * @param array $information Any additional information in the form of an array that need adding to the database
      * @return boolean If the document has successfully been added will return true else returns false
      */
-    public function addDocument($courseID, $groupID, $text, $file, $information = array()){
+    public function addDocument($courseID, $groupID, $text, $file, $information = []){
         if($file['name'] && $this->checkMimeTypes($file) && $this->fileExtCheck($file) && $this->fileSizeCheck($file)){
-            $insert = array_filter(array_merge(array('course_id' => intval($courseID), 'group_id' => intval($groupID), 'link_text' => trim($text), 'file' => $this->makeURLSafe($file['name']), 'type' => $file['type'], 'size' => $file['size'], 'content' => file_get_contents($file['tmp_name'])), array_filter($information)));
+            $insert = array_filter(array_merge(['course_id' => intval($courseID), 'group_id' => intval($groupID), 'link_text' => trim($text), 'file' => $this->makeURLSafe($file['name']), 'type' => $file['type'], 'size' => $file['size'], 'content' => file_get_contents($file['tmp_name'])], array_filter($information)));
             return $this->db->insert($this->upload_database, $insert);
         }
     }
@@ -66,11 +66,11 @@ class Documents extends FileUploadDBAL{
      * @param array $information Any additional information or updates in the form of an array that need adding to the database
      * @return boolean If the document has successfully been updated will return true else returns false
      */
-    public function updateDocument($documentID, $groupID, $text, $file = NULL, $information = array()){
+    public function updateDocument($documentID, $groupID, $text, $file = NULL, $information = []){
         if($file !== NULL && !empty($file['name']) && $this->checkMimeTypes($file) && $this->fileExtCheck($file) && $this->fileSizeCheck($file)){
-            $information = array_merge(array('file' => $this->makeURLSafe($file['name']), 'type' => $file['type'], 'size' => $file['size'], 'content' => file_get_contents($file['tmp_name']),), $information);
+            $information = array_merge(['file' => $this->makeURLSafe($file['name']), 'type' => $file['type'], 'size' => $file['size'], 'content' => file_get_contents($file['tmp_name'])], $information);
         }
-        return $this->db->update($this->upload_database, array_merge(array('group_id' => intval($groupID), 'link_text' => trim($text)), array_filter($information)), array('id' => $documentID));
+        return $this->db->update($this->upload_database, array_merge(['group_id' => intval($groupID), 'link_text' => trim($text)], array_filter($information)), ['id' => $documentID]);
     }
     
     /**
@@ -89,8 +89,8 @@ class Documents extends FileUploadDBAL{
      * @param array $additionalInfo Any additional information about the group can be added here
      * @return boolean If the group has been added will return true else return false
      */
-    public function addGroup($courseID, $name, $additionalInfo = array()){
-        $insert = array_filter(array_merge(array('course_id' => intval($courseID), 'name' => $name), $additionalInfo));
+    public function addGroup($courseID, $name, $additionalInfo = []){
+        $insert = array_filter(array_merge(['course_id' => intval($courseID), 'name' => $name], $additionalInfo));
         return $this->db->insert($this->doc_group, $insert);
     }
     
@@ -100,8 +100,8 @@ class Documents extends FileUploadDBAL{
      * @param array $information This should be any information that you wish to update in the form of an array with field name and value
      * @return booolean If the information is successfully updated will return true else return false
      */
-    public function editGroup($groupID, $information = array()){
-        return $this->db->update($this->doc_group, $information, array('id' => $groupID));
+    public function editGroup($groupID, $information = []){
+        return $this->db->update($this->doc_group, $information, ['id' => $groupID]);
     }
     
     /**
@@ -110,7 +110,7 @@ class Documents extends FileUploadDBAL{
      * @return boolean If the group has been deleted will return true else return false
      */
     public function deleteGroup($groupID){
-        return $this->db->delete($this->doc_group, array('id' => $groupID));
+        return $this->db->delete($this->doc_group, ['id' => $groupID]);
     }
     
     /**
@@ -119,7 +119,7 @@ class Documents extends FileUploadDBAL{
      * @return array|false If the group exists an array will be returned else will return false
      */
     public function getGroupByID($groupID){
-        return $this->db->select($this->doc_group, array('id' => $groupID));
+        return $this->db->select($this->doc_group, ['id' => $groupID]);
     }
     
     /**
