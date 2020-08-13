@@ -51,7 +51,7 @@ class Course extends FileUpload{
      */
     public function getUserCourses($userID, $isInstructor = false){
         if(is_numeric($userID)){
-            return $this->db->query("SELECT * FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.".($isInstructor === true ? `instructor_id` : `user_id`)." = ? AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_courses}`.`active` = 1;", [$userID]);
+            return $this->db->query("SELECT * FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.".($isInstructor === true ? "`instructor_id`" : "`user_id`")." = ? AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_courses}`.`active` = 1;", [$userID]);
         }
         return false;
     }
