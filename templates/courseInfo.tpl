@@ -8,8 +8,8 @@
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Course</small></span></h1>
     </div>
     <div class="col-12">
-        <a href="{if !$add && !$edit && !$delete && !$smarty.get.pageid}./{else}info{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.pageid}course home{else}page list{/if}</a>
-        {if $userDetails.isHeadOffice && !$add && !$edit && !$delete && !$smarty.get.pageid}<div class="row"><div class="col-12"><a href="info?addnew=true" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new page</a></div><p>&nbsp;</p></div>{/if}
+        <a href="{if !$add && !$edit && !$delete && !$smarty.get.pageid}./{else}/student/learning/{$courseInfo.url}/info/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.pageid}course home{else}page list{/if}</a>
+        {if $userDetails.isHeadOffice && !$add && !$edit && !$delete && !$smarty.get.pageid}<div class="row"><div class="col-12"><a href="/student/learning/{$courseInfo.url}/info/add" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new page</a></div><p>&nbsp;</p></div>{/if}
         {if $pages && !$add && !$delete}
             {if $pages}
                 <div id="coursePages"{if $userDetails.isHeadOffice} class="course-admin"{/if}>
@@ -18,28 +18,28 @@
                         {if $userDetails.isHeadOffice}
                             <li class="list-group-item{if $page.subpages} has-sub-list{/if}">
                                 <div class="float-left page-order">
-                                    {if $page.has_prev}<a href="?move={$page.page_id}&amp;dir=up" title="Move up" class="btn btn-success btn-xs"><span class="fa fa-angle-up"></span></a> {/if}
-                                    {if $page.has_next}<a href="?move={$page.page_id}&amp;dir=down" title="Move down" class="btn btn-success btn-xs"><span class="fa fa-angle-down"></span></a>{/if}
+                                    {if $page.has_prev}<a href="/student/learning/{$courseInfo.url}/move/{$page.page_id}/up" title="Move up" class="btn btn-success btn-xs"><span class="fa fa-angle-up"></span></a> {/if}
+                                    {if $page.has_next}<a href="/student/learning/{$courseInfo.url}/move/{$page.page_id}/down" title="Move down" class="btn btn-success btn-xs"><span class="fa fa-angle-down"></span></a>{/if}
                                 </div>
                         {/if}
-                        <a href="{$page.page_id}/" title="{$page.title}"{if !$userDetails.isHeadOffice} class="list-group-item{if $page.progress} list-group-item-success{/if}"{/if}>{$page.order}) {$page.title}</a>
+                        <a href="/student/learning/{$courseInfo.url}/{$page.page_id}/" title="{$page.title}"{if !$userDetails.isHeadOffice} class="list-group-item{if $page.progress} list-group-item-success{/if}"{/if}>{$page.order}) {$page.title}</a>
                         {if $userDetails.isHeadOffice}
                             <div class="float-right">
-                                <a href="{$page.page_id}/edit=true" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a>
-                                {if !$page.subpages} &nbsp; <a href="info?pageid={$page.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>{/if}
+                                <a href="/student/learning/{$courseInfo.url}/{$page.page_id}/edit" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a>
+                                {if !$page.subpages} &nbsp; <a href="/student/learning/{$courseInfo.url}/info/{$page.page_id}/delete" title="Delete Page" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>{/if}
                             </div>
                         {/if}
                         {if $page.subpages}{if $userDetails.isHeadOffice}<ul class="list-group">{/if}
                             {foreach $page.subpages as $subpage}
                                 {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}
                                     {if $userDetails.isHeadOffice}<div class="float-left page-order">
-                                            {if $subpage.has_prev}<a href="?move={$subpage.page_id}&amp;dir=up" title="Move up" class="btn btn-default btn-xs"><span class="fa fa-angle-up"></span></a> {/if}
-                                            {if $subpage.has_next}<a href="?move={$subpage.page_id}&amp;dir=down" title="Move down" class="btn btn-default btn-xs"><span class="fa fa-angle-down"></span></a>{/if}
+                                            {if $subpage.has_prev}<a href="/student/learning/{$courseInfo.url}/move/{$subpage.page_id}/up" title="Move up" class="btn btn-default btn-xs"><span class="fa fa-angle-up"></span></a> {/if}
+                                            {if $subpage.has_next}<a href="/student/learning/{$courseInfo.url}/move/{$subpage.page_id}/down" title="Move down" class="btn btn-default btn-xs"><span class="fa fa-angle-down"></span></a>{/if}
                                     </div>{/if}
-                                    <a href="?pageid={$subpage.page_id}" title="{$subpage.title}"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$subpage.order}) {$subpage.title}</a>
+                                    <a href="/student/learning/{$courseInfo.url}/info/{$subpage.page_id}/" title="{$subpage.title}"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$subpage.order}) {$subpage.title}</a>
                                     {if $userDetails.isHeadOffice}
                                         <div class="float-right">
-                                            <a href="info?pageid={$subpage.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> &nbsp; <a href="info?pageid={$subpage.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>
+                                            <a href="/student/learning/{$courseInfo.url}/info/{$subpage.page_id}/edit" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> &nbsp; <a href="/student/learning/{$courseInfo.url}/info/{$subpage.page_id}/delete" title="Delete Page" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>
                                         </div>
                                     {/if}
                                 {if $userDetails.isHeadOffice}</li>{/if}
@@ -62,13 +62,13 @@
             {if !$edit && !$delete && !$add}
             <div class="row">
                 <div class="col-12">
-                        {if $page.prev_page}<a href="info?pageid={$page.prev_page}" title="Previous Page" class="btn btn-default"><span class="fa fa-angle-left fa-fw"></span> Previous<span class="d-none d-sm-inline-block"> Page</span></a>&nbsp;{/if}
-                        {if $page.next_page}<a href="info?pageid={$page.next_page}" title="Next Page" class="btn btn-default float-right">Next<span class="d-none d-sm-inline-block"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a>{/if}
+                        {if $page.prev_page}<a href="/student/learning/{$courseInfo.url}/info/{$page.prev_page}/" title="Previous Page" class="btn btn-default"><span class="fa fa-angle-left fa-fw"></span> Previous<span class="d-none d-sm-inline-block"> Page</span></a>&nbsp;{/if}
+                        {if $page.next_page}<a href="/student/learning/{$courseInfo.url}/info/{$page.next_page}/" title="Next Page" class="btn btn-default float-right">Next<span class="d-none d-sm-inline-block"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a>{/if}
                 </div>
             </div>
             {/if}
             {if $userDetails.isHeadOffice && !$edit && !$delete && !$add}
-                <div class="row"><div class="col-12"><div class="float-right"><a href="info?pageid={$page.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="info?pageid={$page.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></div></div></div>
+                <div class="row"><div class="col-12"><div class="float-right"><a href="/student/learning/{$courseInfo.url}/info/{$page.page_id}/edit" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="/student/learning/{$courseInfo.url}/info/{$page.page_id}/delete" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></div></div></div>
             {/if}
             {if $edit}<form method="post" action="" class="form-horizontal">{/if}
                 
@@ -97,8 +97,8 @@
             {/if}
             {if !$edit && !$delete && !$add}<div class="row">
                 <div class="col-12">
-                    {if $page.prev_page}<a href="info?pageid={$page.prev_page}" title="Previous Page" class="btn btn-default"><span class="fa fa-angle-left fa-fw"></span> Previous<span class="hidden-xs"> Page</span></a>{/if}
-                    {if $page.next_page}<a href="info?pageid={$page.next_page}" title="Next Page" class="btn btn-default float-right">Next<span class="hidden-xs"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a>{/if}
+                    {if $page.prev_page}<a href="/student/learning/{$courseInfo.url}/info/{$page.prev_page}/" title="Previous Page" class="btn btn-default"><span class="fa fa-angle-left fa-fw"></span> Previous<span class="hidden-xs"> Page</span></a>{/if}
+                    {if $page.next_page}<a href="/student/learning/{$courseInfo.url}/info/{$page.next_page}/" title="Next Page" class="btn btn-default float-right">Next<span class="hidden-xs"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a>{/if}
                 </div>
             </div>{/if}
             {if !$userDetails.isHeadOffice}<script type="text/javascript">
@@ -169,7 +169,7 @@
         {else}
             <p class="text-center">There is currently no course content, please check back later or contact the course administrator</p>
         {/if}
-            <a href="{if !$add && !$edit && !$delete && !$smarty.get.pageid}./{else}info{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.pageid}course home{else}page list{/if}</a>
+            <a href="{if !$add && !$edit && !$delete && !$smarty.get.pageid}./{else}/student/learning/{$courseInfo.url}/info/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.pageid}course home{else}page list{/if}</a>
     </div>
 </div>
 {if ($edit || $add) && $userDetails.isHeadOffice}

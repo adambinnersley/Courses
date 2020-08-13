@@ -4,11 +4,11 @@
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Videos</small></span></h1>
     </div>
     <div class="col-12">
-        <a href="{if !$add && !$edit && !$delete}./{else}videos/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}</a>
+        <a href="{if !$add && !$edit && !$delete}./{else}/student/learning/{$courseInfo.url}/videos/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}</a>
     </div>
     <div class="col-12">
     {if $smarty.get.itemdeleted}<div class="alert alert-success">The video has successfully been removed from the course</div>{/if}
-    {if $userDetails.isHeadOffice && !$add && !$delete}<a href="videos/add" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new video</a>{/if}
+    {if $userDetails.isHeadOffice && !$add && !$delete}<a href="/student/learning/{$courseInfo.url}/videos/add" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new video</a>{/if}
     {if $add || $edit}
         <form method="post" action="" class="form-horizontal">
             <div class="form-group form-inline">
@@ -32,7 +32,7 @@
         <p class="text-center">Are you sure you wish to delete the <strong>{$item.title}</strong> video?</p>
         <div class="text-center">
         <form method="post" action="" class="form-inline">
-            <a href="videos/" title="No, return to reading list" class="btn btn-success">No, return to videos</a> &nbsp; 
+            <a href="/student/learning/{$courseInfo.url}/videos/" title="No, return to reading list" class="btn btn-success">No, return to videos</a> &nbsp; 
             <input type="submit" name="confirmdelete" id="confirmdelete" class="btn btn-danger" value="Yes, delete video" />
         </form>
         </div>
@@ -46,7 +46,7 @@
     {/if}
     </div>
     <div class="col-12">
-        <a href="{if !$add && !$edit && !$delete}./{else}videos/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}</a>
+        <a href="{if !$add && !$edit && !$delete}./{else}/student/learning/{$courseInfo.url}/videos/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}</a>
     </div>
 </div>
 {/strip}

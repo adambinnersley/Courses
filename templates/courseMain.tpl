@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
         <div class="card course-panel">
-            <a href="{$courseRoot}{$courseInfo.url}/info/">
+            <a href="/student/learning/{$courseInfo.url}/info/">
                 <span class="fa fa-fw fa-list fa-3x"></span><br />
                 Course Info
             </a>
@@ -19,7 +19,7 @@
     </div>
     {if $readingList || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
         <div class="card course-panel">
-            <a href="{$courseRoot}{$courseInfo.url}/reading-list/">
+            <a href="/student/learning/{$courseInfo.url}/reading-list/">
                 <span class="fa fa-fw fa-book fa-3x"></span><br />
                 Reading List
             </a>
@@ -27,7 +27,7 @@
     </div>{/if}
     {if $courseVideos || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
         <div class="card course-panel">
-            <a href="{$courseRoot}{$courseInfo.url}/videos/">
+            <a href="/student/learning/{$courseInfo.url}/videos/">
                 <span class="fa fa-fw fa-film fa-3x"></span><br />
                 Videos
             </a>
@@ -35,7 +35,7 @@
     </div>{/if}
     {if $courseDocs || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
         <div class="card course-panel">
-            <a href="{$courseRoot}{$courseInfo.url}/course-documents/">
+            <a href="/student/learning/{$courseInfo.url}/course-documents/">
                 <span class="fa fa-fw fa-file-download fa-3x"></span><br />
                 Course Documents
             </a>
@@ -43,7 +43,7 @@
     </div>{/if}
     {if $courseTests || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
         <div class="card course-panel">
-            <a href="{$courseRoot}{$courseInfo.url}/tests/">
+            <a href="/student/learning/{$courseInfo.url}/tests/">
                 <span class="fa fa-fw fa-pencil-alt fa-3x"></span><br />
                 My Tests{if $userDetails.isHeadOffice && $submissionCount.unmarked > 1} <span class="badge badge-danger">{$submissionCount.unmarked}</span>{/if}
             </a>
@@ -52,7 +52,7 @@
     {if $userDetails.isHeadOffice}
         <div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
             <div class="card course-panel">
-                <a href="{$courseRoot}{$courseInfo.url}/pupils/">
+                <a href="/student/learning/{$courseInfo.url}/pupils/">
                     <span class="fa fa-fw fa-users fa-3x"></span><br />
                     Course Pupils
                 </a>
