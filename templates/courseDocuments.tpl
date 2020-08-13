@@ -4,8 +4,8 @@
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Course Documents</small></span></h1>
     </div>
     <div class="col-12">
-        {if $userDetails.isHeadOffice && !$add && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}<div class="row"><div class="col-12"><a href="course-documents?addnew=true" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new document</a></div></div>{/if}
-                <a href="{if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}./{else}course-documents{/if}" title="Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}</a>
+        {if $userDetails.isHeadOffice && !$add && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}<div class="row"><div class="col-12"><a href="course-documents/add" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new document</a></div></div>{/if}
+                <a href="{if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}./{else}course-documents/{/if}" title="Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}</a>
         {if $add || $edit || $smarty.get.editgroup || $smarty.get.deletegroup}
             <div class="row">
                 {if $doc_groups}
@@ -118,7 +118,7 @@
                     {if $group != $doc.group && $doc.group}{if !$first}</ul></div></div>{/if}<div class="col-md-4 col-sm-6"><div class="card"><div class="card-header">{$doc.group}</div>{if $userDetails.isHeadOffice}<ul class="list-group">{/if}{/if}
                     
                     {assign var="group" value=$doc.group}
-                    {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}<a href="{$courseRoot}documents/{$doc.course_id}/{$doc.file}" title="{$doc.link_text}" target="_blank"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$doc.link_text}</a>{if $userDetails.isHeadOffice}<div class="float-right"><a href="course-documents?edit={$doc.id}" title="Edit item" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="course-documents?delete={$doc.id}" title="Delete item" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a></div></li>{/if}
+                    {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}<a href="{$courseRoot}documents/{$doc.course_id}/{$doc.file}" title="{$doc.link_text}" target="_blank"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$doc.link_text}</a>{if $userDetails.isHeadOffice}<div class="float-right"><a href="course-documents/{$doc.id}/edit" title="Edit item" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="course-documents/{$doc.id}/delete" title="Delete item" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a></div></li>{/if}
                     {assign var="first" value=false}
                 {/foreach}
                 {if $userDetails.isHeadOffice}</ul>{/if}
@@ -126,7 +126,7 @@
                 </div>
             </div>
         {/if}
-        <a href="{if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}./{else}course-documents{/if}" title="Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}</a>
+        <a href="{if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}./{else}course-documents/{/if}" title="Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}course home{else}documents{/if}</a>
     </div>
 </div>
 {/strip}

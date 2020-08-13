@@ -5,7 +5,7 @@
     </div>
 {if $userDetails.isHeadOffice && !$add && !$edit}
     <div class="col-12">
-        <a href="?addnew=true" title="Add Course" class="btn btn-success float-right"><span class="fa fa-plus"></span> Add Course</a>
+        <a href="add" title="Add Course" class="btn btn-success float-right"><span class="fa fa-plus"></span> Add Course</a>
     </div>
 </div>
 <div class="row" id="course-list">

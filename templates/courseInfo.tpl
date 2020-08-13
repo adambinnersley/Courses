@@ -22,10 +22,10 @@
                                     {if $page.has_next}<a href="?move={$page.page_id}&amp;dir=down" title="Move down" class="btn btn-success btn-xs"><span class="fa fa-angle-down"></span></a>{/if}
                                 </div>
                         {/if}
-                        <a href="?pageid={$page.page_id}" title="{$page.title}"{if !$userDetails.isHeadOffice} class="list-group-item{if $page.progress} list-group-item-success{/if}"{/if}>{$page.order}) {$page.title}</a>
+                        <a href="{$page.page_id}/" title="{$page.title}"{if !$userDetails.isHeadOffice} class="list-group-item{if $page.progress} list-group-item-success{/if}"{/if}>{$page.order}) {$page.title}</a>
                         {if $userDetails.isHeadOffice}
                             <div class="float-right">
-                                <a href="info?pageid={$page.page_id}&amp;edit=true" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a>
+                                <a href="{$page.page_id}/edit=true" title="Edit Page" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a>
                                 {if !$page.subpages} &nbsp; <a href="info?pageid={$page.page_id}&amp;delete=true" title="Delete Page" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>{/if}
                             </div>
                         {/if}

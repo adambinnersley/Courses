@@ -6,7 +6,7 @@
     <div class="col-12">
         {if $userDetails.isHeadOffice && !$edit && !$add && !$delete && !$submission}<div class="col-12"><a href="tests?addnew=true" title="Add new test" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new test</a></div>{/if}
         {if !$testdetails || $reviewInfo}
-            <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}tests?submissions={$smarty.get.submissions}{elseif $edit && $questionedit}tests?testid={$questionedit.test_id}&amp;edit=true{else}tests{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="btn btn-default">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
+            <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}tests/submissions/{$smarty.get.submissions}{elseif $edit && $questionedit}tests/{$questionedit.test_id}/edit{else}tests{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="btn btn-default">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
         {/if}
         {if $tests || $edit || $add || $delete || $submission}
             {if !$edit && !$add && !$delete && !$submission}
@@ -40,8 +40,8 @@
                                 <td class="text-center">{if $test.results.status >= 2 || ($test.self_assessed && $test.results.status == 1)}<a href="?review={$test.test_id}" title="Review" class="btn btn-info">Review Test</a>{/if}{if $test.results.status == 0 || $test.results.status == 2}<a href="?take={$test.test_id}" title="Take {$test.name}" class="btn btn-success">{if $test.results.status == 2}Retake{else}Start{/if} Test</a>{/if}</td>
                                 {else}
                                 <td class="text-center">{if $test.submissions.total > 0}{$test.submissions.total} Total{else}None{/if}{if $test.submissions.unmarked >= 1} <div class="badge">{$test.submissions.unmarked} Unmarked</div>{/if}</td>
-                                <td class="text-center">{if $test.submissions.total >= 1}<a href="tests?submissions={$test.test_id}" title="Submissions" class="btn btn-info">View Submissions</a>{/if}</td>
-                                <td class="text-center"><a href="tests?testid={$test.test_id}&amp;edit=true" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="tests?testid={$test.test_id}&amp;delete=true" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></td>{/if}
+                                <td class="text-center">{if $test.submissions.total >= 1}<a href="tests/submissions/{$test.test_id}" title="Submissions" class="btn btn-info">View Submissions</a>{/if}</td>
+                                <td class="text-center"><a href="tests/{$test.test_id}/edit" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="tests/{$test.test_id}/delete" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a></td>{/if}
                             </tr>    
                         {/foreach}
                     </table>
@@ -160,7 +160,7 @@ $("input[type='checkbox']").click(function(){
                                 <div class="row">
                                     <div class="col-md-12">
                                 <div class="float-right">
-                                    <a href="tests?questionid={$question.question_id}&amp;edit=true" title="Edit Page" class="text-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> &nbsp; <a href="tests?questionid={$question.question_id}&amp;delete=true" title="Delete Page" class="text-danger"><span class="fa fa-trash fa-fw"></span> Delete</a>
+                                    <a href="tests/question/{$question.question_id}/edit" title="Edit Page" class="text-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> &nbsp; <a href="tests/question/{$question.question_id}delete" title="Delete Page" class="text-danger"><span class="fa fa-trash fa-fw"></span> Delete</a>
                                 </div>
                                     </div>
                                 </div>
@@ -450,7 +450,7 @@ $(document).ready(function(){
                                         <td class="text-center">{$i+1}</td>
                                         <td class="text-center">{$utest.user_details.title} {$utest.user_details.firstname} {$utest.user_details.surname}</td>
                                         <td class="text-center">{$utest.num_unmarked}</td>
-                                        <td class="text-center"><a href="tests?submissions={$smarty.get.submissions}&amp;marktest={$utest.id}" title="Mark Test" class="btn btn-default">Mark Test</a></td>
+                                        <td class="text-center"><a href="tests/submissions/{$smarty.get.submissions}/mark/{$utest.id}" title="Mark Test" class="btn btn-default">Mark Test</a></td>
                                     </tr>
                                 {/foreach}
                             </table>
@@ -473,7 +473,7 @@ $(document).ready(function(){
                                         <td class="text-center">{$submission.user_details.title} {$submission.user_details.firstname} {$submission.user_details.surname}</td>
                                         <td class="text-center">{$submission.last_modified|date_format:"%d/%m/%Y %I:%M %p"}</td>
                                         <td class="text-center">{if $submission.status == 2}<strong class="text-danger">Failed</strong>{elseif $submission.status == 3}<strong class="text-success">Passed</strong>{/if}</td>
-                                        <td class="text-center"><a href="tests?submissions={$smarty.get.submissions}&amp;reviewtest={$submission.id}" title="Review Test" class="btn btn-default">Review Test</a></td>
+                                        <td class="text-center"><a href="tests/submissions/{$smarty.get.submissions}/review/{$submission.id}" title="Review Test" class="btn btn-default">Review Test</a></td>
                                     </tr>
                                 {/foreach}
                             </table>
@@ -532,7 +532,7 @@ $(document).ready(function(){
             <div class="col-md-12 text-center">There are currently no tests for this course</div>
         {/if}
         {if !$testdetails || $reviewInfo}
-            <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}tests?submissions={$smarty.get.submissions}{elseif $edit && $questionedit}tests?testid={$questionedit.test_id}&amp;edit=true{else}tests{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}"  class="btn btn-default">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
+            <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}tests/submissions/{$smarty.get.submissions}{elseif $edit && $questionedit}tests/{$questionedit.test_id}/edit{else}tests/{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}"  class="btn btn-default">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
         {/if}
     </div>
 </div>
