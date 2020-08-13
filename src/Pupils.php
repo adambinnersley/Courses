@@ -3,15 +3,14 @@ namespace Courses;
 
 use DBAL\Database;
 use DBAL\Modifiers\Modifier;
+use Configuration\Config;
 use DateTime;
 
 class Pupils{
     protected $db;
+    protected $config;
     
-    protected $users_table = 'products_customers';
     protected $instructors_table = 'instructors';
-    
-    protected $pupils_table = 'course_access';
     
     public $bulkUserTypes = [1 => "Learner Drivers", 2 => "PDIs", 3 => "Instructors", 4 => "Tutors"];
 
@@ -19,8 +18,9 @@ class Pupils{
      * Pass an instance of the database to the class
      * @param Database $db This should be an instance of the database
      */
-    public function __construct(Database $db) {
+    public function __construct(Database $db, Config $config) {
         $this->db = $db;
+        $this->config = $config;
     }
     
     /**
@@ -36,7 +36,7 @@ class Pupils{
             $expiry = date('Y-m-d H:i:s', strtotime($expiry));
         }
         if(is_numeric($pupilID) && (is_numeric($isInstructor) || is_bool($isInstructor)) && is_numeric($courseID)) {
-            return $this->db->insert($this->pupils_table, ['user_id' => Modifier::setNullOnEmpty(boolval($isInstructor) === false ? $pupilID : NULL), 'instructor_id' => Modifier::setNullOnEmpty(boolval($isInstructor) === false ? NULL : $pupilID), 'course_id' => $courseID, 'expiry_date' => $expiry]);
+            return $this->db->insert($this->config->table_course_access, ['user_id' => Modifier::setNullOnEmpty(boolval($isInstructor) === false ? $pupilID : NULL), 'instructor_id' => Modifier::setNullOnEmpty(boolval($isInstructor) === false ? NULL : $pupilID), 'course_id' => $courseID, 'expiry_date' => $expiry]);
         }
         return false;
     }
@@ -61,8 +61,8 @@ class Pupils{
      * @return array|boolean If any users exist for the given type they will be returned as an array else will return false 
      */
     protected function getUsersByType($type){
-        if($type == 1){return $this->db->query("SELECT `id`, 0 as `is_instructor` FROM `{$this->users_table}` WHERE `student` = 1 AND `student_type` => 1;");}
-        elseif($type == 2){return $this->db->query("SELECT `id`, 0 as `is_instructor` FROM `{$this->users_table}` WHERE `student` = 1 AND `student_type` => 2;");}
+        if($type == 1){return $this->db->query("SELECT `id`, 0 as `is_instructor` FROM `{$this->config->table_users}` WHERE `student` = 1 AND `student_type` => 1;");}
+        elseif($type == 2){return $this->db->query("SELECT `id`, 0 as `is_instructor` FROM `{$this->config->table_users}` WHERE `student` = 1 AND `student_type` => 2;");}
         elseif($type == 3){return $this->db->query("SELECT `id`, 1 as `is_instructor` FROM `{$this->instructors_table}` WHERE `disabled` = 0;");}
         elseif($type == 4){return $this->db->query("SELECT `id`, 1 as `is_instructor` FROM `{$this->instructors_table}` WHERE `disabled` = 0 AND `tutor` = 1;");}
         return false;
@@ -76,7 +76,7 @@ class Pupils{
      * @return boolean If the user has access to the course will return true else will return false
      */
     public function getPupilAccess($pupilID, $isInstructor, $courseID){
-        return boolval($this->db->count($this->pupils_table, array_merge($this->getUserWhere($pupilID, $isInstructor), ['course_id' => $courseID])));
+        return boolval($this->db->count($this->config->table_course_access, array_merge($this->getUserWhere($pupilID, $isInstructor), ['course_id' => $courseID])));
     }
     
     /**
@@ -88,7 +88,7 @@ class Pupils{
      */
     public function removePupilAccess($pupilID, $isInstructor, $courseID){
         if(is_numeric($pupilID) && is_numeric($courseID)){
-            return $this->db->delete($this->pupils_table, array_merge($this->getUserWhere($pupilID, $isInstructor), ['course_id' => $courseID]));
+            return $this->db->delete($this->config->table_course_access, array_merge($this->getUserWhere($pupilID, $isInstructor), ['course_id' => $courseID]));
         }
         return false;
     }
@@ -111,7 +111,7 @@ class Pupils{
      */
     public function getPupilsOnCourse($courseID){
         if(is_numeric($courseID)){
-            return $this->db->query("SELECT * FROM ((SELECT CONCAT(`{$this->users_table}`.`firstname`, ' ', `{$this->users_table}`.`lastname`) as `name`, `{$this->users_table}`.`email`, `{$this->users_table}`.`id`, 0 as `is_instructor` FROM `{$this->users_table}` WHERE `{$this->pupils_table}`.`course_id` = :courseid AND `{$this->pupils_table}`.`user_id` = `{$this->users_table}`.`id`) UNION (SELECT `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email`, `{$this->instructors_table}`.`id`, 1 as `is_instructor` FROM `{$this->users_table}` WHERE `{$this->pupils_table}`.`course_id` = :courseid AND `{$this->pupils_table}`.`is_instructor` = 1 AND `{$this->pupils_table}`.`instructor_id` = `{$this->instructors_table}`.`id`)) ORDER BY `name` ASC;", [':courseid' => intval($courseID)]);
+            return $this->db->query("SELECT * FROM ((SELECT CONCAT(`{$this->config->table_users}`.`firstname`, ' ', `{$this->config->table_users}`.`lastname`) as `name`, `{$this->config->table_users}`.`email`, `{$this->config->table_users}`.`id`, 0 as `is_instructor` FROM `{$this->config->table_users}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`user_id` = `{$this->config->table_users}`.`id`) UNION (SELECT `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email`, `{$this->instructors_table}`.`id`, 1 as `is_instructor` FROM `{$this->config->table_users}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`is_instructor` = 1 AND `{$this->config->table_course_access}`.`instructor_id` = `{$this->instructors_table}`.`id`)) ORDER BY `name` ASC;", [':courseid' => intval($courseID)]);
         }
         return false;
     }
@@ -123,7 +123,7 @@ class Pupils{
      * @return array|false If the pupil is list on any courses will return an array of the enrolled course ID else will return false
      */
     public function getPupilsCoursesList($pupilID, $isInstructor){
-        return $this->db->selectAll($this->pupils_table, $this->getUserWhere($pupilID, $isInstructor), ['course_id']);
+        return $this->db->selectAll($this->config->table_course_access, $this->getUserWhere($pupilID, $isInstructor), ['course_id']);
     }
     
     /**

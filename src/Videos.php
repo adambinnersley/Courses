@@ -3,20 +3,22 @@
 namespace Courses;
 
 use DBAL\Database;
+use Configuration\Config;
 use Madcoda\Youtube\Youtube;
 
 class Videos{
-    protected static $db;
-    
-    protected $video_table = 'course_videos';
+    protected $db;
+    protected $config;
+
     protected $google_api_key;
     
     /**
      * Constructor to add an instance of the Database instance 
      * @param Database $db Instance of the database instance
      */
-    public function __construct(Database $db){
-        self::$db = $db;
+    public function __construct(Database $db, Config $config){
+        $this->db = $db;
+        $this->config = $config;
     }
     
     /**
@@ -45,7 +47,7 @@ class Videos{
      * @return array|boolean If the video exists will return the video information else will return the information as an array else will return false
      */
     public function getVideoInfo($videoID){
-        $videoInfo = self::$db->select($this->video_table, ['id' => $videoID]);
+        $videoInfo = $this->db->select($this->config->table_course_videos, ['id' => $videoID]);
         $videoInfo['information'] = unserialize($videoInfo['information']);
         return $videoInfo;
     }
@@ -59,7 +61,7 @@ class Videos{
         if(is_numeric($courseID)){
             $where = ['course_id' => $courseID];
         }
-        $videos = self::$db->selectAll($this->video_table, $where);
+        $videos = $this->db->selectAll($this->config->table_course_videos, $where);
         if(is_array($videos)){
             foreach($videos as $i => $video){
                 $videos[$i]['information'] = unserialize($video['information']);
@@ -85,7 +87,7 @@ class Videos{
                     ['information' => serialize($this->getYouTubeInfo($videoID))]
                 )
             );
-            return self::$db->insert($this->video_table, $insert);
+            return $this->db->insert($this->config->table_course_videos, $insert);
         }
         return false;
     }
@@ -105,7 +107,7 @@ class Videos{
                 )
             );
         }
-        return self::$db->update($this->video_table, $information, ['id' => $videoID]);
+        return $this->db->update($this->config->table_course_videos, $information, ['id' => $videoID]);
     }
     
     /**
@@ -114,7 +116,7 @@ class Videos{
      * @return boolean If the video information is deleted will return true else return false
      */
     public function deleteVideo($videoID){
-        return self::$db->delete($this->video_table, ['id' => $videoID]);
+        return $this->db->delete($this->config->table_course_videos, ['id' => $videoID]);
     }
     
     /**

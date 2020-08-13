@@ -3,10 +3,7 @@
 namespace Courses\Quiz;
 
 class Test extends Questions{
-        
-    const TESTS_TABLE = 'course_tests';
-    const USER_TEST_STATUS = 'course_test_user_status';
-
+    
     /**
      * Get a list of all of the tests for a given course and user
      * @param int $courseID This should be the unique course ID you wish to get the 
@@ -19,11 +16,11 @@ class Test extends Questions{
         if(is_numeric($courseID)){
             $where['course_id'] = $courseID;
             if($active){$where['active'] = 1;}
-            $tests = $this->db->selectAll(self::TESTS_TABLE, $where);
+            $tests = $this->db->selectAll($this->config->table_course_tests, $where);
             if(is_array($tests)) {
                 foreach($tests as $i => $test) {
                     $tests[$i]['max_score'] = $this->getMaxScore($test['test_id']);
-                    $tests[$i]['no_questions'] = $this->db->count(self::QUESTIONS_TABLE, ['test_id' => $test['test_id']]);
+                    $tests[$i]['no_questions'] = $this->db->count($this->config->table_course_test_questions, ['test_id' => $test['test_id']]);
                     $tests[$i]['results'] = $this->getTestStatus($test['test_id'], $userID, $userType);
                     if(!$active){$tests[$i]['submissions'] = $this->countSubmissionsByTest($test['test_id']);}
                 }
@@ -40,7 +37,7 @@ class Test extends Questions{
      */
     public function getTestName($testID){
         if(is_numeric($testID)){
-            return $this->db->select(self::TESTS_TABLE, ['test_id' => $testID]);
+            return $this->db->select($this->config->table_course_tests, ['test_id' => $testID]);
         }
     }
 
@@ -61,7 +58,7 @@ class Test extends Questions{
             if($pass_type == 1){$mark = intval($passmark); $percent = NULL; $self_assessed = 0;}
             elseif($pass_type == 2){$mark = NULL; $percent = intval($passpercent); $self_assessed = 0;}
             elseif($pass_type == 3){$mark = NULL; $percent = NULL; $self_assessed = 1;}
-            return $this->db->update(self::TESTS_TABLE, ['name' => $name, 'description' => $description, 'self_assessed' => intval($self_assessed), 'pass_mark' => $mark, 'pass_percentage' => $percent, 'active' => intval($status)], ['test_id' => intval($testID)], 1);
+            return $this->db->update($this->config->table_course_tests, ['name' => $name, 'description' => $description, 'self_assessed' => intval($self_assessed), 'pass_mark' => $mark, 'pass_percentage' => $percent, 'active' => intval($status)], ['test_id' => intval($testID)], 1);
             
         }
         return false;
@@ -107,7 +104,7 @@ class Test extends Questions{
             if($pass_type == 1){$mark = intval($passmark); $percent = NULL; $self_assessed = 0;}
             elseif($pass_type == 2){$mark = NULL; $percent = intval($passpercent); $self_assessed = 0;}
             elseif($pass_type == 3){$mark = NULL; $percent = NULL; $self_assessed = 1;}
-            return $this->db->insert(self::TESTS_TABLE, ['course_id' => intval($courseID), 'name' => $name, 'description' => $description, 'self_assessed' => intval($self_assessed), 'pass_mark' => $mark, 'pass_percentage' => $percent, 'active' => $status]);
+            return $this->db->insert($this->config->table_course_tests, ['course_id' => intval($courseID), 'name' => $name, 'description' => $description, 'self_assessed' => intval($self_assessed), 'pass_mark' => $mark, 'pass_percentage' => $percent, 'active' => $status]);
         }
         return false;
     }
@@ -133,8 +130,8 @@ class Test extends Questions{
      */
     public function deleteTest($testID){
         if(is_numeric($testID)){
-            if($this->db->delete(self::TESTS_TABLE, ['test_id' => $testID], 1)){
-                $this->db->delete(self::QUESTIONS_TABLE, ['test_id' => $testID]);
+            if($this->db->delete($this->config->table_course_tests, ['test_id' => $testID], 1)){
+                $this->db->delete($this->config->table_course_test_questions, ['test_id' => $testID]);
                 return true;
             }
         }
@@ -146,8 +143,8 @@ class Test extends Questions{
      * @return array An array containing the total number of submissions and unmarked submission will be returned
      */
     public function countSubmissionsByTest($testID){
-        $submission['total'] = intval($this->db->query("SELECT count(*) as `count` FROM `".self::USER_TEST_STATUS."`, `".self::TESTS_TABLE."` WHERE `".self::USER_TEST_STATUS."`.`status` >= ? AND `".self::USER_TEST_STATUS."`.`test_id` = `".self::TESTS_TABLE."`.`test_id` AND `".self::TESTS_TABLE."`.`test_id` = ?;", [1, $testID])[0]['count']);
-        $submission['unmarked'] = intval($this->db->query("SELECT count(*) as `count` FROM `".self::USER_TEST_STATUS."`, `".self::TESTS_TABLE."` WHERE `".self::USER_TEST_STATUS."`.`status` = ? AND `".self::USER_TEST_STATUS."`.`test_id` = `".self::TESTS_TABLE."`.`test_id` AND `".self::TESTS_TABLE."`.`test_id` = ? AND `".self::TESTS_TABLE."`.`self_assessed` = 0;", [1, $testID])[0]['count']);
+        $submission['total'] = intval($this->db->query("SELECT count(*) as `count` FROM `".$this->config->table_course_test_status."`, `".$this->config->table_course_tests."` WHERE `".$this->config->table_course_test_status."`.`status` >= ? AND `".$this->config->table_course_test_status."`.`test_id` = `".$this->config->table_course_tests."`.`test_id` AND `".$this->config->table_course_tests."`.`test_id` = ?;", [1, $testID])[0]['count']);
+        $submission['unmarked'] = intval($this->db->query("SELECT count(*) as `count` FROM `".$this->config->table_course_test_status."`, `".$this->config->table_course_tests."` WHERE `".$this->config->table_course_test_status."`.`status` = ? AND `".$this->config->table_course_test_status."`.`test_id` = `".$this->config->table_course_tests."`.`test_id` AND `".$this->config->table_course_tests."`.`test_id` = ? AND `".$this->config->table_course_tests."`.`self_assessed` = 0;", [1, $testID])[0]['count']);
         return $submission;
     }
 }

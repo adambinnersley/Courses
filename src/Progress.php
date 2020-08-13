@@ -3,19 +3,19 @@
 namespace Courses;
 
 use DBAL\Database;
-use Users\User;
+use Configuration\Config;
 
 class Progress{
     protected $db;
-    
-    const PAGE_PROGRESS = 'course_content_user_progress';
+    protected $config;
     
     /**
      * Add the instance of the Database class to use in this class
      * @param Database $db Should be an instance of the database class
      */
-    public function __construct(Database $db){
+    public function __construct(Database $db, Config $config){
         $this->db = $db;
+        $this->config = $config;
     }
     
     /**
@@ -26,7 +26,7 @@ class Progress{
      * @return array|boolean If any information exist it will be returned as an array else will return false
      */
     public function getUserPageProgress($userID, $userType, $pageID){
-        return $this->db->select(self::PAGE_PROGRESS, ['user_id' => intval($userID), 'is_instructor' => intval($userType), 'page_id' => intval($pageID)]);
+        return $this->db->select($this->config->course_content_user_progress, ['user_id' => intval($userID), 'is_instructor' => intval($userType), 'page_id' => intval($pageID)]);
     }
     
     /**
@@ -41,7 +41,7 @@ class Progress{
         if($this->getUserPageProgress($userID, $userType, $pageID)){
             return $this->updateUserPageProgress($userID, $userType, $pageID, $time);
         }
-        return $this->db->insert(self::PAGE_PROGRESS, ['user_id' => intval($userID), 'is_instructor' => intval($userType), 'page_id' => intval($pageID), 'time_spent' => intval($time)]);
+        return $this->db->insert($this->config->course_content_user_progress, ['user_id' => intval($userID), 'is_instructor' => intval($userType), 'page_id' => intval($pageID), 'time_spent' => intval($time)]);
     }
     
     /**
@@ -53,7 +53,7 @@ class Progress{
      * @return boolean If the information has been updated will return true else returns false
      */
     protected function updateUserPageProgress($userID, $userType, $pageID, $time = 0){
-        return $this->db->update(self::PAGE_PROGRESS, ['time_spent' => intval($time)], ['user_id' => intval($userID), 'is_instructor' => intval($userType), 'page_id' => intval($pageID)], 1);
+        return $this->db->update($this->config->course_content_user_progress, ['time_spent' => intval($time)], ['user_id' => intval($userID), 'is_instructor' => intval($userType), 'page_id' => intval($pageID)], 1);
     }
     
     /**
@@ -64,7 +64,7 @@ class Progress{
      * @return boolean If the data has been delete will return true else returns false
      */
     public function deleteUserPageProgress($userID, $userType, $pageID){
-        return $this->db->delete(self::PAGE_PROGRESS, ['user_id' => intval($userID), 'is_instructor' => intval($userType), 'page_id' => intval($pageID)], 1);
+        return $this->db->delete($this->config->course_content_user_progress, ['user_id' => intval($userID), 'is_instructor' => intval($userType), 'page_id' => intval($pageID)], 1);
     }
     
     /**
@@ -74,6 +74,6 @@ class Progress{
      * @return boolean If all of the users progress has been removed will return true else will return false
      */
     public function deleteAllUserPageProgress($userID, $userType){
-        return $this->db->delete(self::PAGE_PROGRESS, ['user_id' => intval($userID), 'is_instructor' => intval($userType)]);
+        return $this->db->delete($this->config->course_content_user_progress, ['user_id' => intval($userID), 'is_instructor' => intval($userType)]);
     }
 }

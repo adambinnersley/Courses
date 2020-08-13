@@ -3,18 +3,19 @@
 namespace Courses;
 
 use DBAL\Database;
+use Configuration\Config;
 
 class ReadingList{
     protected $db;
-    
-    const READING_TABLE = 'course_reading_list';
+    protected $config;
     
     /**
      * Should provide an instance of the database class to use
      * @param Database $db This should be an instance of the Database class
      */
-    public function __construct(Database $db) {
+    public function __construct(Database $db, Config $config) {
         $this->db = $db;
+        $this->config = $config;
     }
     
     /**
@@ -23,7 +24,7 @@ class ReadingList{
      * @return array|boolean If the course has any reading list item they will be returned as an array else will return false
      */
     public function getReadingList($courseID){
-        return $this->db->selectAll(self::READING_TABLE, ['course_id' => $courseID], '*', ['resource_type' => 'ASC']);
+        return $this->db->selectAll($this->config->table_course_reading, ['course_id' => $courseID], '*', ['resource_type' => 'ASC']);
     }
     
     /**
@@ -34,7 +35,7 @@ class ReadingList{
      */
     public function getItemDetails($courseID, $linkID){
         if(is_numeric($courseID) && is_numeric($linkID)){
-            return $this->db->select(self::READING_TABLE, ['id' => $linkID, 'course_id' => $courseID]);
+            return $this->db->select($this->config->table_course_reading, ['id' => $linkID, 'course_id' => $courseID]);
         }
         return false;
     }
@@ -60,7 +61,7 @@ class ReadingList{
         if(empty($isbn)){$isbn = NULL;}
         if(empty($publisher)){$publisher = NULL;}
         if(empty($publishDate)){$publishDate = NULL;}
-        return $this->db->insert(self::READING_TABLE, ['course_id' => intval($courseID), 'title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link]);
+        return $this->db->insert($this->config->table_course_reading, ['course_id' => intval($courseID), 'title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link]);
     }
     
     /**
@@ -83,7 +84,7 @@ class ReadingList{
         if(empty($isbn)){$isbn = NULL;}
         if(empty($publisher)){$publisher = NULL;}
         if(empty($publishDate)){$publishDate = NULL;}
-        return $this->db->update(self::READING_TABLE, ['title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link], ['id' => $linkID], 1);
+        return $this->db->update($this->config->table_course_reading, ['title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link], ['id' => $linkID], 1);
     }
     
     /**
@@ -93,7 +94,7 @@ class ReadingList{
      */
     public function deleteItem($linkID){
         if(is_numeric($linkID)){
-            return $this->db->delete(self::READING_TABLE, ['id' => $linkID], 1);
+            return $this->db->delete($this->config->table_course_reading, ['id' => $linkID], 1);
         }
         return false;
     }
@@ -105,7 +106,7 @@ class ReadingList{
      */
     public function deleteCourseItems($courseID){
         if(is_numeric($courseID)){
-            return $this->db->delete(self::READING_TABLE, ['course_id' => $courseID]); 
+            return $this->db->delete($this->config->table_course_reading, ['course_id' => $courseID]); 
         }
         return false;
     }

@@ -3,14 +3,13 @@
 namespace Courses;
 
 use DBAL\Database;
+use DBAL\Modifiers\Modifier;
 use Upload\FileUpload;
+use Configuration\Config;
 
 class Course extends FileUpload{
     protected $db;
-    
-    const COURSES_TABLE = 'courses';
-    const CONTENT_TABLE = 'course_content';
-    const ACCESS_TABLE = 'course_access';
+    protected $config;
 
     public $course_id;
     public $course_info;
@@ -21,8 +20,9 @@ class Course extends FileUpload{
      * Should provide an instance of the database class to use
      * @param Database $db This should be an instance of the Database class
      */
-    public function __construct(Database $db) {
+    public function __construct(Database $db, Config $config) {
         $this->db = $db;
+        $this->config = $config;
     }
     
     /**
@@ -40,7 +40,7 @@ class Course extends FileUpload{
      */
     public function listCourses($active = 1){
         if($active == 1){$where = ['active' => 1];}else{$where = [];}
-        return $this->db->selectAll(self::COURSES_TABLE, $where);
+        return $this->db->selectAll($this->config->table_courses, $where);
     }
     
     /**
@@ -50,7 +50,7 @@ class Course extends FileUpload{
      */
     public function getUserCourses($userID){
         if(is_numeric($userID)){
-            return $this->db->query("SELECT * FROM `".self::COURSES_TABLE."`, `".self::ACCESS_TABLE."` WHERE `user_id` = '".$userID."' AND `".self::COURSES_TABLE."`.`id` = `".self::ACCESS_TABLE."`.`course_id` AND `".self::COURSES_TABLE."`.`active` = 1;");
+            return $this->db->query("SELECT * FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `user_id` = ? AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_courses}`.`active` = 1;", [$userID]);
         }
         return false;
     }
@@ -67,9 +67,8 @@ class Course extends FileUpload{
      */
     public function addCourse($title, $url, $content = NULL, $status = 1, $image = NULL, $additional = []){
         if(!empty($title) && !empty($url)){
-            if(empty($content)){$content = 'NULL';}
             $additional = array_merge($additional, $this->checkImageUpload($image));
-            return $this->db->insert(self::COURSES_TABLE, array_merge(['url' => strtolower($url), 'name' => $title, 'description' => $content, 'active' => $status], $additional));
+            return $this->db->insert($this->config->table_courses, array_merge(['url' => strtolower($url), 'name' => $title, 'description' => Modifier::setNullOnEmpty($content), 'active' => $status], $additional));
         }
         return false;
     }
@@ -88,7 +87,7 @@ class Course extends FileUpload{
     public function editCourse($courseID, $title, $url, $content = NULL, $status = 1, $image = NULL, $additional = []){
         if(is_numeric($courseID) && !empty($title) && !empty($url)){
             $additional = array_merge($additional, $this->checkImageUpload($image));
-            return $this->db->update(self::COURSES_TABLE, array_merge(['url' => $url, 'name' => $title, 'description' => $content, 'active' => $status], $additional), ['id' => $courseID], 1);
+            return $this->db->update($this->config->table_courses, array_merge(['url' => $url, 'name' => $title, 'description' => $content, 'active' => $status], $additional), ['id' => $courseID], 1);
         }
         return false;
     }
@@ -152,7 +151,7 @@ class Course extends FileUpload{
      * @return array|boolean If the course URL is correct the course details will be returned else will return false
      */
     public function getCourseByURL($course_url){
-        return $this->db->select(self::COURSES_TABLE, ['url' => $course_url]);
+        return $this->db->select($this->config->table_courses, ['url' => $course_url]);
     }
     
     /**
@@ -161,7 +160,7 @@ class Course extends FileUpload{
      * @return array|boolean If the course ID is correct the course details will be returned else will return false
      */
     public function getCourseByID($course_id){
-        return $this->db->select(self::COURSES_TABLE, ['id' => $course_id]);
+        return $this->db->select($this->config->table_courses, ['id' => $course_id]);
     }
     
     /**
@@ -183,7 +182,7 @@ class Course extends FileUpload{
      * @return array|boolean If any main pages exist will return an array of their details else will return false
      */
     public function getMainPages($course_id){
-        $pages = $this->db->selectAll(self::CONTENT_TABLE, ['course_id' => $course_id, 'subof' => 'IS NULL'], '*', ['nav_order' => 'ASC']);
+        $pages = $this->db->selectAll($this->config->table_course_content, ['course_id' => $course_id, 'subof' => 'IS NULL'], '*', ['nav_order' => 'ASC']);
         if(!empty($pages)){
             foreach($pages as $i => $page){
                 $pages[$i]['order'] = $this->removeZeros($page['nav_order']);
@@ -204,10 +203,10 @@ class Course extends FileUpload{
     public function setCourseDetails($name, $description, $active = 1, $id = NULL){
         $values = ['name' => $name, 'description' => $description, 'active' => $active];
         if(is_numeric($id)){
-            return $this->db->update(self::COURSES_TABLE, $values, ['id' => $id]);
+            return $this->db->update($this->config->table_courses, $values, ['id' => $id]);
         }
         else{
-            return $this->db->insert(self::COURSES_TABLE, $values);
+            return $this->db->insert($this->config->table_courses, $values);
         }
     }
     
@@ -222,14 +221,14 @@ class Course extends FileUpload{
             $where['course_id'] = $course_id;
             if(is_numeric($subof)){$where['subof'] = intval($subof);}
             else{$where['subof'] = 'IS NULL';}
-            $pageInfo = $this->db->selectAll(self::CONTENT_TABLE, $where, '*', ['nav_order' => 'ASC']);
+            $pageInfo = $this->db->selectAll($this->config->table_course_content, $where, '*', ['nav_order' => 'ASC']);
             foreach($pageInfo as $i => $page){
                 if(is_null($page['subof'])){
                     $pageInfo[$i]['subpages'] = $this->getCoursePages($course_id, $page['page_id']);
                     $subof = 'IS NULL';
                 }
-                $pageInfo[$i]['has_prev'] = $this->db->count(self::CONTENT_TABLE, ['course_id' => $page['course_id'], 'subof' => $subof, 'nav_order' => ['<' => $page['nav_order']]]);
-        $pageInfo[$i]['has_next'] = $this->db->count(self::CONTENT_TABLE, ['course_id' => $page['course_id'], 'subof' => $subof, 'nav_order' => ['>' => $page['nav_order']]]);
+                $pageInfo[$i]['has_prev'] = $this->db->count($this->config->table_course_content, ['course_id' => $page['course_id'], 'subof' => $subof, 'nav_order' => ['<' => $page['nav_order']]]);
+        $pageInfo[$i]['has_next'] = $this->db->count($this->config->table_course_content, ['course_id' => $page['course_id'], 'subof' => $subof, 'nav_order' => ['>' => $page['nav_order']]]);
                 $pageInfo[$i]['order'] = $this->removeZeros($page['nav_order']);
             }
             return $pageInfo;
@@ -246,8 +245,7 @@ class Course extends FileUpload{
      */
     public function addCoursePage($courseID, $title, $content, $subpage = 0){
         if(is_numeric($courseID) && $title && $content){
-            if(intval($subpage) === 0){$subpage = 'NULL';}
-            return $this->db->insert(self::CONTENT_TABLE, ['course_id' => $courseID, 'title' => $title, 'content' => $content, 'subof' => $subpage, 'nav_order' => $this->formatPageOrder($this->getNextOrderNum($courseID, intval($subpage)), $subpage)]);
+            return $this->db->insert($this->config->table_course_content, ['course_id' => $courseID, 'title' => $title, 'content' => $content, 'subof' => Modifier::setNullOnEmpty($subpage), 'nav_order' => $this->formatPageOrder($this->getNextOrderNum($courseID, intval($subpage)), $subpage)]);
         }
         return false;
     }
@@ -277,8 +275,7 @@ class Course extends FileUpload{
             else{
                 $where = [];
             }
-            if(intval($subpage) === 0){$subpage = 'NULL';}
-            if($this->db->update(self::CONTENT_TABLE, array_merge(['title' => $title, 'content' => $content, 'subof' => $subpage], $where), ['page_id' => $pageID], 1)){
+            if($this->db->update($this->config->table_course_content, array_merge(['title' => $title, 'content' => $content, 'subof' => Modifier::setNullOnEmpty($subpage)], $where), ['page_id' => $pageID], 1)){
                 if($reorder){$this->reorderFollowingPages($currentValue['course_id'], $currentValue['nav_order'], $reorderSub);}
                 return true;
             }
@@ -308,7 +305,7 @@ class Course extends FileUpload{
     public function deleteCoursePage($pageID){
         if(is_numeric($pageID)){
             $pageInfo = $this->getPageByID($pageID);
-            if($this->db->delete(self::CONTENT_TABLE, ['page_id' => $pageID])){
+            if($this->db->delete($this->config->table_course_content, ['page_id' => $pageID])){
                 $this->reorderFollowingPages($pageInfo['course_id'], $pageInfo['nav_order'], $pageInfo['subof']);
                 return true;
             }
@@ -324,7 +321,7 @@ class Course extends FileUpload{
      */
     protected function getNextOrderNum($courseID, $subpage = 0){
         if(intval($subpage) === 0){$subpage = 'IS NULL';}
-        $pageNum = $this->db->count(self::CONTENT_TABLE, ['course_id' => $courseID, 'subof' => $subpage], '*', ['nav_order' => 'DESC']);
+        $pageNum = $this->db->count($this->config->table_course_content, ['course_id' => $courseID, 'subof' => $subpage], '*', ['nav_order' => 'DESC']);
         return intval(intval($pageNum) + 1);
     }
     
@@ -337,10 +334,10 @@ class Course extends FileUpload{
      */
     protected function reorderFollowingPages($courseID, $followingOrder, $subpage = 0, $subtract = true){
         if(intval($subpage) === 0){$subpage = 'IS NULL';}
-        foreach($this->db->selectAll(self::CONTENT_TABLE, ['course_id' => $courseID, 'subof' => $subpage, 'nav_order' => ['>=', $followingOrder]], '*', ['nav_order' => $subtract ? 'ASC' : 'DESC']) as $page){
+        foreach($this->db->selectAll($this->config->table_course_content, ['course_id' => $courseID, 'subof' => $subpage, 'nav_order' => ['>=', $followingOrder]], '*', ['nav_order' => $subtract ? 'ASC' : 'DESC']) as $page){
             if($subpage >= 1){$pageValue = 0.001;}else{$pageValue = 1;}
             if($subtract){$neworder = ($page['nav_order'] - $pageValue);}else{$neworder = ($page['nav_order'] + $pageValue);}
-            $this->db->update(self::CONTENT_TABLE, ['nav_order' => $neworder], ['page_id' => $page['page_id']]);
+            $this->db->update($this->config->table_course_content, ['nav_order' => $neworder], ['page_id' => $page['page_id']]);
         }
     }
     
@@ -354,7 +351,7 @@ class Course extends FileUpload{
         $mainPage = false;
         $pageInfo = $this->getPageByID($pageID);
         if(intval($pageInfo['subof']) === 0){$pageInfo['subof'] = 'IS NULL'; $mainPage = true;}
-        $nextPage = $this->db->select(self::CONTENT_TABLE, ['course_id' => $pageInfo['course_id'], 'subof' => $pageInfo['subof'], 'nav_order' => [($dir === 'up' ? '<' : '>'), $pageInfo['nav_order']]], '*', ['nav_order' => ($dir === 'up' ? 'DESC' : 'ASC')]);
+        $nextPage = $this->db->select($this->config->table_course_content, ['course_id' => $pageInfo['course_id'], 'subof' => $pageInfo['subof'], 'nav_order' => [($dir === 'up' ? '<' : '>'), $pageInfo['nav_order']]], '*', ['nav_order' => ($dir === 'up' ? 'DESC' : 'ASC')]);
         if(isset($pageInfo['nav_order']) && isset($nextPage['nav_order'])){
             if($this->updatePageOrder($pageInfo['page_id'], $pageInfo['nav_order'], $nextPage['nav_order'], $mainPage) && $this->updatePageOrder($nextPage['page_id'], $nextPage['nav_order'], $pageInfo['nav_order'], $mainPage)){
                 return true;
@@ -372,15 +369,15 @@ class Course extends FileUpload{
      * @return boolean If the queries are executed successfully will return true else will return false
      */
     protected function updatePageOrder($pageID, $oldOrder, $newOrder, $isMain = false){
-        $update = $this->db->update(self::CONTENT_TABLE, ['nav_order' => $newOrder], ['page_id' => $pageID], 1);
+        $update = $this->db->update($this->config->table_course_content, ['nav_order' => $newOrder], ['page_id' => $pageID], 1);
         if($isMain === false){
             return $update;
         }
         $num = ($newOrder - $oldOrder);
-        $subpages = $this->db->selectAll(self::CONTENT_TABLE, ['subof' => $pageID]);
+        $subpages = $this->db->selectAll($this->config->table_course_content, ['subof' => $pageID]);
         if(!empty($subpages)){
             foreach($subpages as $page){
-                $this->db->update(self::CONTENT_TABLE, ['nav_order' => ($page['nav_order'] + $num)], ['page_id' => $page['page_id']], 1);
+                $this->db->update($this->config->table_course_content, ['nav_order' => ($page['nav_order'] + $num)], ['page_id' => $page['page_id']], 1);
             }
         }
         return true;
@@ -392,7 +389,7 @@ class Course extends FileUpload{
      * @return array|boolean If the page exist the details will be returned as an array else will return false
      */
     public function getPageByID($pageID){
-        $pageInfo = $this->db->select(self::CONTENT_TABLE, ['page_id' => $pageID]);
+        $pageInfo = $this->db->select($this->config->table_course_content, ['page_id' => $pageID]);
         $pageInfo['next_page'] = $this->getNextPage($pageInfo);
         $pageInfo['prev_page'] = $this->getPreviousPage($pageInfo);
         $pageInfo['order'] = $this->removeZeros($pageInfo['nav_order']);
@@ -407,7 +404,7 @@ class Course extends FileUpload{
      * @return array|boolean If any pages exist the next page information will be returned as an array else will return false
      */
     protected function findNextPageID($courseID, $navOrder = 0, $dir = '>'){        
-        return $this->db->select(self::CONTENT_TABLE, ['course_id' => $courseID, 'nav_order' => [$dir, $navOrder]], ['page_id'], ['nav_order' => ($dir == '>' ? 'ASC' : 'DESC')]);
+        return $this->db->select($this->config->table_course_content, ['course_id' => $courseID, 'nav_order' => [$dir, $navOrder]], ['page_id'], ['nav_order' => ($dir == '>' ? 'ASC' : 'DESC')]);
     }
     
     /**
