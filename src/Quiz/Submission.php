@@ -31,7 +31,7 @@ class Submission extends Test{
      * @param int $userType This should be the users type
      */
     public function deleteUserAnswers($testID, $userID, $userType){
-        $this->db->query("DELETE FROM `".$this->config->table_course_test_answers."` USING `".$this->config->table_course_test_answers."`, `".$this->config->table_course_test_questions."` WHERE `".$this->config->table_course_test_answers."`.`user_id` = ? AND `".$this->config->table_course_test_answers."`.`user_type` = ? AND `".$this->config->table_course_test_answers."`.`question_id` = `".$this->config->table_course_test_questions."`.`question_id` AND `".$this->config->table_course_test_questions."`.`test_id` = ?;", [$userID, $userType, $testID]);
+        $this->db->query("DELETE FROM `{$this->config->table_course_test_answers}` USING `{$this->config->table_course_test_answers}`, `{$this->config->table_course_test_questions}` WHERE `{$this->config->table_course_test_answers}`.`user_id` = ? AND `{$this->config->table_course_test_answers}`.`user_type` = ? AND `{$this->config->table_course_test_answers}`.`question_id` = `{$this->config->table_course_test_questions}`.`question_id` AND `{$this->config->table_course_test_questions}`.`test_id` = ?;", [$userID, $userType, $testID]);
     }
     
     /**
@@ -63,8 +63,8 @@ class Submission extends Test{
      * @return array
      */
     public function countSubmissionByCourse($courseID){
-        $submission['total'] = $this->db->query("SELECT count(*) FROM `".$this->config->table_course_test_status."`, `".$this->config->table_course_tests."` WHERE `".$this->config->table_course_test_status."`.`status` >= ? AND `".$this->config->table_course_test_status."`.`test_id` = `".$this->config->table_course_tests."`.`test_id` AND `".$this->config->table_course_tests."`.`course_id` = ?;", [1, $courseID]);
-        $submission['unmarked'] = $this->db->query("SELECT count(*) FROM `".$this->config->table_course_test_status."`, `".$this->config->table_course_tests."` WHERE `".$this->config->table_course_test_status."`.`status` = ? AND `".$this->config->table_course_test_status."`.`test_id` = `".$this->config->table_course_tests."`.`test_id` AND `".$this->config->table_course_tests."`.`course_id` = ? AND `".$this->config->table_course_tests."`.`self_assessed` = 0;", [1, $courseID]);
+        $submission['total'] = $this->db->query("SELECT count(*) FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` >= ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`course_id` = ?;", [1, $courseID]);
+        $submission['unmarked'] = $this->db->query("SELECT count(*) FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` = ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`course_id` = ? AND `{$this->config->table_course_tests}`.`self_assessed` = 0;", [1, $courseID]);
         return $submission;
     }
     
@@ -76,11 +76,11 @@ class Submission extends Test{
      * @return array|boolean Will return the test submissions for the given tests if any exist else will return false
      */
     public function getTestSubmissions($userObject, $testID, $marked = true){        
-        $submissions = $this->db->query("SELECT `".$this->config->table_course_test_status."`.* FROM `".$this->config->table_course_test_status."`, `".$this->config->table_course_tests."` WHERE `".$this->config->table_course_tests."`.`self_assessed` = 0 AND `".$this->config->table_course_tests."`.`test_id` = `".$this->config->table_course_test_status."`.`test_id` AND `".$this->config->table_course_test_status."`.`status` ".($marked === true ? ">= 2" : "= 1")." AND `".$this->config->table_course_test_status."`.`test_id` = ? ORDER BY `last_modified` ".($marked === true ? "DESC" : "ASC").";", [$testID]);
+        $submissions = $this->db->query("SELECT `{$this->config->table_course_test_status}`.* FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_tests}`.`self_assessed` = 0 AND `{$this->config->table_course_tests}`.`test_id` = `{$this->config->table_course_test_status}`.`test_id` AND `{$this->config->table_course_test_status}`.`status` ".($marked === true ? ">= 2" : "= 1")." AND `{$this->config->table_course_test_status}`.`test_id` = ? ORDER BY `last_modified` ".($marked === true ? "DESC" : "ASC").";", [$testID]);
         foreach($submissions as $i => $status){
             if($status['user_type'] == 1){$submissions[$i]['user_details'] = $userObject->getUserDetails($status['user_id']);}
             elseif($status['user_type'] == 2){$submissions[$i]['user_details'] = $userObject->getInstuctorDetails($status['user_id']);}
-            if(!$marked){$submissions[$i]['num_unmarked'] = count($this->db->query("SELECT * FROM `".$this->config->table_course_test_answers."`, `".$this->config->table_course_test_questions."` WHERE `".$this->config->table_course_test_questions."`.`test_id` = '".$status['test_id']."' AND `".$this->config->table_course_test_questions."`.`question_id` = `".$this->config->table_course_test_answers."`.`question_id` AND `".$this->config->table_course_test_answers."`.`marked` = 0;"));}
+            if(!$marked){$submissions[$i]['num_unmarked'] = count($this->db->query("SELECT * FROM `{$this->config->table_course_test_answers}`, `{$this->config->table_course_test_questions}` WHERE `{$this->config->table_course_test_questions}`.`test_id` = '{$status['test_id']}' AND `{$this->config->table_course_test_questions}`.`question_id` = `{$this->config->table_course_test_answers}`.`question_id` AND `{$this->config->table_course_test_answers}`.`marked` = 0;"));}
         }
         return $submissions;
     }
@@ -120,7 +120,7 @@ class Submission extends Test{
      * @return array|boolean If answers exist for the current user will return the array of answers and questions else will return false
      */
     public function getQuestionAndAnswers($testID, $userID, $userType = 1){
-        $questionInfo = $this->db->query("SELECT * FROM `".$this->config->table_course_test_questions."`, `".$this->config->table_course_test_answers."` WHERE `".$this->config->table_course_test_questions."`.`test_id` = ? AND `".$this->config->table_course_test_questions."`.`question_id` = `".$this->config->table_course_test_answers."`.`question_id` AND `".$this->config->table_course_test_answers."`.`user_id` = ? AND `".$this->config->table_course_test_answers."`.`user_type` = ? ORDER BY `".$this->config->table_course_test_questions."`.`question_order` ASC;", [$testID, $userID, $userType]);
+        $questionInfo = $this->db->query("SELECT * FROM `{$this->config->table_course_test_questions}`, `{$this->config->table_course_test_answers}` WHERE `{$this->config->table_course_test_questions}`.`test_id` = ? AND `{$this->config->table_course_test_questions}`.`question_id` = `{$this->config->table_course_test_answers}`.`question_id` AND `{$this->config->table_course_test_answers}`.`user_id` = ? AND `{$this->config->table_course_test_answers}`.`user_type` = ? ORDER BY `{$this->config->table_course_test_questions}`.`question_order` ASC;", [$testID, $userID, $userType]);
         foreach($questionInfo as $i => $question){
             if($question['answer_type'] == 2){
                 $questionInfo[$i]['answers'] = unserialize($question['answers']);
