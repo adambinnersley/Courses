@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `course_access` (
   `instructor_id` int(11) UNSIGNED DEFAULT NULL,
   `expiry_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_user_course` (`course_id`,`user_id`,`is_instructor`)
+  UNIQUE KEY `unique_user_course` (`course_id`,`user_id`,`instructor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -69,13 +69,13 @@ CREATE TABLE IF NOT EXISTS `course_content` (
 DROP TABLE IF EXISTS `course_content_user_progress`;
 CREATE TABLE IF NOT EXISTS `course_content_user_progress` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `is_instructor` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `user_id` int(11) UNSIGNED DEFAULT NULL,
+  `instructor_id` int(11) UNSIGNED DEFAULT NULL,
   `page_id` smallint(6) UNSIGNED NOT NULL,
   `time_spent` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `last_viewed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_user_page` (`user_id`,`is_instructor`,`page_id`),
+  UNIQUE KEY `unique_user_page` (`user_id`,`instructor_id`,`page_id`),
   KEY `page_id` (`page_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -188,8 +188,8 @@ CREATE TABLE IF NOT EXISTS `course_test_questions` (
 DROP TABLE IF EXISTS `course_test_user_answers`;
 CREATE TABLE IF NOT EXISTS `course_test_user_answers` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) UNSIGNED NOT NULL,
-  `user_type` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
+  `user_id` int(11) UNSIGNED DEFAULT NULL,
+  `instructor_id` int(11) UNSIGNED DEFAULT NULL,
   `question_id` int(11) UNSIGNED NOT NULL,
   `answer` text,
   `answer_type` tinyint(3) UNSIGNED DEFAULT '1',
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS `course_test_user_answers` (
   `marked` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
   `feedback` text,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_answer` (`user_id`,`user_type`,`question_id`),
+  UNIQUE KEY `unique_answer` (`user_id`,`instructor_id`,`question_id`),
   KEY `question_id` (`question_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -210,8 +210,8 @@ CREATE TABLE IF NOT EXISTS `course_test_user_answers` (
 DROP TABLE IF EXISTS `course_test_user_status`;
 CREATE TABLE IF NOT EXISTS `course_test_user_status` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `user_type` tinyint(3) UNSIGNED NOT NULL,
+  `user_id` int(11) UNSIGNED DEFAULT NULL,
+  `instructor_id` int(11) UNSIGNED DEFAULT NULL,
   `test_id` smallint(5) UNSIGNED NOT NULL,
   `score` smallint(5) UNSIGNED NOT NULL,
   `status` tinyint(3) UNSIGNED NOT NULL,
