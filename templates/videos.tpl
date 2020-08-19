@@ -4,7 +4,7 @@
         <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Videos</small></span></h1>
     </div>
     <div class="col-12">
-        <a href="{if !$add && !$edit && !$delete}./{else}/student/learning/{$courseInfo.url}/videos/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}</a>
+        <a href="/student/learning/{$courseInfo.url}/{if $add || $edit || $delete}videos/{/if}" title="Back to {if $add || $edit || $delete}videos{else}course home{/if}" class="btn btn-danger">&laquo; Back to  {if $add || $edit || $delete}videos{else}course home{/if}</a>
     </div>
     <div class="col-12">
     {if $smarty.get.itemdeleted}<div class="alert alert-success">The video has successfully been removed from the course</div>{/if}
@@ -46,7 +46,7 @@
     {/if}
     </div>
     <div class="col-12">
-        <a href="{if !$add && !$edit && !$delete}./{else}/student/learning/{$courseInfo.url}/videos/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}videos{/if}</a>
+        <a href="/student/learning/{$courseInfo.url}/{if $add || $edit || $delete}videos/{/if}" title="Back to {if $add || $edit || $delete}videos{else}course home{/if}" class="btn btn-danger">&laquo; Back to  {if $add || $edit || $delete}videos{else}course home{/if}</a>
     </div>
 </div>
 {/strip}

@@ -6,7 +6,7 @@
 </div>
 <div class="row">
     <div class="col-12">
-        <a href="{if !$add && !$edit && !$delete}./{else}/student/learning/{$courseInfo.url}/reading-list/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}reading list{/if}"  class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}reading list{/if}</a>
+        <a href="/student/learning/{$courseInfo.url}/{if $add || $edit || $delete}reading-list/{/if}" title="Back to {if $add || $edit || $delete}reading list{else}course home{/if}"  class="btn btn-danger">&laquo; Back to {if $add || $edit || $delete}reading list{else}course home{/if}</a>
     </div>
 </div>
 <div class="row">
@@ -102,7 +102,7 @@
 </div>
 <div class="row">
     <div class="col-12">
-        <a href="{if !$add && !$edit && !$delete}./{else}/student/learning/{$courseInfo.url}/reading-list/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}reading list{/if}" class="btn btn-default">&laquo; Back to {if !$add && !$edit && !$delete}course home{else}reading list{/if}</a>
+        <a href="/student/learning/{$courseInfo.url}/{if $add || $edit || $delete}reading-list/{/if}" title="Back to {if $add || $edit || $delete}reading list{else}course home{/if}"  class="btn btn-danger">&laquo; Back to {if $add || $edit || $delete}reading list{else}course home{/if}</a>
     </div>
 </div>
 {/strip}

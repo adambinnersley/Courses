@@ -6,7 +6,7 @@
     <div class="col-12">
         {if $userDetails.isHeadOffice && !$edit && !$add && !$delete && !$submission}<div class="col-12"><a href="/student/learning/{$courseInfo.url}/tests/add" title="Add new test" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new test</a></div>{/if}
         {if !$testdetails || $reviewInfo}
-            <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}/student/learning/{$courseInfo.url}/tests/submissions/{$smarty.get.submissions}{elseif $edit && $questionedit}/student/learning/{$courseInfo.url}/tests/{$questionedit.test_id}/edit{else}/student/learning/{$courseInfo.url}/tests/{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="btn btn-default">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
+            <a href="/student/learning/{$courseInfo.url}/{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}{elseif $submission && ($mark || $review)}tests/submissions/{$smarty.get.submissions}{elseif $edit && $questionedit}tests/{$questionedit.test_id}/edit{else}tests/{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="btn btn-danger">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
         {/if}
         {if $tests || $edit || $add || $delete || $submission}
             {if !$edit && !$add && !$delete && !$submission}
@@ -450,7 +450,7 @@ $(document).ready(function(){
                                         <td class="text-center">{$i+1}</td>
                                         <td class="text-center">{$utest.user_details.title} {$utest.user_details.firstname} {$utest.user_details.surname}</td>
                                         <td class="text-center">{$utest.num_unmarked}</td>
-                                        <td class="text-center"><a href="/student/learning/{$courseInfo.url}/tests/submissions/{$smarty.get.submissions}/mark/{$utest.id}" title="Mark Test" class="btn btn-default">Mark Test</a></td>
+                                        <td class="text-center"><a href="/student/learning/{$courseInfo.url}/tests/submissions/{$smarty.get.submissions}/mark/{$utest.id}" title="Mark Test" class="btn btn-success">Mark Test</a></td>
                                     </tr>
                                 {/foreach}
                             </table>
@@ -473,7 +473,7 @@ $(document).ready(function(){
                                         <td class="text-center">{$submission.user_details.title} {$submission.user_details.firstname} {$submission.user_details.surname}</td>
                                         <td class="text-center">{$submission.last_modified|date_format:"%d/%m/%Y %I:%M %p"}</td>
                                         <td class="text-center">{if $submission.status == 2}<strong class="text-danger">Failed</strong>{elseif $submission.status == 3}<strong class="text-success">Passed</strong>{/if}</td>
-                                        <td class="text-center"><a href="/student/learning/{$courseInfo.url}/tests/submissions/{$smarty.get.submissions}/review/{$submission.id}" title="Review Test" class="btn btn-default">Review Test</a></td>
+                                        <td class="text-center"><a href="/student/learning/{$courseInfo.url}/tests/submissions/{$smarty.get.submissions}/review/{$submission.id}" title="Review Test" class="btn btn-success">Review Test</a></td>
                                     </tr>
                                 {/foreach}
                             </table>
@@ -532,7 +532,7 @@ $(document).ready(function(){
             <div class="col-md-12 text-center">There are currently no tests for this course</div>
         {/if}
         {if !$testdetails || $reviewInfo}
-            <a href="{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}./{elseif $submission && ($mark || $review)}/student/learning/{$courseInfo.url}/tests/submissions/{$smarty.get.submissions}{elseif $edit && $questionedit}/student/learning/{$courseInfo.url}/tests/{$questionedit.test_id}/edit{else}/student/learning/{$courseInfo.url}/tests/{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}"  class="btn btn-default">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
+            <a href="/student/learning/{$courseInfo.url}/{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}{elseif $submission && ($mark || $review)}tests/submissions/{$smarty.get.submissions}{elseif $edit && $questionedit}tests/{$questionedit.test_id}/edit{else}tests/{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="btn btn-danger">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
         {/if}
     </div>
 </div>
