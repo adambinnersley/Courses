@@ -54,74 +54,18 @@
         </div>
         {/if}
         <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">Add Document Group</div>
-                <div class="card-body">
-                    <form method="post" action="" class="form-horizontal">
-                        <div class="form-group{if $error && !$smarty.post.group_name} has-error{/if}">
-                            <label for="group_name" class="col-md-3 control-label"><span class="text-danger">*</span> Name:</label>
-                            <div class="col-md-9"><input type="text" name="group_name" id="group_name" value="{$group_name}" size="9" placeholder="Document group name" class="form-control" /></div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-9 col-md-offset-3"><label class="sr-only" for="submitbtn">Submit</label><input name="submitbtn" id="submitbtn" class="btn btn-success" type="submit" value="Add Group" /></div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">Edit Document Groups</div>
-                    <ul class="list-group">
-                    {foreach $doc_groups as $group}
-                        <li class="list-group-item">{$group.name}<div class="float-right"><a href="/student/learning/{$courseInfo.url}/course-documents/edit/{$group.id}/#editgroup" title="Edit group" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a>{if $group.items == 0} <a href="/student/learning/{$courseInfo.url}/course-documents/delete/{$group.id}/#deletegroup" title="Delete group" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a>{/if}</div></li>
-                    {/foreach}
-                    </ul>
-            </div>
+            {include file="documents/addGroup.tpl"}
+            {include file="documents/listGroups.tpl"}
             {if $smarty.get.editgroup >= 1 && $groupinfo && $userDetails.isHeadOffice}
-            <div class="card border-warning" id="editgroup">
-                <div class="card-header">Edit Group</div>
-                <div class="card-body">
-                    <form method="post" action="" class="form-horizontal">
-                        <div class="form-group{if $error && !$smarty.post.group_name} has-error{/if}">
-                            <label for="edit_group_name" class="col-md-3 control-label"><span class="text-danger">*</span> Name:</label>
-                            <div class="col-md-9"><input type="text" name="edit_group_name" id="edit_group_name" value="{$groupinfo.name}" size="9" placeholder="Document group name" class="form-control" /></div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-9 col-md-offset-3"><label class="sr-only" for="editbtn">Submit</label><input name="editbtn" id="editbtn" class="btn btn-success" type="submit" value="Edit Group" /></div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                {include file="documents/editGroup.tpl"}
             {/if}
             {if $smarty.get.deletegroup >= 1 && $groupinfo && $userDetails.isHeadOffice}
-            <div class="card border-danger" id="deletegroup">
-                <div class="card-header">Delete Group</div>
-                <div class="card-body">
-                    <h4 class="text-center">Confirm Delete</h4>
-                    <p class="text-center">Are you sure that you want to delete the <strong>{$group.name}</strong> group?</p>
-                    <div class="text-center">
-                        <form method="post" action="" class="form-inline">
-                            <a href="course-documents" title="No, leave it as is" class="btn btn-success">No, leave it as is</a> &nbsp; 
-                            <input type="submit" name="confirmdelete" id="confirmdelete" class="btn btn-danger" value="Yes, delete document group" />
-                        </form>
-                    </div>
-                </div>
-            </div>
+                {include file="documents/deleteGroup.tpl"}
             {/if}
         </div>
     </div>
 {elseif $delete}
-    <div class="row">
-        <div class="col-12">
-            <h3 class="text-center">Confirm Delete</h3>
-            <p class="text-center">Are you sure you wish to delete the <strong>{$item.link_text} <small>({$item.file})</small></strong> document?</p>
-            <div class="text-center">
-            <form method="post" action="" class="form-inline">
-                <a href="/student/learning/{$courseInfo.url}/course-documents/" title="No, return to documents" class="btn btn-success">No, return to documents</a> &nbsp; 
-                <input type="submit" name="confirmdelete" id="confirmdelete" class="btn btn-danger" value="Yes, delete document" />
-            </form>
-            </div>
-        </div>
-    </div>
+    {include file="documents/deleteDocument.tpl"}
 {else}
     <div class="row">
         {assign var="first" value=1}
@@ -129,7 +73,7 @@
             {if $group != $doc.group && $doc.group}{if !$first}</ul></div></div>{/if}<div class="col-md-4 col-sm-6"><div class="card"><div class="card-header">{$doc.group}</div>{if $userDetails.isHeadOffice}<ul class="list-group">{/if}{/if}
 
             {assign var="group" value=$doc.group}
-            {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}<a href="{$courseRoot}documents/{$doc.course_id}/{$doc.file}" title="{$doc.link_text}" target="_blank"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$doc.link_text}</a>{if $userDetails.isHeadOffice}<div class="float-right"><a href="/student/learning/{$courseInfo.url}/course-documents/{$doc.id}/edit" title="Edit item" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="/student/learning/{$courseInfo.url}/course-documents/{$doc.id}/delete" title="Delete item" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a></div></li>{/if}
+            {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}<a href="/student/learning/{$courseInfo.url}/course-documents/{$doc.course_id}/{$doc.file}" title="{$doc.link_text}" target="_blank"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$doc.link_text}</a>{if $userDetails.isHeadOffice}<div class="float-right"><a href="/student/learning/{$courseInfo.url}/course-documents/{$doc.id}/edit" title="Edit item" class="btn btn-warning btn-xs"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> <a href="/student/learning/{$courseInfo.url}/course-documents/{$doc.id}/delete" title="Delete item" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-fw"></span> Delete</a></div></li>{/if}
             {assign var="first" value=false}
         {/foreach}
         {if $userDetails.isHeadOffice}</ul>{/if}
