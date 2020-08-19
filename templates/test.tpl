@@ -1,13 +1,17 @@
 {strip}
+{assign var="headerSection" value="Tests" scope="global"}
+{include file="assets/page-header.tpl"}
+
+{if $userDetails.isHeadOffice && !$edit && !$add && !$delete && !$submission}<div class="col-12"><a href="/student/learning/{$courseInfo.url}/tests/add" title="Add new test" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new test</a></div>{/if}
+{if !$testdetails || $reviewInfo}
+    {if $add || $edit || $delete || $testSubmitted || $submission}
+        {assign var="backURL" value="tests/" scope="global"}
+        {assign var="backText" value="Back to Tests" scope="global"}
+    {/if}
+    {include file="assets/back-button.tpl"}
+{/if}
 <div class="row">
     <div class="col-12">
-        <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Tests</small></span></h1>
-    </div>
-    <div class="col-12">
-        {if $userDetails.isHeadOffice && !$edit && !$add && !$delete && !$submission}<div class="col-12"><a href="/student/learning/{$courseInfo.url}/tests/add" title="Add new test" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new test</a></div>{/if}
-        {if !$testdetails || $reviewInfo}
-            <a href="/student/learning/{$courseInfo.url}/{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}{elseif $submission && ($mark || $review)}tests/submissions/{$smarty.get.submissions}{elseif $edit && $questionedit}tests/{$questionedit.test_id}/edit{else}tests/{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="btn btn-danger">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
-        {/if}
         {if $tests || $edit || $add || $delete || $submission}
             {if !$edit && !$add && !$delete && !$submission}
                 {if !$testdetails}
@@ -531,9 +535,9 @@ $(document).ready(function(){
         {else}
             <div class="col-md-12 text-center">There are currently no tests for this course</div>
         {/if}
-        {if !$testdetails || $reviewInfo}
-            <a href="/student/learning/{$courseInfo.url}/{if !$edit && !$add && !$delete && !$testSubmitted && !$submission}{elseif $submission && ($mark || $review)}tests/submissions/{$smarty.get.submissions}{elseif $edit && $questionedit}tests/{$questionedit.test_id}/edit{else}tests/{/if}" title="Back to {if !$edit && !$add && !$delete}course home{else}tests{/if}" class="btn btn-danger">&laquo; Back to {if !$edit && !$add && !$delete && !$testSubmitted && !$submission}course home{else}tests{/if}</a>
-        {/if}
     </div>
 </div>
+{if !$testdetails || $reviewInfo}
+    {include file="assets/back-button.tpl"}
+{/if}
 {/strip}

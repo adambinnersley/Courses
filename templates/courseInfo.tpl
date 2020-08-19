@@ -1,14 +1,17 @@
 {strip}
+{assign var="headerSection" value="Course" scope="global"}
 {if $edit || $add}
     {assign var="style" value='<link rel="stylesheet" type="text/css" href="/css/student/wysiwyg.css" />' scope="global"}
     {assign var="extrascript" value='<script type="text/javascript" src="/js/student/summernote.min.js"></script>' scope="global"}
 {/if}
+{include file="assets/page-header.tpl"}
+{if $add || $edit || $delete || $page}
+    {assign var="backURL" value="info/" scope="global"}
+    {assign var="backText" value="Back to page list" scope="global"}
+{/if}
+{include file="assets/back-button.tpl"}
 <div class="row">
     <div class="col-12">
-        <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Course</small></span></h1>
-    </div>
-    <div class="col-12">
-        <a href="/student/learning/{$courseInfo.url}/{if $add || $edit || $delete || $page}info/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="btn btn-danger">&laquo; Back to {if $add || $edit || $delete || $page}page list{else}course home{/if}</a>
         {if $userDetails.isHeadOffice && !$add && !$edit && !$delete && !$smarty.get.pageid}<div class="row"><div class="col-12"><a href="/student/learning/{$courseInfo.url}/info/add" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new page</a></div><p>&nbsp;</p></div>{/if}
         {if $pages && !$add && !$delete}
             {if $pages}
@@ -169,9 +172,9 @@
         {else}
             <p class="text-center">There is currently no course content, please check back later or contact the course administrator</p>
         {/if}
-            <a href="/student/learning/{$courseInfo.url}/{if $add || $edit || $delete || $page}info/{/if}" title="Back to {if !$add && !$edit && !$delete}course home{else}page list{/if}" class="btn btn-danger">&laquo; Back to {if $add || $edit || $delete || $page}page list{else}course home{/if}</a>
     </div>
 </div>
+{include file="assets/back-button.tpl"}
 {if ($edit || $add) && $userDetails.isHeadOffice}
     <script type="text/javascript">{literal}$(document).ready(function(){$("#content").summernote({minHeight:300,maxHeight:null,focus:true});});{/literal}</script>
 {/if}

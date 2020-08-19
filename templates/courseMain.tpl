@@ -1,8 +1,6 @@
 {strip}
+{include file="assets/page-header.tpl"}
 <div class="row">
-    <div class="col-12">
-        <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name}</span></h1>
-    </div>
     <div class="col-12">
         <h3 class="no-margin-t">{$courseInfo.name}</h3>
         {if $courseInfo.description}<p>{$courseInfo.description}</p>{/if}

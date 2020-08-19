@@ -1,11 +1,12 @@
 {strip}
+{assign var="headerSection" value="Videos" scope="global"}
+{include file="assets/page-header.tpl"}
+{if $add || $edit || $delete}
+    {assign var="backURL" value="videos/" scope="global"}
+    {assign var="backText" value="Back to Videos" scope="global"}
+{/if}
+{include file="assets/back-button.tpl"}
 <div class="row" id="course-list">
-    <div class="col-12">
-        <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Videos</small></span></h1>
-    </div>
-    <div class="col-12">
-        <a href="/student/learning/{$courseInfo.url}/{if $add || $edit || $delete}videos/{/if}" title="Back to {if $add || $edit || $delete}videos{else}course home{/if}" class="btn btn-danger">&laquo; Back to  {if $add || $edit || $delete}videos{else}course home{/if}</a>
-    </div>
     <div class="col-12">
     {if $smarty.get.itemdeleted}<div class="alert alert-success">The video has successfully been removed from the course</div>{/if}
     {if $userDetails.isHeadOffice && !$add && !$delete}<a href="/student/learning/{$courseInfo.url}/videos/add" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new video</a>{/if}
@@ -45,8 +46,6 @@
         {/foreach}
     {/if}
     </div>
-    <div class="col-12">
-        <a href="/student/learning/{$courseInfo.url}/{if $add || $edit || $delete}videos/{/if}" title="Back to {if $add || $edit || $delete}videos{else}course home{/if}" class="btn btn-danger">&laquo; Back to  {if $add || $edit || $delete}videos{else}course home{/if}</a>
-    </div>
 </div>
+{include file="assets/back-button.tpl"}
 {/strip}

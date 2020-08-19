@@ -1,14 +1,11 @@
 {strip}
-<div class="row">
-    <div class="col-12">
-        <h1 class="page-header"><span class="page-header-text"><span class="fa fa-graduation-cap"></span> {$courseInfo.name} <small>/ Reading List</small></span></h1>
-    </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <a href="/student/learning/{$courseInfo.url}/{if $add || $edit || $delete}reading-list/{/if}" title="Back to {if $add || $edit || $delete}reading list{else}course home{/if}"  class="btn btn-danger">&laquo; Back to {if $add || $edit || $delete}reading list{else}course home{/if}</a>
-    </div>
-</div>
+{assign var="headerSection" value="Reading List" scope="global"}
+{include file="assets/page-header.tpl"}
+{if $add || $edit || $delete}
+    {assign var="backURL" value="reading-list/" scope="global"}
+    {assign var="backText" value="Back to Reading List" scope="global"}
+{/if}
+{include file="assets/back-button.tpl"}
 <div class="row">
     {if !$add && !$edit && !$delete}
         {if $userDetails.isHeadOffice}<div class="col-12"><a href="/student/learning/{$courseInfo.url}/reading-list/addnew" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new item</a></div>{/if}
@@ -100,9 +97,5 @@
         </div>
     {/if}
 </div>
-<div class="row">
-    <div class="col-12">
-        <a href="/student/learning/{$courseInfo.url}/{if $add || $edit || $delete}reading-list/{/if}" title="Back to {if $add || $edit || $delete}reading list{else}course home{/if}"  class="btn btn-danger">&laquo; Back to {if $add || $edit || $delete}reading list{else}course home{/if}</a>
-    </div>
-</div>
+{include file="assets/back-button.tpl"}
 {/strip}
