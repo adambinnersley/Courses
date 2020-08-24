@@ -7,15 +7,8 @@
 {/if}
 {include file="assets/back-button.tpl"}
 <div class="row">
-    {if !$add && !$edit && !$delete}
-        {if $userDetails.isHeadOffice}<div class="col-12"><a href="/student/learning/{$courseInfo.url}/reading-list/addnew" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new item</a></div>{/if}
-     {include file="reading/readingList.tpl"}
-</div>
-    {elseif !$delete}
-        {include file="reading/addReadingItem.tpl"}
-    {else}
-        {include file="reading/deleteReadingItem.tpl"}
-    {/if}
+    {if $userDetails.isHeadOffice}<div class="col-12"><a href="/student/learning/{$courseInfo.url}/reading-list/addnew" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new item</a></div>{/if}
+    {include file="reading/readingList.tpl"}
 </div>
 {include file="assets/back-button.tpl"}
 {/strip}
