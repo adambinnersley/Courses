@@ -9,11 +9,11 @@ class CourseTest extends TestCase {
     protected $db;
     public $course;
     
-    public function setUp() {
+    public function setUp(): void {
         $this->db = new Database($GLOBALS['HOSTNAME'], $GLOBALS['USERNAME'], $GLOBALS['PASSWORD'], $GLOBALS['DATABASE']);
     }
     
-    public function tearDown() {
+    public function tearDown(): void {
         $this->db = null;
     }
     
