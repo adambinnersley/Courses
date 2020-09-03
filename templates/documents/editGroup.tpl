@@ -1,6 +1,6 @@
 {strip}
-<div class="card border-warning" id="editgroup">
-    <div class="card-header">Edit Group</div>
+<div class="card border-primary" id="editgroup">
+    <div class="card-header bg-primary">Edit Group</div>
     <div class="card-body">
         <form method="post" action="" class="form-horizontal">
             <div class="form-group{if $error && !$smarty.post.group_name} has-error{/if}">

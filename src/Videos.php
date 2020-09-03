@@ -125,7 +125,7 @@ class Videos{
      * @return object If the video exists will return the video information as an object
      */
     protected function getYouTubeInfo($videoID){
-        $youTube = new Youtube(['key' => $this->getYouTubeAPIKey()]);
+        $youTube = new Youtube(['key' => $this->getGoogleAPIKey()]);
         return $youTube->getVideoInfo($videoID);
     }
     
