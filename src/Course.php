@@ -69,7 +69,7 @@ class Course extends FileUpload{
     public function addCourse($title, $url, $content = NULL, $status = 1, $image = NULL, $additional = []){
         if(!empty($title) && !empty($url)){
             $additional = array_merge($additional, $this->checkImageUpload($image));
-            return $this->db->insert($this->config->table_courses, array_merge(['url' => strtolower($url), 'name' => $title, 'description' => Modifier::setNullOnEmpty($content), 'active' => $status], $additional));
+            return $this->db->insert($this->config->table_courses, array_merge(['url' => strtolower($url), 'name' => $title, 'description' => Modifier::setNullOnEmpty($content), 'active' => Modifier::setZeroOnEmpty($status)], $additional));
         }
         return false;
     }
@@ -88,7 +88,7 @@ class Course extends FileUpload{
     public function editCourse($courseID, $title, $url, $content = NULL, $status = 1, $image = NULL, $additional = []){
         if(is_numeric($courseID) && !empty($title) && !empty($url)){
             $additional = array_merge($additional, $this->checkImageUpload($image));
-            return $this->db->update($this->config->table_courses, array_merge(['url' => $url, 'name' => $title, 'description' => $content, 'active' => $status], $additional), ['id' => $courseID], 1);
+            return $this->db->update($this->config->table_courses, array_merge(['url' => $url, 'name' => $title, 'description' => $content, 'active' => Modifier::setZeroOnEmpty($status)], $additional), ['id' => $courseID], 1);
         }
         return false;
     }

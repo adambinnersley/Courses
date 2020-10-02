@@ -1,4 +1,7 @@
 {strip}
+{assign var="headerSection" value="Delete Course" scope="global"}
+{assign var="title" value=$headerSection scope="global"}
+{include file="assets/page-header.tpl"}
 <div class="row">
     <div class="col-lg-6 mx-auto">
         <div class="card border-danger">
