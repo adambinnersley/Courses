@@ -56,7 +56,7 @@
             {/foreach}
             </div>
         {/if}
-        {if $question.question_type != 2}<div class="form-group">
+        {if $question.question_type != 2}<div class="form-group row">
             <label for="score_{$i + 1}" class="col-md-2 control-label">Score</label>
             <div class="col-md-10 form-inline">
                 <select name="score[{$question.id}]" id="score_{$question.id}" class="form-control">
@@ -67,7 +67,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="feedback_{$question.id}" class="col-md-2 control-label">Feedback</label>
             <div class="col-md-10">
             <textarea name="feedback[{$question.id}]" id="feedback_{$question.id}" class="form-control" placeholder="Feedback">{$question.feedback}</textarea>

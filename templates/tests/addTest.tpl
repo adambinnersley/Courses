@@ -1,7 +1,7 @@
 {strip}
 <form action="" method="post" class="form-horizontal">
     {if ($testedit && $edit) || $add}
-        <div class="form-group form-inline">
+        <div class="form-group row form-inline">
             <label for="status" class="col-md-3 control-label">Status:</label>
             <div class="col-md-9">
                 <select name="status" id="status" class="form-control">
@@ -10,19 +10,19 @@
                 </select>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="name" class="col-md-3 control-label"><span class="text-danger">*</span> Test Name:</label>
             <div class="col-md-9">
                 <input type="text" name="name" id="name" value="{if $edit}{$testedit.name}{else}{$smarty.post.name}{/if}" class="form-control" placeholder="Test name" />
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="description" class="col-md-3 control-label">Description:</label>
             <div class="col-md-9">
                 <textarea name="description" id="description" rows="3" class="form-control" placeholder="Test description">{if $edit}{$testedit.description}{else}{$smarty.post.description}{/if}</textarea>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label for="description" class="col-md-3 control-label">Pass Type:</label>
             <div class="col-md-9 form-inline">
                 <select name="pass_type" id="pass_type" class="form-control">
@@ -46,28 +46,28 @@
                 </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-md-3 text-right"><strong>Question {$question.question_order}:</strong></div>
                     <div class="col-md-9">{$question.question}</div>
                 </div>
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-md-3 text-right"><strong>Max. Question Score:</strong></div>
                     <div class="col-md-9">{$question.max_score}</div>
                 </div>
                 {if $question.question_type == 2 && $question.allow_partial}
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-md-3 text-right"><strong>Partial Score Allowed:</strong></div>
                     <div class="col-md-9">Yes</div>
                 </div>
                 {/if}
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-md-3 text-right"><strong>Type:</strong></div>
                     <div class="col-md-9">
                         {if $question.question_type == 1}Textbox{elseif $question.question_type == 2}Multiple Choice{/if}
                     </div>
                 </div>
                 {if $question.question_type == 2}
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-md-3 text-right"><strong>Answers:</strong></div>
                     <div class="col-md-9">
                         <table class="table table-striped table-bordered table-condensed">
@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 {if $question.explanation}
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-3 text-right"><strong>Explanation:</strong></div>
                         <div class="col-md-9">
                             {$question.explanation}
@@ -89,7 +89,7 @@
                     </div>
                 {/if}
                 {elseif $testedit.self_assessed == 1}
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-md-3 text-right"><strong>Answer:</strong></div>
                     <div class="col-md-9">
                         {$question.answers}
@@ -103,19 +103,19 @@
         {if $add}
         <h3>Questions</h3>
         <hr />
-        <div class="form-group">
+        <div class="form-group row">
             <label class="col-md-3 control-label"><span class="text-danger">*</span> Question 1</label>
             <div class="col-md-9">
                 <textarea name="questions[1][q]" id="test_q" rows="3" class="form-control" placeholder="Question 1"></textarea>
             </div>
         </div>
-        <div class="form-group form-inline">
+        <div class="form-group row form-inline">
             <label for="score" class="col-md-3 control-label"><span class="text-danger">*</span> Max. Question Score</label>
             <div class="col-md-9">
                 <input type="text" name="questions[1][score]" id="score" value="1" placeholder="Score" size="3" maxlength="3" class="form-control" />
             </div>
         </div>
-        <div class="form-group form-inline" id="question_partial_1" style="display:none">
+        <div class="form-group row form-inline" id="question_partial_1" style="display:none">
             <label for="partial" class="col-md-3 control-label"><span class="text-danger">*</span> Allow partial points<br /><small>The user will be awarded a percetage of the points based on the amount of correct answers they give</small></label>
             <div class="col-md-9">
                 <select name="questions[1][partial]" id="partial" class="form-control">
@@ -124,7 +124,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label class="col-md-3 control-label"><span class="text-danger">*</span> Answer Type</label>
             <div class="col-md-9">
                 <div class="radio">
@@ -133,29 +133,29 @@
                 </div>
             </div>
         </div>
-        <div class="form-group" id="question_self_assess_1" style="display:none">
+        <div class="form-group row" id="question_self_assess_1" style="display:none">
             <label class="col-md-3 control-label"> Question 1 Answer</label>
             <div class="col-md-9">
                  <textarea name="questions[1][answer]" id="test_answer" rows="5" class="form-control" placeholder="Question 1 Answer"></textarea>
             </div>
         </div>
-        <div class="form-group" id="question_options_1" style="display:none">
+        <div class="form-group row" id="question_options_1" style="display:none">
             <label class="col-md-3 control-label"> Question 1 Options</label>
             <div class="col-md-9">
                 <div class="row">
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-9"><input type="text" name="questions[1][answers][1][answer]" value="" class="form-control" placeholder="Answer 1" /></div>
                         <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" name="questions[1][answers][1][correct]" /> Correct</label></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-9"><input type="text" name="questions[1][answers][2][answer]" value="" class="form-control" placeholder="Answer 2" /></div>
                         <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" name="questions[1][answers][2][correct]" /> Correct</label></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-9"><input type="text" name="questions[1][answers][3][answer]" value="" class="form-control" placeholder="Answer 3" /></div>
                         <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" name="questions[1][answers][3][correct]" /> Correct</label></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-9"><input type="text" name="questions[1][answers][4][answer]" value="" class="form-control" placeholder="Answer 4" /></div>
                         <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" value="1" name="questions[1][answers][4][correct]" /> Correct</label></div>
                     </div>
@@ -173,7 +173,7 @@
         <hr />
         {/if}
         <div id="additionalQuestions"></div>
-        <div class="form-group">
+        <div class="form-group row">
             <div class="col-md-12">
             <button type="button" id="addQuestion" class="btn btn-danger">Add Another Question</button>
             </div>
@@ -227,19 +227,19 @@ question++;
 });
 {/literal}</script>
     {elseif $edit && $questionedit}
-        <div class="form-group">
+        <div class="form-group row">
             <label class="col-md-3 control-label"><span class="text-danger">*</span> Question</label>
             <div class="col-md-9">
                 <textarea name="questions[q]" id="test_q" rows="4" class="form-control" placeholder="Question 1">{$questionedit.question}</textarea>
             </div>
         </div>
-        <div class="form-group form-inline">
+        <div class="form-group row form-inline">
             <label for="score" class="col-md-3 control-label"><span class="text-danger">*</span> Max. Question Score</label>
             <div class="col-md-9">
                 <input type="text" name="questions[score]" id="score" value="{$questionedit.max_score}" placeholder="Score" size="3" maxlength="3" class="form-control" />
             </div>
         </div>
-        <div class="form-group form-inline" id="question_partial"{if $questionedit.question_type == 1} style="display:none"{/if}>
+        <div class="form-group row form-inline" id="question_partial"{if $questionedit.question_type == 1} style="display:none"{/if}>
             <label for="partial" class="col-md-3 control-label"><span class="text-danger">*</span> Allow partial points<br /><small>The user will be awarded a percetage of the points based on the amount of correct answers they give</small></label>
             <div class="col-md-9">
                 <select name="questions[partial]" id="partial" class="form-control">
@@ -248,7 +248,7 @@ question++;
                 </select>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             <label class="col-md-3 control-label"><span class="text-danger">*</span> Answer Type</label>
             <div class="col-md-9">
                 <div class="radio">
@@ -257,13 +257,13 @@ question++;
                 </div>
             </div>
         </div>
-        <div class="form-group" id="question_self_assess"{if $questionedit.question_type != 1 || $testinfo.self_assessed != 1} style="display:none"{/if}>
+        <div class="form-group row" id="question_self_assess"{if $questionedit.question_type != 1 || $testinfo.self_assessed != 1} style="display:none"{/if}>
             <label class="col-md-3 control-label"> Question Answer</label>
             <div class="col-md-9">
                 <textarea name="questions[answer]" id="test_answer" rows="8" class="form-control" placeholder="Question Answer">{$questionedit.answers}</textarea>
             </div>
         </div>
-        <div class="form-group" id="question_options"{if $questionedit.question_type == 1} style="display:none"{/if}>
+        <div class="form-group row" id="question_options"{if $questionedit.question_type == 1} style="display:none"{/if}>
             <label class="col-md-3 control-label"> Question Options</label>
             <div class="col-md-9">
                 {if $questionedit.question_type == 1}
@@ -274,14 +274,14 @@ question++;
                 {/if}
                 {assign var="qnum" value=1}
                 {foreach $questionedit.answers as $i => $answer}
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-9"><input type="text" name="questions[answers][{$i}][answer]" value="{$answer.answer}" class="form-control" placeholder="Answer {$i}" /></div>
                         <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" name="questions[answers][{$i}][correct]"{if $answer.correct} checked="checked"{/if} /> Correct</label></div>
                     </div>
                     {assign var="qnum" value=$qnum+1}
                 {/foreach}
                 <div id="additional_options"></div>
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-md-9">
                     <button type="button" id="addOption" data-question="1" class="btn btn-info btn-block">Add another option</button>
                     </div>
@@ -290,7 +290,7 @@ question++;
             <label class="col-md-3 control-label"> Explanation</label>
             <div class="col-md-9"><textarea name="questions[explanation]" id="explanation" rows="3" class="form-control" placeholder="Answer explanation">{$questionedit.explanation}</textarea></div>
         </div>
-        <div class="form-group text-center">
+        <div class="form-group row text-center">
             <input type="submit" name="submit" id="submit" value="Update Question" class="btn btn-success btn-lg" />
         </div>
         <script type="text/javascript">{literal}

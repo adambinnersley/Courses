@@ -3,11 +3,11 @@
     <div class="card-header bg-primary">{if $addPage}Add{else}Edit{/if} Page</div>
     <div class="card-body">
         <form method="post" action="" class="form-horizontal">
-            <div class="form-group">
+            <div class="form-group row">
                 <label for="title" class="col-md-2 control-label">Title:</label>
                 <div class="col-md-10"><input type="text" name="title" id="title" class="form-control" value="{$smarty.post.title}" /></div>
             </div>
-            {if $subpages}<div class="form-group">
+            {if $subpages}<div class="form-group row">
                 <label for="subpage" class="col-md-2 control-label">Subpage of:</label>
                 <div class="col-md-10">
                     <select name="subpage" id="subpage" class="form-control">
@@ -20,7 +20,7 @@
                     </select>
                 </div>
             </div>{/if}
-            <div class="form-group">
+            <div class="form-group row">
                 <label for="content" class="col-md-2 control-label">Content:</label>
                 <div class="col-md-10"><textarea name="content" id="content" class="form-control" rows="20">{$smarty.post.content}</textarea></div>
             </div>
