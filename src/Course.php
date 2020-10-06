@@ -94,6 +94,18 @@ class Course extends FileUpload{
     }
     
     /**
+     * Delete a course from the database
+     * @param int $courseID This should be the courses unique ID
+     * @return boolean Returns true if successfully deleted else returns false
+     */
+    public function deleteCourse($courseID){
+        if(is_numeric($courseID)) {
+            return $this->db->delete($this->config->table_courses, ['id' => $courseID], 1);
+        }
+        return false;
+    }
+    
+    /**
      * Checks the validity of an image an sets the variables so they can be added to the database
      * @param file|NULL $upload This should be the image file if one is uploaded else should be set as null
      * @return array An array will be returned if the image meets requirements will contain require values else will be empty array
