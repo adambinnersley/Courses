@@ -26,8 +26,9 @@
                     <div class="card-footer">
                         <div class="row">
                             {if $userDetails.isHeadOffice}
-                                <div class="col-6"><a href="/student/learning/{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View<span class="d-none d-md-inline-block">&nbsp;Course</span></a></div>
-                                <div class="col-6"><a href="/student/learning/edit/{$course.id}" title="Edit Course" class="btn btn-warning btn-block">Edit<span class="d-none d-md-inline-block">&nbsp;Course</span></a></div>
+                                <div class="col-4"><a href="/student/learning/{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View</a></div>
+                                <div class="col-4"><a href="/student/learning/edit/{$course.id}" title="Edit Course" class="btn btn-warning btn-block">Edit</a></div>
+                                <div class="col-4"><a href="/student/learning/delete/{$course.id}" title="Delete Course" class="btn btn-danger btn-block">Delete</a></div>
                             {else}
                             <div class="col-12"><a href="/student/learning/{$course.url}/" title="{$course.name}" class="btn btn-success btn-block">View Course</a></div>
                             {/if}
