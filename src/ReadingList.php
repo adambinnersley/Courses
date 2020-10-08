@@ -5,7 +5,8 @@ namespace Courses;
 use DBAL\Database;
 use Configuration\Config;
 
-class ReadingList{
+class ReadingList
+{
     protected $db;
     protected $config;
     
@@ -13,7 +14,8 @@ class ReadingList{
      * Should provide an instance of the database class to use
      * @param Database $db This should be an instance of the Database class
      */
-    public function __construct(Database $db, Config $config) {
+    public function __construct(Database $db, Config $config)
+    {
         $this->db = $db;
         $this->config = $config;
     }
@@ -23,7 +25,8 @@ class ReadingList{
      * @param int $courseID This should be the course ID that you wish to get all of the reading list items for
      * @return array|boolean If the course has any reading list item they will be returned as an array else will return false
      */
-    public function getReadingList($courseID){
+    public function getReadingList($courseID)
+    {
         return $this->db->selectAll($this->config->table_course_reading, ['course_id' => $courseID], '*', ['resource_type' => 'ASC']);
     }
     
@@ -33,8 +36,9 @@ class ReadingList{
      * @param int $linkID The link id of the item you wish to get the information for
      * @return array|boolean If the item exists the details will be returned in an array else will return false
      */
-    public function getItemDetails($courseID, $linkID){
-        if(is_numeric($courseID) && is_numeric($linkID)){
+    public function getItemDetails($courseID, $linkID)
+    {
+        if (is_numeric($courseID) && is_numeric($linkID)) {
             return $this->db->select($this->config->table_course_reading, ['id' => $linkID, 'course_id' => $courseID]);
         }
         return false;
@@ -54,13 +58,26 @@ class ReadingList{
      * @param string|null $publishDate The published date for any books (doesn't need to be a date, simply a string)
      * @return boolean
      */
-    public function addItem($courseID, $title, $resouceType, $link = NULL, $author = NULL, $description = NULL, $isbn = NULL, $publisher = NULL, $publishDate = NULL){
-        if(empty($link)){$link = NULL;}
-        if(empty($author)){$author = NULL;}
-        if(empty($description)){$description = NULL;}
-        if(empty($isbn)){$isbn = NULL;}
-        if(empty($publisher)){$publisher = NULL;}
-        if(empty($publishDate)){$publishDate = NULL;}
+    public function addItem($courseID, $title, $resouceType, $link = null, $author = null, $description = null, $isbn = null, $publisher = null, $publishDate = null)
+    {
+        if (empty($link)) {
+            $link = null;
+        }
+        if (empty($author)) {
+            $author = null;
+        }
+        if (empty($description)) {
+            $description = null;
+        }
+        if (empty($isbn)) {
+            $isbn = null;
+        }
+        if (empty($publisher)) {
+            $publisher = null;
+        }
+        if (empty($publishDate)) {
+            $publishDate = null;
+        }
         return $this->db->insert($this->config->table_course_reading, ['course_id' => intval($courseID), 'title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link]);
     }
     
@@ -77,13 +94,26 @@ class ReadingList{
      * @param string|null $publishDate The published date for any books (doesn't need to be a date, simply a string)
      * @return boolean If the reading list item is updated true will be returned else will return false
      */
-    public function updateItem($linkID, $title, $resouceType, $link = NULL, $author = NULL, $description = NULL, $isbn = NULL, $publisher = NULL, $publishDate = NULL){
-        if(empty($link)){$link = NULL;}
-        if(empty($author)){$author = NULL;}
-        if(empty($description)){$description = NULL;}
-        if(empty($isbn)){$isbn = NULL;}
-        if(empty($publisher)){$publisher = NULL;}
-        if(empty($publishDate)){$publishDate = NULL;}
+    public function updateItem($linkID, $title, $resouceType, $link = null, $author = null, $description = null, $isbn = null, $publisher = null, $publishDate = null)
+    {
+        if (empty($link)) {
+            $link = null;
+        }
+        if (empty($author)) {
+            $author = null;
+        }
+        if (empty($description)) {
+            $description = null;
+        }
+        if (empty($isbn)) {
+            $isbn = null;
+        }
+        if (empty($publisher)) {
+            $publisher = null;
+        }
+        if (empty($publishDate)) {
+            $publishDate = null;
+        }
         return $this->db->update($this->config->table_course_reading, ['title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link], ['id' => $linkID], 1);
     }
     
@@ -92,8 +122,9 @@ class ReadingList{
      * @param int $linkID The link ID of the link you wish to delete
      * @return boolean If the item is deleted will return true else will return false
      */
-    public function deleteItem($linkID){
-        if(is_numeric($linkID)){
+    public function deleteItem($linkID)
+    {
+        if (is_numeric($linkID)) {
             return $this->db->delete($this->config->table_course_reading, ['id' => $linkID], 1);
         }
         return false;
@@ -104,9 +135,10 @@ class ReadingList{
      * @param int $courseID This should be the course ID of the course you want to delete all of the reading list for
      * @return boolean If everything is deleted will return true else will return false
      */
-    public function deleteCourseItems($courseID){
-        if(is_numeric($courseID)){
-            return $this->db->delete($this->config->table_course_reading, ['course_id' => $courseID]); 
+    public function deleteCourseItems($courseID)
+    {
+        if (is_numeric($courseID)) {
+            return $this->db->delete($this->config->table_course_reading, ['course_id' => $courseID]);
         }
         return false;
     }
@@ -117,9 +149,10 @@ class ReadingList{
      * @param int $newCourseID The course ID of the new course you want to copy to
      * @return boolean If the items are copied it will return true else will return false
      */
-    public function copyCourseItems($courseID, $newCourseID){
-        if(is_numeric($courseID) && is_numeric($newCourseID)){
-            foreach($this->getReadingList($courseID) as $item){
+    public function copyCourseItems($courseID, $newCourseID)
+    {
+        if (is_numeric($courseID) && is_numeric($newCourseID)) {
+            foreach ($this->getReadingList($courseID) as $item) {
                 $this->addItem($newCourseID, $item['title'], $item['resource_type'], $item['link'], $item['author'], $item['description'], $item['isbn'], $item['publisher'], $item['publish_date']);
             }
             return true;
