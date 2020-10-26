@@ -125,6 +125,7 @@ else{
     </div>
 </div>
 {if !$testdetails || $reviewInfo}
+    {assign var="footerBtn" value="true" scope="global"}
     {include file="assets/back-button.tpl"}
 {/if}
 {/strip}

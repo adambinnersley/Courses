@@ -1,4 +1,5 @@
 {strip}
+{assign var="title" value="Delete Reading List Item" scope="global"}
 <div class="row">
     <div class="col-lg-6 mx-auto">
         <div class="card border-danger">

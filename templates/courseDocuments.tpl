@@ -73,5 +73,6 @@
         </div>
     </div>
 {/if}
+{assign var="footerBtn" value="true" scope="global"}
 {include file="assets/back-button.tpl"}
 {/strip}

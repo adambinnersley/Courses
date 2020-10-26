@@ -100,6 +100,7 @@
         {/if}
     </div>
 </div>
+{assign var="footerBtn" value="true" scope="global"}
 {include file="assets/back-button.tpl"}
 {if ($edit || $add) && $userDetails.isHeadOffice}
     <script type="text/javascript">{literal}$(document).ready(function(){$("#content").summernote({minHeight:300,maxHeight:null,focus:true});});{/literal}</script>
