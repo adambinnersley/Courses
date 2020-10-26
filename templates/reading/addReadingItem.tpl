@@ -5,6 +5,10 @@
 {assign var="headerSection" value="Add Reading List Item" scope="global"}
 {/if}
 {assign var="title" value=$headerSection scope="global"}
+{include file="assets/page-header.tpl"}
+{assign var="backURL" value="/student/learning/{$courseInfo.url}/reading-list/" scope="global"}
+{assign var="backText" value="Back to Reading List" scope="global"}
+{include file="assets/back-button.tpl"}
 <div class="card border-primary">
     <div class="card-header bg-primary">{$headerSection}</div>
     <div class="card-body">
@@ -36,7 +40,7 @@
                 </div>
                 <div class="form-group row{if $msgerror && $smarty.post.type == 1 && !$smarty.post.isbn} has-error{/if}">
                     <label for="isbn" class="col-md-3 control-label">ISBN: <span class="text-danger">*</span></label>
-                    <div class="col-md-9 form-inline"><input name="isbn" id="isbn" type="text" size="40" class="form-control" placeholder="ISBN" value="{if $smarty.post.isbn}{$smarty.post.isbn}{else}{$item.isbn}{/if}" /></div>
+                    <div class="col-md-9 form-inline"><input name="isbn" id="isbn" type="text" class="form-control" placeholder="ISBN" value="{if $smarty.post.isbn}{$smarty.post.isbn}{else}{$item.isbn}{/if}" /></div>
                 </div>
             </div>
             <div class="form-group row{if $msgerror && $smarty.post.type == 2 && !$smarty.post.link} has-error{/if}">
@@ -52,4 +56,6 @@
         </script>
     </div>
 </div>
+{assign var="footerBtn" value="true" scope="global"}
+{include file="assets/back-button.tpl"}
 {/strip}
