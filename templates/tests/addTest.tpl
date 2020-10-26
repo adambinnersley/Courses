@@ -1,4 +1,11 @@
 {strip}
+{if isset($edit)}
+{assign var="headerSection" value="Edit Test" scope="global"}
+{else}
+{assign var="headerSection" value="Add Test" scope="global"}
+{/if}
+{assign var="title" value=$headerSection scope="global"}
+{include file="assets/page-header.tpl"}
 <form action="" method="post" class="form-horizontal">
     {if ($testedit && $edit) || $add}
         <div class="form-group row form-inline">
@@ -42,7 +49,7 @@
                 <div class="row">
                     <div class="col-md-12">
                 <div class="float-right">
-                    <a href="/student/learning/{$courseInfo.url}/tests/question/{$question.question_id}/edit" title="Edit Page" class="text-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> &nbsp; <a href="/student/learning/{$courseInfo.url}/tests/question/{$question.question_id}delete" title="Delete Page" class="text-danger"><span class="fa fa-trash fa-fw"></span> Delete</a>
+                    <a href="/student/learning/{$courseInfo.url}/tests/question/{$question.question_id}/edit" title="Edit Page" class="text-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> &nbsp; <a href="/student/learning/{$courseInfo.url}/tests/question/{$question.question_id}/delete" title="Delete Page" class="text-danger"><span class="fa fa-trash fa-fw"></span> Delete</a>
                 </div>
                     </div>
                 </div>

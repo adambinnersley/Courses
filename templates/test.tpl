@@ -2,7 +2,8 @@
 {assign var="headerSection" value="Tests" scope="global"}
 {include file="assets/page-header.tpl"}
 
-{if $userDetails.isHeadOffice}<div class="col-12"><a href="/student/learning/{$courseInfo.url}/tests/add" title="Add new test" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new test</a></div>{/if}
+{if $userDetails.isHeadOffice}
+    <div class="row"><div class="col-12"><a href="/student/learning/{$courseInfo.url}/tests/add" title="Add new test" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new test</a></div></div>{/if}
 {if !$testdetails || $reviewInfo}
     {if $add || $edit || $testSubmitted}
         {assign var="backURL" value="tests/" scope="global"}

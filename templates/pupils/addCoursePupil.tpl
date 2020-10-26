@@ -1,4 +1,4 @@
 {strip}
     {assign var="addPupil" value="true" scope="global"}
-    {include file="pupils/editPupil.tpl"}
+    {include file="pupils/editCoursePupil.tpl"}
 {/strip}

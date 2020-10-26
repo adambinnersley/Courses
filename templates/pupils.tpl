@@ -8,7 +8,7 @@
 {include file="assets/back-button.tpl"}
 <div class="row">
     {if $userDetails.isHeadOffice && !$add && !$delete}<div class="col-12"><a href="/student/learning/{$courseInfo.url}/pupils/add" title="Add new pupil" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new pupil</a></div>{/if}
-    {include file="pupils/listPupils.tpl"}
+    {include file="pupils/coursePupils.tpl"}
 </div>
 {assign var="footerBtn" value="true" scope="global"}
 {include file="assets/back-button.tpl"}
