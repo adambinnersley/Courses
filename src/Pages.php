@@ -154,7 +154,7 @@ class Pages extends FileUpload
         if (intval($subpage) === 0) {
             $subpage = 'IS NULL';
         }
-        $pageNum = $this->db->count($this->config->table_course_content, ['course_id' => $courseID, 'subof' => $subpage], '*', ['nav_order' => 'DESC']);
+        $pageNum = $this->db->count($this->config->table_course_content, ['course_id' => $courseID, 'subof' => $subpage]);
         return intval(intval($pageNum) + 1);
     }
     
