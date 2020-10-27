@@ -23,7 +23,7 @@ class Submission extends Test
                 $mark = $this->markMultipleChoice($questionID, $userAnswer);
                 $userAnswer = serialize($userAnswer);
             }
-            return $this->db->insert($this->config->table_course_test_answers, [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID), 'question_id' => intval($questionID), 'answer' => $userAnswer, 'answer_type' => intval($type), 'score' => intval($mark['score']), 'marked' => intval($mark['marked'])]);
+            return $this->db->insert($this->config->table_course_test_answers, [$this->getUserField($isInstructor) => $userID, 'question_id' => intval($questionID), 'answer' => $userAnswer, 'answer_type' => intval($type), 'score' => intval($mark['score']), 'marked' => intval($mark['marked'])]);
         }
         return false;
     }
@@ -36,7 +36,7 @@ class Submission extends Test
      */
     public function deleteUserAnswers($testID, $userID, $isInstructor = false)
     {
-        $this->db->query("DELETE FROM `{$this->config->table_course_test_answers}` USING `{$this->config->table_course_test_answers}`, `{$this->config->table_course_test_questions}` WHERE `{$this->config->table_course_test_answers}`.`".($isInstructor === true ? 'instructor_id' : 'user_id')."` = ? AND `{$this->config->table_course_test_answers}`.`question_id` = `{$this->config->table_course_test_questions}`.`question_id` AND `{$this->config->table_course_test_questions}`.`test_id` = ?;", [$userID, $testID]);
+        $this->db->query("DELETE FROM `{$this->config->table_course_test_answers}` USING `{$this->config->table_course_test_answers}`, `{$this->config->table_course_test_questions}` WHERE `{$this->config->table_course_test_answers}`.`{$this->getUserField($isInstructor)}` = ? AND `{$this->config->table_course_test_answers}`.`question_id` = `{$this->config->table_course_test_questions}`.`question_id` AND `{$this->config->table_course_test_questions}`.`test_id` = ?;", [$userID, $testID]);
     }
     
     /**
@@ -111,7 +111,7 @@ class Submission extends Test
      */
     public function getTestStatus($testID, $userID, $isInstructor = false)
     {
-        $testStatus = $this->db->select($this->config->table_course_test_status, [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID), 'test_id' => intval($testID)]);
+        $testStatus = $this->db->select($this->config->table_course_test_status, [$this->getUserField($isInstructor) => $userID, 'test_id' => $testID]);
         if ($testStatus === false) {
             return ['status' => 0];
         }
@@ -137,7 +137,7 @@ class Submission extends Test
      */
     public function getQuestionAndAnswers($testID, $userID, $isInstructor = false)
     {
-        $questionInfo = $this->db->query("SELECT * FROM `{$this->config->table_course_test_questions}`, `{$this->config->table_course_test_answers}` WHERE `{$this->config->table_course_test_questions}`.`test_id` = ? AND `{$this->config->table_course_test_questions}`.`question_id` = `{$this->config->table_course_test_answers}`.`question_id` AND `{$this->config->table_course_test_answers}`.`".($isInstructor === true ? 'instructor_id' : 'user_id')."` = ? ORDER BY `{$this->config->table_course_test_questions}`.`question_order` ASC;", [$testID, $userID]);
+        $questionInfo = $this->db->query("SELECT * FROM `{$this->config->table_course_test_questions}`, `{$this->config->table_course_test_answers}` WHERE `{$this->config->table_course_test_questions}`.`test_id` = ? AND `{$this->config->table_course_test_questions}`.`question_id` = `{$this->config->table_course_test_answers}`.`question_id` AND `{$this->config->table_course_test_answers}`.`{$this->getUserField($isInstructor)}` = ? ORDER BY `{$this->config->table_course_test_questions}`.`question_order` ASC;", [$testID, $userID]);
         if (is_array($questionInfo)) {
             foreach ($questionInfo as $i => $question) {
                 if ($question['answer_type'] == 2) {
@@ -176,10 +176,10 @@ class Submission extends Test
             $complete = false;
         }
         $status = $this->setTestStatus($testID, $score, $max_score, $testStatus, $complete);
-        if ($this->db->count($this->config->table_course_test_status, [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID), 'test_id' => intval($testID)])) {
-            return $this->db->update($this->config->table_course_test_status, ['score' => intval($score), 'status' => intval($status)], [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID), 'test_id' => intval($testID)]);
+        if ($this->db->count($this->config->table_course_test_status, [$this->getUserField($isInstructor) => $userID, 'test_id' => $testID])) {
+            return $this->db->update($this->config->table_course_test_status, ['score' => intval($score), 'status' => intval($status)], [$this->getUserField($isInstructor) => intval($userID), 'test_id' => intval($testID)]);
         } else {
-            return $this->db->insert($this->config->table_course_test_status, [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID), 'test_id' => intval($testID), 'score' => intval($score), 'status' => intval($status)]);
+            return $this->db->insert($this->config->table_course_test_status, [$this->getUserField($isInstructor) => intval($userID), 'test_id' => intval($testID), 'score' => intval($score), 'status' => intval($status)]);
         }
     }
         
@@ -191,7 +191,7 @@ class Submission extends Test
      */
     public function deleteUserStatus($userID, $isInstructor = false)
     {
-        return $this->db->delete($this->config->table_course_test_status, [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID)]);
+        return $this->db->delete($this->config->table_course_test_status, [$this->getUserField($isInstructor) => intval($userID)]);
     }
     
     /**
@@ -273,5 +273,17 @@ class Submission extends Test
             }
             $this->updateTestStatus($testID, $userID, $isInstructor = false);
         }
+    }
+    
+    /**
+     * Return the filed that should be used to search for the user field
+     * @param boolean $isInstructor If the user is an instructor set to true else should be false
+     * @return string The field name will be returned
+     */
+    private function getUserField($isInstructor = false){
+        if($isInstructor === true){
+            return 'instructor_id';
+        }
+        return 'user_id';
     }
 }

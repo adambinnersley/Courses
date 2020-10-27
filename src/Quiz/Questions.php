@@ -3,6 +3,7 @@
 namespace Courses\Quiz;
 
 use DBAL\Database;
+use DBAL\Modifiers\Modifier;
 use Configuration\Config;
 
 class Questions
@@ -85,7 +86,7 @@ class Questions
     public function updateQuestion($questionID, $questionInfo)
     {
         if ($questionInfo['type'] == 1) {
-            $answers = (!empty(trim($questionInfo['answer'])) ? $questionInfo['answer'] : null);
+            $answers = Modifier::setNullOnEmpty($questionInfo['answer']);
         } else {
             $answers = $this->serializeAnswers($questionInfo['answers']);
         }

@@ -29,7 +29,7 @@ class Progress
      */
     public function getUserPageProgress($userID, $pageID, $isInstructor = false)
     {
-        return $this->db->select($this->config->course_content_user_progress, [($isInstructor === true ? 'instructor_id' : 'user_id') => $userID, 'page_id' => intval($pageID)]);
+        return $this->db->select($this->config->course_content_user_progress, [$this->getUserField($isInstructor) => $userID, 'page_id' => intval($pageID)]);
     }
     
     /**
@@ -45,7 +45,7 @@ class Progress
         if ($this->getUserPageProgress($userID, $pageID, $isInstructor)) {
             return $this->updateUserPageProgress($userID, $pageID, $isInstructor, $time);
         }
-        return $this->db->insert($this->config->course_content_user_progress, [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID), 'page_id' => intval($pageID), 'time_spent' => intval($time)]);
+        return $this->db->insert($this->config->course_content_user_progress, [$this->getUserField($isInstructor) => $userID, 'page_id' => $pageID, 'time_spent' => intval($time)]);
     }
     
     /**
@@ -58,7 +58,7 @@ class Progress
      */
     protected function updateUserPageProgress($userID, $pageID, $isInstructor = false, $time = 0)
     {
-        return $this->db->update($this->config->course_content_user_progress, ['time_spent' => intval($time)], [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID), 'page_id' => intval($pageID)], 1);
+        return $this->db->update($this->config->course_content_user_progress, ['time_spent' => intval($time)], [$this->getUserField($isInstructor) => $userID, 'page_id' => intval($pageID)], 1);
     }
     
     /**
@@ -70,7 +70,7 @@ class Progress
      */
     public function deleteUserPageProgress($userID, $pageID, $isInstructor = false)
     {
-        return $this->db->delete($this->config->course_content_user_progress, [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID), 'page_id' => intval($pageID)], 1);
+        return $this->db->delete($this->config->course_content_user_progress, [$this->getUserField($isInstructor) => $userID, 'page_id' => intval($pageID)], 1);
     }
     
     /**
@@ -81,6 +81,18 @@ class Progress
      */
     public function deleteAllUserPageProgress($userID, $isInstructor = false)
     {
-        return $this->db->delete($this->config->course_content_user_progress, [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID)]);
+        return $this->db->delete($this->config->course_content_user_progress, [$this->getUserField($isInstructor) => $userID]);
+    }
+    
+    /**
+     * Return the filed that should be used to search for the user field
+     * @param boolean $isInstructor If the user is an instructor set to true else should be false
+     * @return string The field name will be returned
+     */
+    private function getUserField($isInstructor = false){
+        if($isInstructor === true){
+            return 'instructor_id';
+        }
+        return 'user_id';
     }
 }
