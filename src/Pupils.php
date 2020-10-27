@@ -80,7 +80,7 @@ class Pupils
     
     /**
      * Checks to see if the user has access to the given course
-     * @param type $pupilID This should be the users unique ID
+     * @param int $pupilID This should be the users unique ID
      * @param int|boolean $isInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
      * @param int $courseID This need to be the course that you are checking access for
      * @return boolean If the user has access to the course will return true else will return false
@@ -107,7 +107,7 @@ class Pupils
     
     /**
      * Checks to see if the user has access to the given course
-     * @param type $pupilID This should be the users unique ID
+     * @param int $pupilID This should be the users unique ID
      * @param int|boolean $isInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
      * @param int $courseID This need to be the course that you are checking access for
      * @return boolean If the user has access to the course will return true else will return false

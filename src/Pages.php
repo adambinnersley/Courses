@@ -90,6 +90,7 @@ class Pages extends FileUpload
             $currentValue = $this->getPageByID($pageID);
             $where = [];
             $reorder = false;
+            $reorderSub = 0;
             if ($subpage == 0 && $currentValue['subof'] != intval($subpage)) {
                 $where = ['nav_order' => $this->formatPageOrder($this->getNextOrderNum($currentValue['course_id']), $subpage)];
                 $reorderSub = $currentValue['subof'];
@@ -210,10 +211,10 @@ class Pages extends FileUpload
     
     /**
      * Updates the page order and its sub-pages
-     * @param type $pageID This should be the page ID that you are updating
-     * @param type $oldOrder The old order number that the page had
-     * @param type $newOrder The new order to assign to the page
-     * @param type $isMain If the page is a main page make sure sub-pages are reordered too
+     * @param int $pageID This should be the page ID that you are updating
+     * @param int $oldOrder The old order number that the page had
+     * @param int $newOrder The new order to assign to the page
+     * @param boolean $isMain If the page is a main page make sure sub-pages are reordered too
      * @return boolean If the queries are executed successfully will return true else will return false
      */
     protected function updatePageOrder($pageID, $oldOrder, $newOrder, $isMain = false)
