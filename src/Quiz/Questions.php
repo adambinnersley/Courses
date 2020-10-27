@@ -45,7 +45,7 @@ class Questions
     public function getTestQuestions($testID)
     {
         $questions = $this->db->selectAll($this->config->table_course_test_questions, ['test_id' => $testID], '*', ['question_order' => 'ASC']);
-        if(is_array($questions)){
+        if (is_array($questions)) {
             foreach ($questions as $i => $question) {
                 if (intval($question['question_type']) === 2) {
                     $questions[$i]['answers'] = unserialize($question['answers']);

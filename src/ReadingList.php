@@ -2,8 +2,9 @@
 
 namespace Courses;
 
-use DBAL\Database;
 use Configuration\Config;
+use DBAL\Database;
+use DBAL\Modifiers\Modifier;
 
 class ReadingList
 {
@@ -57,25 +58,7 @@ class ReadingList
      */
     public function addItem($courseID, $title, $resouceType, $link = null, $author = null, $description = null, $isbn = null, $publisher = null, $publishDate = null)
     {
-        if (empty($link)) {
-            $link = null;
-        }
-        if (empty($author)) {
-            $author = null;
-        }
-        if (empty($description)) {
-            $description = null;
-        }
-        if (empty($isbn)) {
-            $isbn = null;
-        }
-        if (empty($publisher)) {
-            $publisher = null;
-        }
-        if (empty($publishDate)) {
-            $publishDate = null;
-        }
-        return $this->db->insert($this->config->table_course_reading, ['course_id' => intval($courseID), 'title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link]);
+        return $this->db->insert($this->config->table_course_reading, ['course_id' => intval($courseID), 'title' => $title, 'resource_type' => intval($resouceType), 'author' => Modifier::setNullOnEmpty($author), 'publisher' => Modifier::setNullOnEmpty($publisher), 'publish_date' => Modifier::setNullOnEmpty($publishDate), 'isbn' => Modifier::setNullOnEmpty($isbn), 'description' => Modifier::setNullOnEmpty($description), 'link' => Modifier::setNullOnEmpty($link)]);
     }
     
     /**
@@ -93,25 +76,7 @@ class ReadingList
      */
     public function updateItem($linkID, $title, $resouceType, $link = null, $author = null, $description = null, $isbn = null, $publisher = null, $publishDate = null)
     {
-        if (empty($link)) {
-            $link = null;
-        }
-        if (empty($author)) {
-            $author = null;
-        }
-        if (empty($description)) {
-            $description = null;
-        }
-        if (empty($isbn)) {
-            $isbn = null;
-        }
-        if (empty($publisher)) {
-            $publisher = null;
-        }
-        if (empty($publishDate)) {
-            $publishDate = null;
-        }
-        return $this->db->update($this->config->table_course_reading, ['title' => $title, 'resource_type' => intval($resouceType), 'author' => $author, 'publisher' => $publisher, 'publish_date' => $publishDate, 'isbn' => $isbn, 'description' => $description, 'link' => $link], ['id' => $linkID], 1);
+        return $this->db->update($this->config->table_course_reading, ['title' => $title, 'resource_type' => intval($resouceType), 'author' => Modifier::setNullOnEmpty($author), 'publisher' => Modifier::setNullOnEmpty($publisher), 'publish_date' => Modifier::setNullOnEmpty($publishDate), 'isbn' => Modifier::setNullOnEmpty($isbn), 'description' => Modifier::setNullOnEmpty($description), 'link' => Modifier::setNullOnEmpty($link)], ['id' => $linkID], 1);
     }
     
     /**

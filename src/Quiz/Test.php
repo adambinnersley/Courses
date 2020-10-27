@@ -2,6 +2,8 @@
 
 namespace Courses\Quiz;
 
+use DBAL\Modifiers\Modifier;
+
 class Test extends Questions
 {
     
@@ -59,10 +61,7 @@ class Test extends Questions
     public function updateTestInfo($testID, $name, $status, $pass_type, $passmark = null, $passpercent = null, $description = null)
     {
         if (is_numeric($testID)) {
-            if (empty($description)) {
-                $description = null;
-            }
-            return $this->db->update($this->config->table_course_tests, array_merge(['name' => $name, 'description' => $description, 'active' => intval($status)], $this->getMarkType($pass_type, $passmark, $passpercent)), ['test_id' => intval($testID)], 1);
+            return $this->db->update($this->config->table_course_tests, array_merge(['name' => $name, 'description' => Modifier::setNullOnEmpty($description), 'active' => intval($status)], $this->getMarkType($pass_type, $passmark, $passpercent)), ['test_id' => intval($testID)], 1);
         }
         return false;
     }
@@ -105,10 +104,7 @@ class Test extends Questions
     protected function addTestInfo($courseID, $name, $status, $pass_type, $passmark = null, $passpercent = null, $description = null)
     {
         if (is_numeric($courseID)) {
-            if (empty($description)) {
-                $description = null;
-            }
-            return $this->db->insert($this->config->table_course_tests, array_merge(['course_id' => intval($courseID), 'name' => $name, 'description' => $description, 'active' => $status], $this->getMarkType($pass_type, $passmark, $passpercent)));
+            return $this->db->insert($this->config->table_course_tests, array_merge(['course_id' => intval($courseID), 'name' => $name, 'description' => Modifier::setNullOnEmpty($description), 'active' => $status], $this->getMarkType($pass_type, $passmark, $passpercent)));
         }
         return false;
     }
@@ -116,19 +112,20 @@ class Test extends Questions
     /**
      * Returns an array of the pass mark types and values
      * @param int $passType The set pass type
-     * @param int|null $passMark The pass mark should it be needed else set to null 
+     * @param int|null $passMark The pass mark should it be needed else set to null
      * @param int|null $passPercent The pass percentage should it be needed else set to null
      * @return array
      */
-    protected function getMarkType($passType = 1, $passMark = NULL, $passPercent = NULL) {
-        $type = ['pass_mark' => NULL, 'pass_percentage' => NULL, 'self_assessed' => 0];
+    protected function getMarkType($passType = 1, $passMark = null, $passPercent = null)
+    {
+        $type = ['pass_mark' => null, 'pass_percentage' => null, 'self_assessed' => 0];
         if ($passType == 1) {
                 $type['pass_mark'] = intval($passMark);
-            } elseif ($passType == 2) {
-                $type['pass_percentage'] = intval($passPercent);
-            } elseif ($passType == 3) {
-                $type['pass_percentage'] = 1;
-            }
+        } elseif ($passType == 2) {
+            $type['pass_percentage'] = intval($passPercent);
+        } elseif ($passType == 3) {
+            $type['pass_percentage'] = 1;
+        }
         return $type;
     }
 

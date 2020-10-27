@@ -11,7 +11,6 @@ class PupilsTest extends SetUp
     {
         parent::setUp();
         $this->pupils = new Pupils($this->db, $this->config);
-        
     }
     
     public function tearDown(): void

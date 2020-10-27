@@ -148,7 +148,7 @@ class Pupils
     {
         if (boolval($isInstructor) !== true) {
             return ['user_id' => $pupilID];
-        } 
+        }
         return ['instructor_id' => $pupilID];
     }
 }

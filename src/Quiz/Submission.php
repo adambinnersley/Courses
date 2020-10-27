@@ -2,6 +2,8 @@
 
 namespace Courses\Quiz;
 
+use DBAL\Modifiers\Modifier;
+
 class Submission extends Test
 {
     
@@ -89,7 +91,7 @@ class Submission extends Test
     public function getTestSubmissions($userObject, $testID, $marked = true)
     {
         $submissions = $this->db->query("SELECT `{$this->config->table_course_test_status}`.* FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_tests}`.`self_assessed` = 0 AND `{$this->config->table_course_tests}`.`test_id` = `{$this->config->table_course_test_status}`.`test_id` AND `{$this->config->table_course_test_status}`.`status` ".($marked === true ? ">= 2" : "= 1")." AND `{$this->config->table_course_test_status}`.`test_id` = ? ORDER BY `last_modified` ".($marked === true ? "DESC" : "ASC").";", [$testID]);
-        if(is_array($submissions)){
+        if (is_array($submissions)) {
             foreach ($submissions as $i => $status) {
                 $submissions[$i]['user_details'] = $userObject->getUserDetails($status['user_id']);
                 if (!$marked) {
@@ -136,7 +138,7 @@ class Submission extends Test
     public function getQuestionAndAnswers($testID, $userID, $isInstructor = false)
     {
         $questionInfo = $this->db->query("SELECT * FROM `{$this->config->table_course_test_questions}`, `{$this->config->table_course_test_answers}` WHERE `{$this->config->table_course_test_questions}`.`test_id` = ? AND `{$this->config->table_course_test_questions}`.`question_id` = `{$this->config->table_course_test_answers}`.`question_id` AND `{$this->config->table_course_test_answers}`.`".($isInstructor === true ? 'instructor_id' : 'user_id')."` = ? ORDER BY `{$this->config->table_course_test_questions}`.`question_order` ASC;", [$testID, $userID]);
-        if(is_array($questionInfo)){
+        if (is_array($questionInfo)) {
             foreach ($questionInfo as $i => $question) {
                 if ($question['answer_type'] == 2) {
                     $questionInfo[$i]['answers'] = unserialize($question['answers']);
@@ -266,12 +268,7 @@ class Submission extends Test
         if (is_array($scores)) {
             foreach ($scores as $i => $score) {
                 if (is_numeric($score)) {
-                    if (empty($feedback[$i])) {
-                        $questionFeedback = null;
-                    } else {
-                        $questionFeedback = $feedback[$i];
-                    }
-                    $this->db->update($this->config->table_course_test_answers, ['score' => $score, 'marked' => 1, 'feedback' => $questionFeedback], ['id' => $i]);
+                    $this->db->update($this->config->table_course_test_answers, ['score' => $score, 'marked' => 1, 'feedback' => Modifier::setNullOnEmpty($feedback[$i])], ['id' => $i]);
                 }
             }
             $this->updateTestStatus($testID, $userID, $isInstructor = false);

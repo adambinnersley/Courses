@@ -5,7 +5,8 @@ use PHPUnit\Framework\TestCase;
 use DBAL\Database;
 use Configuration\Config;
 
-abstract class SetUp extends TestCase{
+abstract class SetUp extends TestCase
+{
     protected $db;
     protected $config;
     
@@ -27,5 +28,4 @@ abstract class SetUp extends TestCase{
         $this->db = null;
         $this->config = null;
     }
-    
 }

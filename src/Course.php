@@ -43,12 +43,7 @@ class Course extends FileUpload
      */
     public function listCourses($active = 1)
     {
-        if ($active == 1) {
-            $where = ['active' => 1];
-        } else {
-            $where = [];
-        }
-        return $this->db->selectAll($this->config->table_courses, $where);
+        return $this->db->selectAll($this->config->table_courses, ($active == 1 ? ['active' => 1] : []));
     }
     
     /**
@@ -244,7 +239,7 @@ class Course extends FileUpload
     public function getCoursePages($course_id, $subof = null)
     {
         $pageInfo = $this->db->selectAll($this->config->table_course_content, ['course_id' => $course_id, 'subof' => (is_numeric($subof) ? intval($subof) : 'IS NULL')], '*', ['nav_order' => 'ASC']);
-        if(is_array($pageInfo)){
+        if (is_array($pageInfo)) {
             foreach ($pageInfo as $i => $page) {
                 if (is_null($page['subof'])) {
                     $pageInfo[$i]['subpages'] = $this->getCoursePages($course_id, $page['page_id']);

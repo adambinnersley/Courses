@@ -41,7 +41,8 @@ class CourseTest extends SetUp
      * @covers Courses\Course::getCourseByURL
      * @covers Courses\Course::checkImageUpload
      */
-    public function testEditCourse(){
+    public function testEditCourse()
+    {
         $courseInfo = $this->course->getCourseByURL('/my-new-course');
         $this->assertTrue($this->course->editCourse($courseInfo['id'], $courseInfo['name'], $courseInfo['url'], 'This is some new descriptive content'));
         $this->assertFalse($this->course->editCourse($courseInfo['id'], $courseInfo['name'], $courseInfo['url'], 'This is some new descriptive content'));
@@ -52,7 +53,8 @@ class CourseTest extends SetUp
      * @covers Courses\Course::deleteCourse
      * @covers Courses\Course::getCourseByURL
      */
-    public function testDeleteCourse(){
+    public function testDeleteCourse()
+    {
         $courseInfo = $this->course->getCourseByURL('/my-new-course');
         $this->assertTrue($this->course->deleteCourse($courseInfo['id']));
         $this->assertFalse($this->course->deleteCourse($courseInfo['id']));
