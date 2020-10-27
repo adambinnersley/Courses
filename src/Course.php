@@ -6,9 +6,6 @@ use DBAL\Modifiers\Modifier;
 
 class Course extends Pages
 {
-    protected $db;
-    protected $config;
-
     public $course_id;
     public $course_info;
     

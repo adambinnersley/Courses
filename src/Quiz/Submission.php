@@ -280,8 +280,9 @@ class Submission extends Test
      * @param boolean $isInstructor If the user is an instructor set to true else should be false
      * @return string The field name will be returned
      */
-    private function getUserField($isInstructor = false){
-        if($isInstructor === true){
+    private function getUserField($isInstructor = false)
+    {
+        if ($isInstructor === true) {
             return 'instructor_id';
         }
         return 'user_id';

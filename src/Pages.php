@@ -7,8 +7,11 @@ use DBAL\Modifiers\Modifier;
 use Configuration\Config;
 use Upload\FileUpload;
 
-class Pages extends FileUpload{
+class Pages extends FileUpload
+{
     
+    protected $db;
+    protected $config;
     /**
      * Should provide an instance of the database class to use
      * @param Database $db This should be an instance of the Database class
@@ -18,6 +21,7 @@ class Pages extends FileUpload{
         $this->db = $db;
         $this->config = $config;
     }
+    
     /**
      * Returns a list of all of the main pages that aren't sub-pages
      * @param int $course_id This should be the course ID that you are getting all of the main pages for
