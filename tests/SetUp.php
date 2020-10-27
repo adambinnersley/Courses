@@ -17,8 +17,8 @@ abstract class SetUp extends TestCase{
                  'No local database connection is available'
              );
         }
-        $this->db->query(file_get_contents(dirname(dirname(__FILE__)).'/vendor/adamb/config/database/database_mysql.sql'));
         $this->db->query(file_get_contents(dirname(dirname(__FILE__)).'/database/database.sql'));
+        $this->db->query(file_get_contents(dirname(__FILE__).'/sample_data/database.sql'));
         $this->config = new Config($this->db);
     }
     
