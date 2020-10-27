@@ -2,3 +2,5 @@
 /vendor/
 *.lock
 *.bak
+*.cache
+clover.xml
