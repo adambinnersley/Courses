@@ -1,26 +1,21 @@
 <?php
-namespace Courses\Tests\Quiz;
+namespace Courses\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Courses\Quiz\Questions;
-use DBAL\Database;
 
-class QuestionsTest extends TestCase
+class QuestionsTest extends SetUp
 {
-    protected $db;
-    protected $config;
     protected $questions;
     
     public function setUp(): void
     {
-        $this->db = new Database($GLOBALS['HOSTNAME'], $GLOBALS['USERNAME'], $GLOBALS['PASSWORD'], $GLOBALS['DATABASE']);
-        $this->config = new Config($this->db);
+        parent::setUp();
         $this->questions = new Questions($this->db, $this->config);
     }
     
     public function tearDown(): void
     {
-        $this->db = null;
+        parent::tearDown();
         $this->questions = null;
     }
     

@@ -1,24 +1,22 @@
 <?php
 namespace Courses\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Courses\ReadingList;
-use DBAL\Database;
 
-class ReadingListTest extends TestCase
+class ReadingListTest extends SetUp
 {
-    protected $db;
-    protected $config;
+    protected $readingList;
     
     public function setUp(): void
     {
-        $this->db = new Database($GLOBALS['HOSTNAME'], $GLOBALS['USERNAME'], $GLOBALS['PASSWORD'], $GLOBALS['DATABASE']);
-        $this->config = new Config($this->db);
+        parent::setUp();
+        $this->readingList = new ReadingList($this->db, $this->config);
     }
     
     public function tearDown(): void
     {
-        $this->db = null;
+        parent::tearDown();
+        $this->readingList = null;
     }
     
     public function testExample()

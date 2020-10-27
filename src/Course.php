@@ -77,7 +77,7 @@ class Course extends FileUpload
      */
     public function addCourse($title, $url, $content = null, $status = 1, $image = null, $additional = [])
     {
-        if (!empty($title) && !empty($url)) {
+        if (!empty($title) && !empty($url) && !$this->getCourseByURL($url)) {
             $additional = array_merge($additional, $this->checkImageUpload($image));
             return $this->db->insert($this->config->table_courses, array_merge(['url' => strtolower($url), 'name' => $title, 'description' => Modifier::setNullOnEmpty($content), 'active' => Modifier::setZeroOnEmpty($status)], $additional));
         }
@@ -125,7 +125,7 @@ class Course extends FileUpload
     protected function checkImageUpload($upload)
     {
         $this->setAllowedExtensions(['png', 'jpg', 'jpeg', 'gif']);
-        if ($upload['name'] && $this->checkMimeTypes($upload) && $this->fileExtCheck($upload) && $this->fileSizeCheck($upload)) {
+        if (isset($upload['name']) && $this->checkMimeTypes($upload) && $this->fileExtCheck($upload) && $this->fileSizeCheck($upload)) {
             $image = [];
             $resized = $this->resizeImage($upload);
             $image['image'] = file_get_contents($resized);
@@ -176,7 +176,7 @@ class Course extends FileUpload
      */
     public function getCourseByURL($course_url)
     {
-        return $this->db->select($this->config->table_courses, ['url' => $course_url]);
+        return $this->db->select($this->config->table_courses, ['url' => strtolower($course_url)]);
     }
     
     /**

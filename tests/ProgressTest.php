@@ -1,24 +1,22 @@
 <?php
 namespace Courses\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Courses\Progress;
-use DBAL\Database;
 
-class ProgressTest extends TestCase
+class ProgressTest extends SetUp
 {
-    protected $db;
-    protected $config;
+    protected $progress;
     
     public function setUp(): void
     {
-        $this->db = new Database($GLOBALS['HOSTNAME'], $GLOBALS['USERNAME'], $GLOBALS['PASSWORD'], $GLOBALS['DATABASE']);
-        $this->config = new Config($this->db);
+        parent::setUp();
+        $this->progress = new Progress($this->db, $this->config);
     }
     
     public function tearDown(): void
     {
-        $this->db = null;
+        parent::tearDown();
+        $this->progress = null;
     }
     
     public function testExample(): void

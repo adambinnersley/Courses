@@ -1,22 +1,22 @@
 <?php
 namespace Courses\Tests;
 
-use Courses\Videos;
+use Courses\Quiz\Submission;
 
-class VideosTest extends SetUp
+class SubmissionTest extends SetUp
 {
-    protected $videos;
+    protected $submission;
     
     public function setUp(): void
     {
         parent::setUp();
-        $this->videos = new Videos($this->db, $this->config);
+        $this->submission = new Submission($this->db, $this->config);
     }
     
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->videos = null;
+        $this->submission = null;
     }
     
     public function testExample()

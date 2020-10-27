@@ -1,24 +1,22 @@
 <?php
 namespace Courses\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Courses\Documents;
-use DBAL\Database;
 
-class DocumentsTest extends TestCase
+class DocumentsTest extends SetUp
 {
-    protected $db;
-    protected $config;
+    protected $documents;
     
     public function setUp(): void
     {
-        $this->db = new Database($GLOBALS['HOSTNAME'], $GLOBALS['USERNAME'], $GLOBALS['PASSWORD'], $GLOBALS['DATABASE']);
-        $this->config = new Config($this->db);
+        parent::setUp();
+        $this->documents = new Documents($this->db);
     }
     
     public function tearDown(): void
     {
-        $this->db = null;
+        parent::tearDown();
+        $this->documents = null;
     }
     
     public function testExample()
