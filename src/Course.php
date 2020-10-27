@@ -139,12 +139,12 @@ class Course extends FileUpload
     
     /**
      * Resizes the uploaded image to meet the maximum size requirements
-     * @param file $image This should be the image that has been uploaded
-     * @return file The resized image will be returned
+     * @param array $image This should be the image that has been uploaded
+     * @return string The resized image will be returned
      */
     protected function resizeImage($image)
     {
-        list($width, $height, $type, $attr) = getimagesize($image["tmp_name"]);
+        list($width, $height, $type) = getimagesize($image["tmp_name"]);
         if ($width > $this->max_image_width) {
             $new_height = intval($height * ($this->max_image_width / $width));
             if ($type == 1) {
@@ -247,13 +247,7 @@ class Course extends FileUpload
     public function getCoursePages($course_id, $subof = null)
     {
         if (is_numeric($course_id)) {
-            $where['course_id'] = $course_id;
-            if (is_numeric($subof)) {
-                $where['subof'] = intval($subof);
-            } else {
-                $where['subof'] = 'IS NULL';
-            }
-            $pageInfo = $this->db->selectAll($this->config->table_course_content, $where, '*', ['nav_order' => 'ASC']);
+            $pageInfo = $this->db->selectAll($this->config->table_course_content, ['course_id' => $course_id, 'subof' => (is_numeric($subof) ? intval($subof) : 'IS NULL')], '*', ['nav_order' => 'ASC']);
             foreach ($pageInfo as $i => $page) {
                 if (is_null($page['subof'])) {
                     $pageInfo[$i]['subpages'] = $this->getCoursePages($course_id, $page['page_id']);
@@ -294,7 +288,8 @@ class Course extends FileUpload
     {
         if (is_numeric($pageID) && $title && $content) {
             $currentValue = $this->getPageByID($pageID);
-            
+            $where = [];
+            $reorder = false;
             if ($subpage == 0 && $currentValue['subof'] != intval($subpage)) {
                 $where = ['nav_order' => $this->formatPageOrder($this->getNextOrderNum($currentValue['course_id']), $subpage)];
                 $reorderSub = $currentValue['subof'];
@@ -307,8 +302,6 @@ class Course extends FileUpload
                     $reorderSub = $currentValue['subof'];
                 }
                 $reorder = true;
-            } else {
-                $where = [];
             }
             if ($this->db->update($this->config->table_course_content, array_merge(['title' => $title, 'content' => $content, 'subof' => Modifier::setNullOnEmpty($subpage)], $where), ['page_id' => $pageID], 1)) {
                 if ($reorder) {
@@ -469,7 +462,7 @@ class Course extends FileUpload
     
     /**
      * Gets the next page in the sequence
-     * @param int $currentPage This should be the current pages page ID
+     * @param array $currentPage This should be the current pages array information
      * @param string $dir This should be set to either next or previous, depending on the direction you want the next page to be retrieved from
      * @return int|boolean If a next page exists will return its page_id else if no more pages will return false
      */
@@ -484,12 +477,12 @@ class Course extends FileUpload
     
     /**
      * Gets the previous page in the sequence
-     * @param int $pageID This should be the current pages page ID
+     * @param array $pageInfo This should be the current pages array information
      * @return int|boolean If a previous page exists will return its page_id else if no more pages will return false
      */
-    protected function getPreviousPage($pageID)
+    protected function getPreviousPage($pageInfo)
     {
-        return $this->getNextPage($pageID, 'previous');
+        return $this->getNextPage($pageInfo, 'previous');
     }
     
     /**

@@ -39,9 +39,7 @@ class Documents extends FileUploadDBAL
      */
     public function getDocuments($courseID = false)
     {
-        if (is_numeric($courseID)) {
-            $where = " AND `{$this->upload_database}`.`course_id` = ".intval($courseID);
-        }
+        $where = (is_numeric($courseID) ? " AND `{$this->upload_database}`.`course_id` = ".intval($courseID) : '');
         return $this->db->query("SELECT `{$this->upload_database}`.`id`, `{$this->upload_database}`.`course_id`, `{$this->upload_database}`.`link_text`, `{$this->upload_database}`.`file`, `{$this->doc_group}`.`name` as `group` FROM `{$this->doc_group}`, `{$this->upload_database}` WHERE `{$this->upload_database}`.`group_id` = `{$this->doc_group}`.`id`".$where." ORDER BY `{$this->upload_database}`.`group_id` ASC;");
     }
     

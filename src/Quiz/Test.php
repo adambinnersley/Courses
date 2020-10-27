@@ -16,6 +16,7 @@ class Test extends Questions
     public function getCourseTests($courseID, $userID, $userType = 1, $active = true)
     {
         if (is_numeric($courseID)) {
+            $where = [];
             $where['course_id'] = $courseID;
             if ($active) {
                 $where['active'] = 1;
@@ -65,20 +66,7 @@ class Test extends Questions
             if (empty($description)) {
                 $description = null;
             }
-            if ($pass_type == 1) {
-                $mark = intval($passmark);
-                $percent = null;
-                $self_assessed = 0;
-            } elseif ($pass_type == 2) {
-                $mark = null;
-                $percent = intval($passpercent);
-                $self_assessed = 0;
-            } elseif ($pass_type == 3) {
-                $mark = null;
-                $percent = null;
-                $self_assessed = 1;
-            }
-            return $this->db->update($this->config->table_course_tests, ['name' => $name, 'description' => $description, 'self_assessed' => intval($self_assessed), 'pass_mark' => $mark, 'pass_percentage' => $percent, 'active' => intval($status)], ['test_id' => intval($testID)], 1);
+            return $this->db->update($this->config->table_course_tests, array_merge(['name' => $name, 'description' => $description, 'active' => intval($status)], $this->getMarkType($pass_type, $passmark, $passpercent)), ['test_id' => intval($testID)], 1);
         }
         return false;
     }
@@ -124,24 +112,31 @@ class Test extends Questions
             if (empty($description)) {
                 $description = null;
             }
-            if ($pass_type == 1) {
-                $mark = intval($passmark);
-                $percent = null;
-                $self_assessed = 0;
-            } elseif ($pass_type == 2) {
-                $mark = null;
-                $percent = intval($passpercent);
-                $self_assessed = 0;
-            } elseif ($pass_type == 3) {
-                $mark = null;
-                $percent = null;
-                $self_assessed = 1;
-            }
-            return $this->db->insert($this->config->table_course_tests, ['course_id' => intval($courseID), 'name' => $name, 'description' => $description, 'self_assessed' => intval($self_assessed), 'pass_mark' => $mark, 'pass_percentage' => $percent, 'active' => $status]);
+            return $this->db->insert($this->config->table_course_tests, array_merge(['course_id' => intval($courseID), 'name' => $name, 'description' => $description, 'active' => $status], $this->getMarkType($pass_type, $passmark, $passpercent)));
         }
         return false;
     }
     
+    /**
+     * Returns an array of the pass mark types and values
+     * @param int $passType The set pass type
+     * @param int|null $passMark The pass mark should it be needed else set to null 
+     * @param int|null $passPercent The pass percentage should it be needed else set to null
+     * @return array
+     */
+    protected function getMarkType($passType = 1, $passMark = NULL, $passPercent = NULL) {
+        $type = ['pass_mark' => NULL, 'pass_percentage' => NULL, 'self_assessed' => 0];
+        if ($passType == 1) {
+                $type['pass_mark'] = intval($passMark);
+            } elseif ($passType == 2) {
+                $type['pass_percentage'] = intval($passPercent);
+            } elseif ($passType == 3) {
+                $type['pass_percentage'] = 1;
+            }
+        return $type;
+    }
+
+
     /**
      * Gets the test details and questions for a given test ID
      * @param int $testID This should be the test ID that you are getting the information for
