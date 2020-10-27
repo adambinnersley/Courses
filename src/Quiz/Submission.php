@@ -231,7 +231,7 @@ class Submission extends Test
     private function markMultipleChoice($questionID, $userAnswer)
     {
         $questionInfo = $this->getQuestionInfo($questionID);
-        if (is_array($userAnswer) && is_array($questionInfo)) {
+        if (is_array($userAnswer)) {
             $correct = $this->markMultiAnswerQuestion($questionInfo['answers'], $userAnswer, $questionInfo['max_score'], $questionInfo['allow_partial']);
         } else {
             $correct = $this->markSingleAnswer($questionInfo['answers'], $userAnswer, $questionInfo['max_score']);
