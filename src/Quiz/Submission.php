@@ -19,11 +19,12 @@ class Submission extends Test
     public function addUserAnswer($userID, $questionID, $userAnswer, $isInstructor = false, $type = 1)
     {
         if ($userAnswer) {
+            $mark = ['score' => 0, 'marked' => 0];
             if ($type == 2) {
                 $mark = $this->markMultipleChoice($questionID, $userAnswer);
                 $userAnswer = serialize($userAnswer);
             }
-            return $this->db->insert($this->config->table_course_test_answers, [$this->getUserField($isInstructor) => $userID, 'question_id' => intval($questionID), 'answer' => $userAnswer, 'answer_type' => intval($type), 'score' => intval($mark['score']), 'marked' => intval($mark['marked'])]);
+            return $this->db->insert($this->config->table_course_test_answers, [$this->getUserField($isInstructor) => $userID, 'question_id' => intval($questionID), 'answer' => $userAnswer, 'answer_type' => intval($type), 'score' => $mark['score'], 'marked' => $mark['marked']]);
         }
         return false;
     }
@@ -230,14 +231,12 @@ class Submission extends Test
     private function markMultipleChoice($questionID, $userAnswer)
     {
         $questionInfo = $this->getQuestionInfo($questionID);
-        if (is_array($userAnswer)) {
+        if (is_array($userAnswer) && is_array($questionInfo)) {
             $correct = $this->markMultiAnswerQuestion($questionInfo['answers'], $userAnswer, $questionInfo['max_score'], $questionInfo['allow_partial']);
         } else {
             $correct = $this->markSingleAnswer($questionInfo['answers'], $userAnswer, $questionInfo['max_score']);
         }
-        $mark['score'] = intval($correct);
-        $mark['marked'] = 1;
-        return $mark;
+        return ['score' => intval($correct), 'marked' => 1];
     }
     
     /**
@@ -261,9 +260,8 @@ class Submission extends Test
      * @param array $feedback This should be any feedback that have been given to answers
      * @param int $testID This should be the test ID that you are updating scores for
      * @param int $userID This should be the users ID that you are updating scores for
-     * @param boolean $isInstructor If the user is an instructor set to true else should be false
      */
-    public function markAnswer($scores, $feedback, $testID, $userID, $isInstructor = false)
+    public function markAnswer($scores, $feedback, $testID, $userID)
     {
         if (is_array($scores)) {
             foreach ($scores as $i => $score) {

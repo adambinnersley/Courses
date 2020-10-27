@@ -113,8 +113,9 @@ class ReadingList
      */
     public function copyCourseItems($courseID, $newCourseID)
     {
-        if (is_numeric($courseID) && is_numeric($newCourseID)) {
-            foreach ($this->getReadingList($courseID) as $item) {
+        $readingList = $this->getReadingList($courseID);
+        if (is_numeric($newCourseID) && is_array($readingList)) {
+            foreach ($readingList as $item) {
                 $this->addItem($newCourseID, $item['title'], $item['resource_type'], $item['link'], $item['author'], $item['description'], $item['isbn'], $item['publisher'], $item['publish_date']);
             }
             return true;

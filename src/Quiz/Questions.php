@@ -29,13 +29,12 @@ class Questions
     public function getQuestionInfo($questionID)
     {
         $question = $this->db->select($this->config->table_course_test_questions, ['question_id' => $questionID]);
-        if ($question) {
+        if (is_array($question)) {
             if (intval($question['question_type']) === 2) {
                 $question['answers'] = unserialize($question['answers']);
             }
-            return $question;
         }
-        return false;
+        return $question;
     }
     
     /**
@@ -160,6 +159,7 @@ class Questions
      */
     public function changeQuestionOrder($questionID, $moveUp = true)
     {
+        
     }
     
     /**
