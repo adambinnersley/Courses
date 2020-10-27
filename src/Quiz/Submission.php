@@ -73,6 +73,7 @@ class Submission extends Test
      */
     public function countSubmissionByCourse($courseID)
     {
+        $submission = [];
         $submission['total'] = $this->db->query("SELECT count(*) FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` >= ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`course_id` = ?;", [1, $courseID]);
         $submission['unmarked'] = $this->db->query("SELECT count(*) FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` = ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`course_id` = ? AND `{$this->config->table_course_tests}`.`self_assessed` = 0;", [1, $courseID]);
         return $submission;
@@ -88,10 +89,12 @@ class Submission extends Test
     public function getTestSubmissions($userObject, $testID, $marked = true)
     {
         $submissions = $this->db->query("SELECT `{$this->config->table_course_test_status}`.* FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_tests}`.`self_assessed` = 0 AND `{$this->config->table_course_tests}`.`test_id` = `{$this->config->table_course_test_status}`.`test_id` AND `{$this->config->table_course_test_status}`.`status` ".($marked === true ? ">= 2" : "= 1")." AND `{$this->config->table_course_test_status}`.`test_id` = ? ORDER BY `last_modified` ".($marked === true ? "DESC" : "ASC").";", [$testID]);
-        foreach ($submissions as $i => $status) {
-            $submissions[$i]['user_details'] = $userObject->getUserDetails($status['user_id']);
-            if (!$marked) {
-                $submissions[$i]['num_unmarked'] = count($this->db->query("SELECT * FROM `{$this->config->table_course_test_answers}`, `{$this->config->table_course_test_questions}` WHERE `{$this->config->table_course_test_questions}`.`test_id` = '{$status['test_id']}' AND `{$this->config->table_course_test_questions}`.`question_id` = `{$this->config->table_course_test_answers}`.`question_id` AND `{$this->config->table_course_test_answers}`.`marked` = 0;"));
+        if(is_array($submissions)){
+            foreach ($submissions as $i => $status) {
+                $submissions[$i]['user_details'] = $userObject->getUserDetails($status['user_id']);
+                if (!$marked) {
+                    $submissions[$i]['num_unmarked'] = count($this->db->query("SELECT * FROM `{$this->config->table_course_test_answers}`, `{$this->config->table_course_test_questions}` WHERE `{$this->config->table_course_test_questions}`.`test_id` = '{$status['test_id']}' AND `{$this->config->table_course_test_questions}`.`question_id` = `{$this->config->table_course_test_answers}`.`question_id` AND `{$this->config->table_course_test_answers}`.`marked` = 0;"));
+                }
             }
         }
         return $submissions;
@@ -107,7 +110,7 @@ class Submission extends Test
     public function getTestStatus($testID, $userID, $isInstructor = false)
     {
         $testStatus = $this->db->select($this->config->table_course_test_status, [($isInstructor === true ? 'instructor_id' : 'user_id') => intval($userID), 'test_id' => intval($testID)]);
-        if (!$testStatus) {
+        if ($testStatus === false) {
             return ['status' => 0];
         }
         return $testStatus;
@@ -120,10 +123,7 @@ class Submission extends Test
      */
     public function getStatusInfo($statusID)
     {
-        if (is_numeric($statusID)) {
-            return $this->db->select($this->config->table_course_test_status, ['id' => $statusID]);
-        }
-        return false;
+        return $this->db->select($this->config->table_course_test_status, ['id' => $statusID]);
     }
     
     /**
@@ -136,10 +136,12 @@ class Submission extends Test
     public function getQuestionAndAnswers($testID, $userID, $isInstructor = false)
     {
         $questionInfo = $this->db->query("SELECT * FROM `{$this->config->table_course_test_questions}`, `{$this->config->table_course_test_answers}` WHERE `{$this->config->table_course_test_questions}`.`test_id` = ? AND `{$this->config->table_course_test_questions}`.`question_id` = `{$this->config->table_course_test_answers}`.`question_id` AND `{$this->config->table_course_test_answers}`.`".($isInstructor === true ? 'instructor_id' : 'user_id')."` = ? ORDER BY `{$this->config->table_course_test_questions}`.`question_order` ASC;", [$testID, $userID]);
-        foreach ($questionInfo as $i => $question) {
-            if ($question['answer_type'] == 2) {
-                $questionInfo[$i]['answers'] = unserialize($question['answers']);
-                $questionInfo[$i]['answer'] = unserialize($question['answer']);
+        if(is_array($questionInfo)){
+            foreach ($questionInfo as $i => $question) {
+                if ($question['answer_type'] == 2) {
+                    $questionInfo[$i]['answers'] = unserialize($question['answers']);
+                    $questionInfo[$i]['answer'] = unserialize($question['answer']);
+                }
             }
         }
         return $questionInfo;
@@ -159,7 +161,7 @@ class Submission extends Test
         $max_score = 0;
         $complete = true;
         $userAnswers = $this->getQuestionAndAnswers($testID, $userID, $isInstructor);
-        if ($userAnswers) {
+        if (is_array($userAnswers)) {
             foreach ($userAnswers as $question) {
                 $max_score = intval($max_score + intval($question['max_score']));
                 $score = intval($score + intval($question['score']));
@@ -201,6 +203,7 @@ class Submission extends Test
      */
     private function setTestStatus($testID, $score, $max_score, $testStatus = null, $complete = false)
     {
+        $status = 0;
         if ($complete) {
             $testInfo = $this->getTestName($testID);
             if (($testInfo['pass_mark'] && $score >= $testInfo['pass_mark']) || ($testInfo['pass_percentage'] && ((($score / $max_score) * 100) >= $testInfo['pass_percentage'])) || $testStatus == 3) {
@@ -212,8 +215,6 @@ class Submission extends Test
             }
         } elseif ($testStatus == 1) {
             $status = 1; // Unmarked
-        } else {
-            $status = 0; // Incomplete
         }
         return $status;
     }
@@ -248,9 +249,8 @@ class Submission extends Test
     {
         if ($answers[intval($userAnswer)]['correct']) {
             return intval($score);
-        } else {
-            return 0;
         }
+        return 0;
     }
     
     /**

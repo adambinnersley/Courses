@@ -64,10 +64,7 @@ class Videos
      */
     public function getVideos($courseID = false)
     {
-        if (is_numeric($courseID)) {
-            $where = ['course_id' => $courseID];
-        }
-        $videos = $this->db->selectAll($this->config->table_course_videos, $where);
+        $videos = $this->db->selectAll($this->config->table_course_videos, (is_numeric($courseID) ? ['course_id' => $courseID] : []));
         if (is_array($videos)) {
             foreach ($videos as $i => $video) {
                 $videos[$i]['information'] = unserialize($video['information']);

@@ -111,10 +111,7 @@ class Course extends FileUpload
      */
     public function deleteCourse($courseID)
     {
-        if (is_numeric($courseID)) {
-            return $this->db->delete($this->config->table_courses, ['id' => $courseID], 1);
-        }
-        return false;
+        return $this->db->delete($this->config->table_courses, ['id' => $courseID], 1);
     }
     
     /**
@@ -196,8 +193,8 @@ class Course extends FileUpload
      */
     public function getCourseName($course_id)
     {
-        if (is_numeric($course_id)) {
-            $courseInfo = $this->getCourseByID($course_id);
+        $courseInfo = $this->getCourseByID($course_id);
+        if (is_array($courseInfo)) {
             return $courseInfo['name'];
         }
         return false;
@@ -246,8 +243,8 @@ class Course extends FileUpload
      */
     public function getCoursePages($course_id, $subof = null)
     {
-        if (is_numeric($course_id)) {
-            $pageInfo = $this->db->selectAll($this->config->table_course_content, ['course_id' => $course_id, 'subof' => (is_numeric($subof) ? intval($subof) : 'IS NULL')], '*', ['nav_order' => 'ASC']);
+        $pageInfo = $this->db->selectAll($this->config->table_course_content, ['course_id' => $course_id, 'subof' => (is_numeric($subof) ? intval($subof) : 'IS NULL')], '*', ['nav_order' => 'ASC']);
+        if(is_array($pageInfo)){
             foreach ($pageInfo as $i => $page) {
                 if (is_null($page['subof'])) {
                     $pageInfo[$i]['subpages'] = $this->getCoursePages($course_id, $page['page_id']);
@@ -257,9 +254,8 @@ class Course extends FileUpload
                 $pageInfo[$i]['has_next'] = $this->db->count($this->config->table_course_content, ['course_id' => $page['course_id'], 'subof' => $subof, 'nav_order' => ['>' => $page['nav_order']]]);
                 $pageInfo[$i]['order'] = $this->removeZeros($page['nav_order']);
             }
-            return $pageInfo;
         }
-        return false;
+        return $pageInfo;
     }
     
     /**
@@ -335,12 +331,10 @@ class Course extends FileUpload
      */
     public function deleteCoursePage($pageID)
     {
-        if (is_numeric($pageID)) {
-            $pageInfo = $this->getPageByID($pageID);
-            if ($this->db->delete($this->config->table_course_content, ['page_id' => $pageID])) {
-                $this->reorderFollowingPages($pageInfo['course_id'], $pageInfo['nav_order'], $pageInfo['subof']);
-                return true;
-            }
+        $pageInfo = $this->getPageByID($pageID);
+        if ($this->db->delete($this->config->table_course_content, ['page_id' => $pageID])) {
+            $this->reorderFollowingPages($pageInfo['course_id'], $pageInfo['nav_order'], $pageInfo['subof']);
+            return true;
         }
         return false;
     }

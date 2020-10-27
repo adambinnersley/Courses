@@ -44,16 +44,15 @@ class Questions
      */
     public function getTestQuestions($testID)
     {
-        if (is_numeric($testID)) {
-            $questions = $this->db->selectAll($this->config->table_course_test_questions, ['test_id' => $testID], '*', ['question_order' => 'ASC']);
+        $questions = $this->db->selectAll($this->config->table_course_test_questions, ['test_id' => $testID], '*', ['question_order' => 'ASC']);
+        if(is_array($questions)){
             foreach ($questions as $i => $question) {
                 if (intval($question['question_type']) === 2) {
                     $questions[$i]['answers'] = unserialize($question['answers']);
                 }
             }
-            return $questions;
         }
-        return false;
+        return $questions;
     }
     
     /**
@@ -74,12 +73,7 @@ class Questions
             $questionInfo['explanation'] = 'NULL';
         }
         
-        if (is_numeric($order)) {
-            $questionOrder = intval($order);
-        } else {
-            $questionOrder = $this->getNextAvailableOrder($testID);
-        }// Get the next order num for this test
-        return $this->db->insert($this->config->table_course_test_questions, ['test_id' => $testID, 'question_order' => $questionOrder, 'question' => trim($questionInfo['q']), 'answers' => $answers, 'question_type' => intval($questionInfo['type']), 'max_score' => intval($questionInfo['score']), 'allow_partial' => intval($questionInfo['partial']), 'explanation' => $questionInfo['explanation']]);
+        return $this->db->insert($this->config->table_course_test_questions, ['test_id' => $testID, 'question_order' => (is_numeric($order) ? intval($order) : $this->getNextAvailableOrder($testID)), 'question' => trim($questionInfo['q']), 'answers' => $answers, 'question_type' => intval($questionInfo['type']), 'max_score' => intval($questionInfo['score']), 'allow_partial' => intval($questionInfo['partial']), 'explanation' => $questionInfo['explanation']]);
     }
     
     /**
@@ -174,11 +168,8 @@ class Questions
      */
     private function getNextAvailableOrder($testID)
     {
-        if (is_numeric($testID)) {
-            $order = $this->db->select($this->config->table_course_test_questions, ['test_id' => $testID], ['question_order'], ['question_order' => 'DESC']);
-            return intval($order['question_order'] + 1);
-        }
-        return 1;
+        $order = $this->db->select($this->config->table_course_test_questions, ['test_id' => $testID], ['question_order'], ['question_order' => 'DESC']);
+        return (is_array($order) ? ($order['question_order'] + 1) : 1);
     }
     
     /**

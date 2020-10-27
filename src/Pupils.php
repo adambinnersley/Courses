@@ -124,10 +124,7 @@ class Pupils
      */
     public function getPupilsOnCourse($courseID)
     {
-        if (is_numeric($courseID)) {
-            return $this->db->query("SELECT * FROM ((SELECT CONCAT(`{$this->config->table_users}`.`firstname`, ' ', `{$this->config->table_users}`.`lastname`) as `name`, `{$this->config->table_users}`.`email`, `{$this->config->table_users}`.`id`, 0 as `is_instructor` FROM `{$this->config->table_users}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`user_id` = `{$this->config->table_users}`.`id`) UNION (SELECT `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email`, `{$this->instructors_table}`.`id`, 1 as `is_instructor` FROM `{$this->config->table_users}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`is_instructor` = 1 AND `{$this->config->table_course_access}`.`instructor_id` = `{$this->instructors_table}`.`id`)) ORDER BY `name` ASC;", [':courseid' => intval($courseID)]);
-        }
-        return false;
+        return $this->db->query("SELECT * FROM ((SELECT CONCAT(`{$this->config->table_users}`.`firstname`, ' ', `{$this->config->table_users}`.`lastname`) as `name`, `{$this->config->table_users}`.`email`, `{$this->config->table_users}`.`id`, 0 as `is_instructor` FROM `{$this->config->table_users}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`user_id` = `{$this->config->table_users}`.`id`) UNION (SELECT `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email`, `{$this->instructors_table}`.`id`, 1 as `is_instructor` FROM `{$this->config->table_users}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`is_instructor` = 1 AND `{$this->config->table_course_access}`.`instructor_id` = `{$this->instructors_table}`.`id`)) ORDER BY `name` ASC;", [':courseid' => intval($courseID)]);
     }
     
     /**
@@ -151,8 +148,7 @@ class Pupils
     {
         if (boolval($isInstructor) !== true) {
             return ['user_id' => $pupilID];
-        } else {
-            return ['instructor_id' => $pupilID];
-        }
+        } 
+        return ['instructor_id' => $pupilID];
     }
 }

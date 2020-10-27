@@ -15,38 +15,34 @@ class Test extends Questions
      */
     public function getCourseTests($courseID, $userID, $userType = 1, $active = true)
     {
-        if (is_numeric($courseID)) {
-            $where = [];
-            $where['course_id'] = $courseID;
-            if ($active) {
-                $where['active'] = 1;
-            }
-            $tests = $this->db->selectAll($this->config->table_course_tests, $where);
-            if (is_array($tests)) {
-                foreach ($tests as $i => $test) {
-                    $tests[$i]['max_score'] = $this->getMaxScore($test['test_id']);
-                    $tests[$i]['no_questions'] = $this->db->count($this->config->table_course_test_questions, ['test_id' => $test['test_id']]);
-                    $tests[$i]['results'] = $this->getTestStatus($test['test_id'], $userID, $userType);
-                    if (!$active) {
-                        $tests[$i]['submissions'] = $this->countSubmissionsByTest($test['test_id']);
-                    }
+        $where = [];
+        $where['course_id'] = $courseID;
+        if ($active) {
+            $where['active'] = 1;
+        }
+        $tests = $this->db->selectAll($this->config->table_course_tests, $where);
+        if (is_array($tests)) {
+            foreach ($tests as $i => $test) {
+                $tests[$i]['max_score'] = $this->getMaxScore($test['test_id']);
+                $tests[$i]['no_questions'] = $this->db->count($this->config->table_course_test_questions, ['test_id' => $test['test_id']]);
+                $tests[$i]['results'] = $this->getTestStatus($test['test_id'], $userID, $userType);
+                if (!$active) {
+                    $tests[$i]['submissions'] = $this->countSubmissionsByTest($test['test_id']);
                 }
-                return $tests;
             }
+            return $tests;
         }
         return false;
     }
     
     /**
      * Gets the details for a given test ID
-     * @param int $testID This should be the unique tset ID
+     * @param int $testID This should be the unique test ID
      * @return array|boolean If the test tests will return the details as part of an array else will return false
      */
     public function getTestName($testID)
     {
-        if (is_numeric($testID)) {
-            return $this->db->select($this->config->table_course_tests, ['test_id' => $testID]);
-        }
+        return $this->db->select($this->config->table_course_tests, ['test_id' => $testID]);
     }
 
     /**

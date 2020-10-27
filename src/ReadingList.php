@@ -38,10 +38,7 @@ class ReadingList
      */
     public function getItemDetails($courseID, $linkID)
     {
-        if (is_numeric($courseID) && is_numeric($linkID)) {
-            return $this->db->select($this->config->table_course_reading, ['id' => $linkID, 'course_id' => $courseID]);
-        }
-        return false;
+        return $this->db->select($this->config->table_course_reading, ['id' => $linkID, 'course_id' => $courseID]);
     }
 
 
