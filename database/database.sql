@@ -2,7 +2,6 @@
 -- Table structure for table `courses`
 --
 
-DROP TABLE IF EXISTS `courses`;
 CREATE TABLE IF NOT EXISTS `courses` (
   `id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT,
   `url` varchar(255) NOT NULL,
@@ -28,7 +27,6 @@ CREATE TABLE IF NOT EXISTS `courses` (
 -- Table structure for table `course_access`
 --
 
-DROP TABLE IF EXISTS `course_access`;
 CREATE TABLE IF NOT EXISTS `course_access` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `course_id` smallint(6) UNSIGNED NOT NULL,
@@ -45,7 +43,6 @@ CREATE TABLE IF NOT EXISTS `course_access` (
 -- Table structure for table `course_content`
 --
 
-DROP TABLE IF EXISTS `course_content`;
 CREATE TABLE IF NOT EXISTS `course_content` (
   `page_id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT,
   `course_id` smallint(6) UNSIGNED NOT NULL,
@@ -66,7 +63,6 @@ CREATE TABLE IF NOT EXISTS `course_content` (
 -- Table structure for table `course_content_user_progress`
 --
 
-DROP TABLE IF EXISTS `course_content_user_progress`;
 CREATE TABLE IF NOT EXISTS `course_content_user_progress` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(11) UNSIGNED DEFAULT NULL,
@@ -85,7 +81,6 @@ CREATE TABLE IF NOT EXISTS `course_content_user_progress` (
 -- Table structure for table `course_documents`
 --
 
-DROP TABLE IF EXISTS `course_documents`;
 CREATE TABLE IF NOT EXISTS `course_documents` (
   `id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT,
   `course_id` smallint(4) UNSIGNED NOT NULL,
@@ -107,7 +102,6 @@ CREATE TABLE IF NOT EXISTS `course_documents` (
 -- Table structure for table `course_doc_groups`
 --
 
-DROP TABLE IF EXISTS `course_doc_groups`;
 CREATE TABLE IF NOT EXISTS `course_doc_groups` (
   `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `course_id` smallint(5) UNSIGNED NOT NULL,
@@ -122,7 +116,6 @@ CREATE TABLE IF NOT EXISTS `course_doc_groups` (
 -- Table structure for table `course_reading_list`
 --
 
-DROP TABLE IF EXISTS `course_reading_list`;
 CREATE TABLE IF NOT EXISTS `course_reading_list` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `course_id` smallint(4) UNSIGNED NOT NULL,
@@ -144,13 +137,12 @@ CREATE TABLE IF NOT EXISTS `course_reading_list` (
 -- Table structure for table `course_tests`
 --
 
-DROP TABLE IF EXISTS `course_tests`;
 CREATE TABLE IF NOT EXISTS `course_tests` (
   `test_id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT,
   `course_id` smallint(6) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text,
-  `self_assessed` tinyint(1) UNSIGHNED NOT NULL DEFAULT '0';
+  `self_assessed` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
   `pass_mark` smallint(6) UNSIGNED DEFAULT NULL,
   `pass_percentage` tinyint(3) UNSIGNED DEFAULT NULL,
   `active` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -164,7 +156,6 @@ CREATE TABLE IF NOT EXISTS `course_tests` (
 -- Table structure for table `course_test_questions`
 --
 
-DROP TABLE IF EXISTS `course_test_questions`;
 CREATE TABLE IF NOT EXISTS `course_test_questions` (
   `question_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `test_id` smallint(6) UNSIGNED NOT NULL,
@@ -185,7 +176,6 @@ CREATE TABLE IF NOT EXISTS `course_test_questions` (
 -- Table structure for table `course_test_user_answers`
 --
 
-DROP TABLE IF EXISTS `course_test_user_answers`;
 CREATE TABLE IF NOT EXISTS `course_test_user_answers` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(11) UNSIGNED DEFAULT NULL,
@@ -207,7 +197,6 @@ CREATE TABLE IF NOT EXISTS `course_test_user_answers` (
 -- Table structure for table `course_test_user_status`
 --
 
-DROP TABLE IF EXISTS `course_test_user_status`;
 CREATE TABLE IF NOT EXISTS `course_test_user_status` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(11) UNSIGNED DEFAULT NULL,
@@ -227,7 +216,6 @@ CREATE TABLE IF NOT EXISTS `course_test_user_status` (
 -- Table structure for table `course_videos`
 --
 
-DROP TABLE IF EXISTS `course_videos`;
 CREATE TABLE IF NOT EXISTS `course_videos` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `course_id` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
