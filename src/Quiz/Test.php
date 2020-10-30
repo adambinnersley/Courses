@@ -46,6 +46,22 @@ class Test extends Questions
     {
         return $this->db->select($this->config->table_course_tests, ['test_id' => $testID]);
     }
+    
+    /**
+     * Gets the current status for the user for the given test
+     * @param int $testID This should be the test ID
+     * @param int $userID This should be the user ID
+     * @param boolean $isInstructor If the user is an instructor set to true else should be false
+     * @return array The users test status details will be returned as an array
+     */
+    public function getTestStatus($testID, $userID, $isInstructor = false)
+    {
+        $testStatus = $this->db->select($this->config->table_course_test_status, [$this->getUserField($isInstructor) => $userID, 'test_id' => $testID]);
+        if ($testStatus === false) {
+            return ['status' => 0];
+        }
+        return $testStatus;
+    }
 
     /**
      * Updates the details for a given test
@@ -167,6 +183,7 @@ class Test extends Questions
      */
     public function countSubmissionsByTest($testID)
     {
+        $submission = [];
         $submission['total'] = intval($this->db->query("SELECT count(*) as `count` FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` >= ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`test_id` = ?;", [1, $testID])[0]['count']);
         $submission['unmarked'] = intval($this->db->query("SELECT count(*) as `count` FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` = ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`test_id` = ? AND `{$this->config->table_course_tests}`.`self_assessed` = 0;", [1, $testID])[0]['count']);
         return $submission;

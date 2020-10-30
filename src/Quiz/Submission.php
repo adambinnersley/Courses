@@ -104,22 +104,6 @@ class Submission extends Test
     }
     
     /**
-     * Gets the current status for the user for the given test
-     * @param int $testID This should be the test ID
-     * @param int $userID This should be the user ID
-     * @param boolean $isInstructor If the user is an instructor set to true else should be false
-     * @return array The users test status details will be returned as an array
-     */
-    public function getTestStatus($testID, $userID, $isInstructor = false)
-    {
-        $testStatus = $this->db->select($this->config->table_course_test_status, [$this->getUserField($isInstructor) => $userID, 'test_id' => $testID]);
-        if ($testStatus === false) {
-            return ['status' => 0];
-        }
-        return $testStatus;
-    }
-    
-    /**
      * Gets the status details for the given ID
      * @param int $statusID This should be the unique status id you wish to get the details for
      * @return array|boolean If the id exists the details will be returned as an array else will return false
