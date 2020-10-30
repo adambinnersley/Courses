@@ -131,35 +131,53 @@ class Questions
      * @param int $testID The test ID that you are getting the next question for
      * @param int $currentQuestion The current question order number
      * @return int|boolean If a next question id will be return if a next question exists else will return false
+     */
     public function getNextQuestionID($testID, $currentQuestion){
-        if(is_numeric($testID) && is_numeric($currentQuestion)){
-            $questionInfo = $this->db->select($this->config->table_course_test_questions, ['test_id' => $testID, 'question_order' => ($currentQuestion + 1)]);
-            return $questionInfo['question_id'];
-        }
-        return false;
-    }*/
+        return $this->getNextID($testID, $currentQuestion);
+    }
     
     /**
      * Gets the ID of the previous question
      * @param int $testID The test ID that you are getting the previous question for
      * @param int $currentQuestion The current question order number
      * @return int|boolean If a next question id will be return if a previous question exists else will return false
+     */
     public function getPrevQuestionID($testID, $currentQuestion){
+        return $this->getNextID($testID, $currentQuestion, 'prev');
+    }
+    
+    /**
+     * Gets the ID of the next question
+     * @param int $testID The test ID that you are getting the next question for
+     * @param int $currentQuestion The current question order number
+     * @param string $dir The direction you want to get the next question for 'next' or 'prev' 
+     * @return int|boolean If a next question id will be return if a next question exists else will return false
+     */
+    protected function getNextID($testID, $currentQuestion, $dir = 'next'){
         if(is_numeric($testID) && is_numeric($currentQuestion)){
-            $questionInfo = $this->db->select($this->config->table_course_test_questions, ['test_id' => $testID, 'question_order' => ($currentQuestion - 1)]);
+            $questionInfo = $this->db->select($this->config->table_course_test_questions, ['test_id' => $testID, 'question_order' => ($dir === 'next' ? ($currentQuestion + 1) : ($currentQuestion - 1))]);
             return $questionInfo['question_id'];
         }
         return false;
-    }*/
+    }
     
     /**
      * Changes the question order
      * @param int $questionID The ID of the question you are changing of the order of
      * @param boolean $moveUp If you are moving the question up should be set to true else moving down set to false
+     * @return boolean
      */
     public function changeQuestionOrder($questionID, $moveUp = true)
     {
-        
+        $questionInfo = $this->getQuestionInfo($questionID);
+        if(is_array($questionInfo)){
+            $prevID = ($moveUp === true ? $this->getPrevQuestionID($questionInfo['test_id'], $questionInfo['question_order']) : $this->getNextQuestionID($questionInfo['test_id'], $questionInfo['question_order']));
+            //SET @firstOrder=(SELECT `question_order` FROM `course_test_questions` WHERE `course_test_questions`.`question_id` = 4;);
+            //UPDATE `course_test_questions` SET `question_order` = '5' WHERE `course_test_questions`.`question_id` = 4;
+            //UPDATE `course_test_questions` SET `question_order` = '4' WHERE `course_test_questions`.`question_id` = 5;
+            //$this->db->update($table, $records, $where);
+        }
+        return false;
     }
     
     /**
