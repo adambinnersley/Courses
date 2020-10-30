@@ -256,17 +256,4 @@ class Submission extends Test
             $this->updateTestStatus($testID, $userID, $isInstructor = false);
         }
     }
-    
-    /**
-     * Return the filed that should be used to search for the user field
-     * @param boolean $isInstructor If the user is an instructor set to true else should be false
-     * @return string The field name will be returned
-     */
-    private function getUserField($isInstructor = false)
-    {
-        if ($isInstructor === true) {
-            return 'instructor_id';
-        }
-        return 'user_id';
-    }
 }

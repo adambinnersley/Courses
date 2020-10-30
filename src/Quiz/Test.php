@@ -27,7 +27,7 @@ class Test extends Questions
             foreach ($tests as $i => $test) {
                 $tests[$i]['max_score'] = $this->getMaxScore($test['test_id']);
                 $tests[$i]['no_questions'] = $this->db->count($this->config->table_course_test_questions, ['test_id' => $test['test_id']]);
-                $tests[$i]['results'] = $this->getTestStatus($test['test_id'], $userID, $userType);
+                $tests[$i]['results'] = $this->getTestStatus($test['test_id'], $userID, ($userType == 2 ? true : false));
                 if (!$active) {
                     $tests[$i]['submissions'] = $this->countSubmissionsByTest($test['test_id']);
                 }
@@ -187,5 +187,18 @@ class Test extends Questions
         $submission['total'] = intval($this->db->query("SELECT count(*) as `count` FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` >= ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`test_id` = ?;", [1, $testID])[0]['count']);
         $submission['unmarked'] = intval($this->db->query("SELECT count(*) as `count` FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` = ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`test_id` = ? AND `{$this->config->table_course_tests}`.`self_assessed` = 0;", [1, $testID])[0]['count']);
         return $submission;
+    }
+    
+    /**
+     * Return the filed that should be used to search for the user field
+     * @param boolean $isInstructor If the user is an instructor set to true else should be false
+     * @return string The field name will be returned
+     */
+    private function getUserField($isInstructor = false)
+    {
+        if ($isInstructor === true) {
+            return 'instructor_id';
+        }
+        return 'user_id';
     }
 }
