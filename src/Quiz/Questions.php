@@ -172,10 +172,7 @@ class Questions
         $questionInfo = $this->getQuestionInfo($questionID);
         if(is_array($questionInfo)){
             $prevID = ($moveUp === true ? $this->getPrevQuestionID($questionInfo['test_id'], $questionInfo['question_order']) : $this->getNextQuestionID($questionInfo['test_id'], $questionInfo['question_order']));
-            //SET @firstOrder=(SELECT `question_order` FROM `course_test_questions` WHERE `course_test_questions`.`question_id` = 4;);
-            //UPDATE `course_test_questions` SET `question_order` = '5' WHERE `course_test_questions`.`question_id` = 4;
-            //UPDATE `course_test_questions` SET `question_order` = '4' WHERE `course_test_questions`.`question_id` = 5;
-            //$this->db->update($table, $records, $where);
+            return $this->db->query("SET @lastOrder=(SELECT `question_order` FROM `course_test_questions` WHERE `course_test_questions`.`question_id` = ?); UPDATE `course_test_questions` SET `question_order` = ? WHERE `course_test_questions`.`question_id` = ? LIMIT 1; UPDATE `course_test_questions` SET `question_order` = ? WHERE `course_test_questions`.`question_id` = ? LIMIT 1; UPDATE `course_test_questions` SET `question_order` = @lastOrder WHERE `course_test_questions`.`question_id` = ? LIMIT 1;", [$prevID, $this->getNextAvailableOrder($questionInfo['test_id']), $questionID, $questionInfo['question_order'], $prevID, $questionID]);
         }
         return false;
     }
