@@ -6,6 +6,11 @@
 {/if}
 {assign var="title" value=$headerSection scope="global"}
 {include file="assets/page-header.tpl"}
+{if $add || $edit || $delete}
+    {assign var="backURL" value="tests/" scope="global"}
+    {assign var="backText" value="Back to Tests" scope="global"}
+{/if}
+{include file="assets/back-button.tpl"}
 <form action="" method="post" class="form-horizontal">
     {if ($testedit && $edit) || $add}
         <div class="card mb-3 border-primary">
@@ -123,15 +128,15 @@
                         <textarea name="questions[1][q]" id="test_q" rows="3" class="form-control" placeholder="Question 1"></textarea>
                     </div>
                 </div>
-                <div class="form-group row form-inline">
+                <div class="form-group row">
                     <label for="score" class="col-md-3 control-label"><span class="text-danger">*</span> Max. Question Score</label>
-                    <div class="col-md-9">
+                    <div class="col-md-9 form-inline">
                         <input type="text" name="questions[1][score]" id="score" value="1" placeholder="Score" size="3" maxlength="3" class="form-control" />
                     </div>
                 </div>
-                <div class="form-group row form-inline" id="question_partial_1" style="display:none">
+                <div class="form-group row" id="question_partial_1" style="display:none">
                     <label for="partial" class="col-md-3 control-label"><span class="text-danger">*</span> Allow partial points<br /><small>The user will be awarded a percetage of the points based on the amount of correct answers they give</small></label>
-                    <div class="col-md-9">
+                    <div class="col-md-9 form-inline">
                         <select name="questions[1][partial]" id="partial" class="form-control">
                             <option value="0">No</option>
                             <option value="1">Yes</option>
@@ -234,7 +239,7 @@ addOptions($(this).data('question'));
 });
 
 $('#addQuestion').click(function(){
-$('#additionalQuestions').append("<div class=\"form-group\"><label class=\"col-md-3 control-label\"><span class=\"text-danger\">*</span> Question "+question+"</label><div class=\"col-md-9\"><textarea name=\"questions["+question+"][q]\" id=\"test_q\" rows=\"3\" class=\"form-control\" placeholder=\"Question "+question+"\"></textarea></div></div><div class=\"form-group form-inline\"><label for=\"score\" class=\"col-md-3 control-label\"><span class=\"text-danger\">*</span> Max. Question Score</label><div class=\"col-md-9\"><input type=\"text\" name=\"questions["+question+"][score]\" id=\"score\" value=\"1\" placeholder=\"Score\" size=\"3\" maxlength=\"3\" class=\"form-control\" /></div></div><div class=\"form-group form-inline\" id=\"question_partial_"+question+"\" style=\"display:none\"><label for=\"partial\" class=\"col-md-3 control-label\"><span class=\"text-danger\">*</span> Allow partial points<br /><small>The user will be awarded a percetage of the points based on the amount of correct answers they give</small></label><div class=\"col-md-9\"><select name=\"questions["+question+"][partial]\" id=\"partial\" class=\"form-control\"><option value=\"0\">No</option><option value=\"1\">Yes</option></select></div></div><div class=\"form-group\"><label class=\"col-md-3 control-label\"><span class=\"text-danger\">*</span> Answer Type</label><div class=\"col-md-9\"><div class=\"radio\"><label><input type=\"radio\" name=\"questions["+question+"][type]\" class=\"question_type\" value=\"1\" checked=\"checked\" onchange=\"changeType("+question+", 1);\" /> Textbox</label><label><input type=\"radio\" name=\"questions["+question+"][type]\" class=\"question_type\" value=\"2\" onchange=\"changeType("+question+", 2);\" /> Multiple Choice</label></div></div></div><div class=\"form-group\" id=\"question_self_assess_"+question+"\""+($('#pass_type').val() == 3 ? '' : ' style="display:none"')+"><label class=\"col-md-3 control-label\"> Question "+question+" Answer</label><div class=\"col-md-9\"><textarea name=\"questions["+question+"][answer]\" id=\"test_answer\" rows=\"5\" class=\"form-control\" placeholder=\"Question "+question+" Answer\"></textarea></div></div><div class=\"form-group\" id=\"question_options_"+question+"\" style=\"display:none\"><label class=\"col-md-3 control-label\"> Question "+question+" Options</label><div class=\"col-md-9\"><div class=\"row\"><div class=\"form-group\"><div class=\"col-md-9\"><input type=\"text\" name=\"questions["+question+"][answers][1][answer]\" value=\"\" class=\"form-control\" placeholder=\"Answer 1\" /></div><div class=\"col-md-3\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"questions["+question+"][answers][1][correct]\" value=\"1\" /> Correct</label></div></div><div class=\"form-group\"><div class=\"col-md-9\"><input type=\"text\" name=\"questions["+question+"][answers][2][answer]\" value=\"\" class=\"form-control\" placeholder=\"Answer 2\" /></div><div class=\"col-md-3\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"questions["+question+"][answers][2][correct]\" value=\"1\" /> Correct</label></div></div><div class=\"form-group\"><div class=\"col-md-9\"><input type=\"text\" name=\"questions["+question+"][answers][3][answer]\" value=\"\" class=\"form-control\" placeholder=\"Answer 3\" /></div><div class=\"col-md-3\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"questions["+question+"][answers][3][correct]\" value=\"1\" /> Correct</label></div></div><div class=\"form-group\"><div class=\"col-md-9\"><input type=\"text\" name=\"questions["+question+"][answers][4][answer]\" value=\"\" class=\"form-control\" placeholder=\"Answer 4\" /></div><div class=\"col-md-3\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"questions["+question+"][answers][4][correct]\" value=\"1\" /> Correct</label></div></div><div id=\"additional_options_"+question+"\"></div><div class=\"form-group\"><div class=\"col-md-9\"><button type=\"button\" onclick=\"addOptions("+question+");\" class=\"btn btn-info btn-block\">Add another option</button></div></div></div></div><label class=\"col-md-3 control-label\"> Explanation</label><div class=\"col-md-9\"><textarea name=\"questions["+question+"][explanation]\" id=\"explanation"+question+"\" rows=\"3\" class=\"form-control\" placeholder=\"Answer explanation\"></textarea></div></div><hr />");
+$('#additionalQuestions').append("<div class=\"form-group\"><label class=\"col-md-3 control-label\"><span class=\"text-danger\">*</span> Question "+question+"</label><div class=\"col-md-9\"><textarea name=\"questions["+question+"][q]\" id=\"test_q\" rows=\"3\" class=\"form-control\" placeholder=\"Question "+question+"\"></textarea></div></div><div class=\"form-group\"><label for=\"score\" class=\"col-md-3 control-label\"><span class=\"text-danger\">*</span> Max. Question Score</label><div class=\"col-md-9 form-inline\"><input type=\"text\" name=\"questions["+question+"][score]\" id=\"score\" value=\"1\" placeholder=\"Score\" size=\"3\" maxlength=\"3\" class=\"form-control\" /></div></div><div class=\"form-group\" id=\"question_partial_"+question+"\" style=\"display:none\"><label for=\"partial\" class=\"col-md-3 control-label\"><span class=\"text-danger\">*</span> Allow partial points<br /><small>The user will be awarded a percetage of the points based on the amount of correct answers they give</small></label><div class=\"col-md-9 form-inline\"><select name=\"questions["+question+"][partial]\" id=\"partial\" class=\"form-control\"><option value=\"0\">No</option><option value=\"1\">Yes</option></select></div></div><div class=\"form-group\"><label class=\"col-md-3 control-label\"><span class=\"text-danger\">*</span> Answer Type</label><div class=\"col-md-9\"><div class=\"radio\"><label><input type=\"radio\" name=\"questions["+question+"][type]\" class=\"question_type\" value=\"1\" checked=\"checked\" onchange=\"changeType("+question+", 1);\" /> Textbox</label><label><input type=\"radio\" name=\"questions["+question+"][type]\" class=\"question_type\" value=\"2\" onchange=\"changeType("+question+", 2);\" /> Multiple Choice</label></div></div></div><div class=\"form-group\" id=\"question_self_assess_"+question+"\""+($('#pass_type').val() == 3 ? '' : ' style="display:none"')+"><label class=\"col-md-3 control-label\"> Question "+question+" Answer</label><div class=\"col-md-9\"><textarea name=\"questions["+question+"][answer]\" id=\"test_answer\" rows=\"5\" class=\"form-control\" placeholder=\"Question "+question+" Answer\"></textarea></div></div><div class=\"form-group\" id=\"question_options_"+question+"\" style=\"display:none\"><label class=\"col-md-3 control-label\"> Question "+question+" Options</label><div class=\"col-md-9\"><div class=\"row\"><div class=\"form-group\"><div class=\"col-md-9\"><input type=\"text\" name=\"questions["+question+"][answers][1][answer]\" value=\"\" class=\"form-control\" placeholder=\"Answer 1\" /></div><div class=\"col-md-3\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"questions["+question+"][answers][1][correct]\" value=\"1\" /> Correct</label></div></div><div class=\"form-group\"><div class=\"col-md-9\"><input type=\"text\" name=\"questions["+question+"][answers][2][answer]\" value=\"\" class=\"form-control\" placeholder=\"Answer 2\" /></div><div class=\"col-md-3\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"questions["+question+"][answers][2][correct]\" value=\"1\" /> Correct</label></div></div><div class=\"form-group\"><div class=\"col-md-9\"><input type=\"text\" name=\"questions["+question+"][answers][3][answer]\" value=\"\" class=\"form-control\" placeholder=\"Answer 3\" /></div><div class=\"col-md-3\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"questions["+question+"][answers][3][correct]\" value=\"1\" /> Correct</label></div></div><div class=\"form-group\"><div class=\"col-md-9\"><input type=\"text\" name=\"questions["+question+"][answers][4][answer]\" value=\"\" class=\"form-control\" placeholder=\"Answer 4\" /></div><div class=\"col-md-3\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"questions["+question+"][answers][4][correct]\" value=\"1\" /> Correct</label></div></div><div id=\"additional_options_"+question+"\"></div><div class=\"form-group\"><div class=\"col-md-9\"><button type=\"button\" onclick=\"addOptions("+question+");\" class=\"btn btn-info btn-block\">Add another option</button></div></div></div></div><label class=\"col-md-3 control-label\"> Explanation</label><div class=\"col-md-9\"><textarea name=\"questions["+question+"][explanation]\" id=\"explanation"+question+"\" rows=\"3\" class=\"form-control\" placeholder=\"Answer explanation\"></textarea></div></div><hr />");
 $('#addNewQuestions').show();
 current["question_"+question] = 5;
 question++;
@@ -248,15 +253,15 @@ question++;
                 <textarea name="questions[q]" id="test_q" rows="4" class="form-control" placeholder="Question 1">{$questionedit.question}</textarea>
             </div>
         </div>
-        <div class="form-group row form-inline">
+        <div class="form-group row">
             <label for="score" class="col-md-3 control-label"><span class="text-danger">*</span> Max. Question Score</label>
-            <div class="col-md-9">
+            <div class="col-md-9 form-inline">
                 <input type="text" name="questions[score]" id="score" value="{$questionedit.max_score}" placeholder="Score" size="3" maxlength="3" class="form-control" />
             </div>
         </div>
-        <div class="form-group row form-inline" id="question_partial"{if $questionedit.question_type == 1} style="display:none"{/if}>
+        <div class="form-group row" id="question_partial"{if $questionedit.question_type == 1} style="display:none"{/if}>
             <label for="partial" class="col-md-3 control-label"><span class="text-danger">*</span> Allow partial points<br /><small>The user will be awarded a percetage of the points based on the amount of correct answers they give</small></label>
-            <div class="col-md-9">
+            <div class="col-md-9 form-inline">
                 <select name="questions[partial]" id="partial" class="form-control">
                     <option value="0"{if $questionedit.allow_partial != 1} selected="selected"{/if}>No</option>
                     <option value="1"{if $questionedit.allow_partial == 1} selected="selected"{/if}>Yes</option>
@@ -306,7 +311,7 @@ question++;
             <div class="col-md-9"><textarea name="questions[explanation]" id="explanation" rows="3" class="form-control" placeholder="Answer explanation">{$questionedit.explanation}</textarea></div>
         </div>
         <div class="form-group row text-center">
-            <input type="submit" name="submit" id="submit" value="Update Question" class="btn btn-success btn-lg" />
+            <input type="submit" name="submit" id="submit" value="Update Question" class="btn btn-success mx-auto" />
         </div>
         <script type="text/javascript">{literal}
 var current = {/literal}{$qnum}{literal};
@@ -323,11 +328,13 @@ $('#question_options').hide();
 });
 
 $('#addOption').click(function(){
-$('#additional_options').append('<div class="form-group"><div class="col-md-9"><input type="text" name="questions[answers]['+current+'][answer] value="" class="form-control" placeholder="Answer '+current+'" /></div><div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" value="1" name="questions[answers]['+current+'][correct]" /> Correct</label></div></div>');
+$('#additional_options').append('<div class="form-group row"><div class="col-md-9"><input type="text" name="questions[answers]['+current+'][answer] value="" class="form-control" placeholder="Answer '+current+'" /></div><div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" value="1" name="questions[answers]['+current+'][correct]" /> Correct</label></div></div>');
 current++;
 });
 });
 {/literal}</script>
     {/if}
 </form>
+{assign var="footerBtn" value="true" scope="global"}
+{include file="assets/back-button.tpl"}
 {/strip}
