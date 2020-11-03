@@ -8,50 +8,54 @@
 {include file="assets/page-header.tpl"}
 <form action="" method="post" class="form-horizontal">
     {if ($testedit && $edit) || $add}
-        <div class="form-group row form-inline">
-            <label for="status" class="col-md-3 control-label">Status:</label>
-            <div class="col-md-9">
-                <select name="status" id="status" class="form-control">
-                    <option value="1"{if ($edit && $testedit.active == 1) || ($add && ($smarty.post.status == 1 || !$smarty.post.status))} selected="selected"{/if}>Active</option>
-                    <option value="0"{if ($edit && $testedit.active == 0) || ($add && $smarty.post.status == 0)} selected="selected"{/if}>Disabled</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="name" class="col-md-3 control-label"><span class="text-danger">*</span> Test Name:</label>
-            <div class="col-md-9">
-                <input type="text" name="name" id="name" value="{if $edit}{$testedit.name}{else}{$smarty.post.name}{/if}" class="form-control" placeholder="Test name" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="description" class="col-md-3 control-label">Description:</label>
-            <div class="col-md-9">
-                <textarea name="description" id="description" rows="3" class="form-control" placeholder="Test description">{if $edit}{$testedit.description}{else}{$smarty.post.description}{/if}</textarea>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="description" class="col-md-3 control-label">Pass Type:</label>
-            <div class="col-md-9 form-inline">
-                <select name="pass_type" id="pass_type" class="form-control">
-                    <option value="1"{if ($edit && $testedit.pass_mark) || ($add && (!$smarty.post.pass_type || $smarty.post.pass_type == 1))} selected="selected"{/if}>Total Score</option>
-                    <option value="2"{if ($edit && $testedit.pass_percentage) || ($add && $smarty.post.pass_type == 2)} selected="selected"{/if}>Percentage</option>
-                    <option value="3"{if ($edit && $testedit.self_assessed) || ($add && $smarty.post.pass_type == 3)} selected="selected"{/if}>Self Assessed</option>
-                </select>
-                <span id="pass_score"{if ($edit && !$testedit.pass_mark) || ($add && ($smarty.post.pass_type && $smarty.post.pass_type != 1))} style="display:none"{/if}> equal to or greater than <input type="text" name="passmark" id="passmark" size="3" placeholder="Score" class="form-control" value="{if $edit && $testedit.pass_mark}{$testedit.pass_mark}{elseif $smarty.post.passmark}{$smarty.post.passmark}{else}1{/if}" /></span>
-                <span id="pass_percentage"{if ($edit && !$testedit.pass_percentage) || ($add && $smarty.post.pass_type != 2)} style="display:none"{/if}> equal to or greater than <input type="text" name="percent" id="percent" size="3" placeholder="Score" class="form-control" value="{if $edit && $testedit.pass_percentage}{$testedit.pass_percentage}{elseif $smarty.post.percent}{$smarty.post.percent}{else}80{/if}" />%</span>
+        <div class="card mb-3 border-primary">
+            <div class="card-header bg-primary text-bold">Test Information</div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <label for="status" class="col-md-3 control-label">Status:</label>
+                    <div class="col-md-9 form-inline">
+                        <select name="status" id="status" class="form-control">
+                            <option value="1"{if ($edit && $testedit.active == 1) || ($add && ($smarty.post.status == 1 || !$smarty.post.status))} selected="selected"{/if}>Active</option>
+                            <option value="0"{if ($edit && $testedit.active == 0) || ($add && $smarty.post.status == 0)} selected="selected"{/if}>Disabled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="name" class="col-md-3 control-label"><span class="text-danger">*</span> Test Name:</label>
+                    <div class="col-md-9">
+                        <input type="text" name="name" id="name" value="{if $edit}{$testedit.name}{else}{$smarty.post.name}{/if}" class="form-control" placeholder="Test name" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-md-3 control-label">Description:</label>
+                    <div class="col-md-9">
+                        <textarea name="description" id="description" rows="3" class="form-control" placeholder="Test description">{if $edit}{$testedit.description}{else}{$smarty.post.description}{/if}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-md-3 control-label">Pass Type:{$testedit.pass_percentage}</label>
+                    <div class="col-md-9 form-inline">
+                        <select name="pass_type" id="pass_type" class="form-control">
+                            <option value="1"{if ($edit && $testedit.pass_mark) || ($add && (!$smarty.post.pass_type || $smarty.post.pass_type == 1))} selected="selected"{/if}>Total Score</option>
+                            <option value="2"{if ($edit && $testedit.pass_percentage) || ($add && $smarty.post.pass_type == 2)} selected="selected"{/if}>Percentage</option>
+                            <option value="3"{if ($edit && $testedit.self_assessed) || ($add && $smarty.post.pass_type == 3)} selected="selected"{/if}>Self Assessed</option>
+                        </select>
+                        <span id="pass_score"{if ($edit && !$testedit.pass_mark) || ($add && ($smarty.post.pass_type && $smarty.post.pass_type != 1))} style="display:none"{/if}> equal to or greater than <input type="text" name="passmark" id="passmark" size="3" placeholder="Score" class="form-control" value="{if $edit && $testedit.pass_mark}{$testedit.pass_mark}{elseif $smarty.post.passmark}{$smarty.post.passmark}{else}1{/if}" /></span>
+                        <span id="pass_percentage"{if ($edit && !$testedit.pass_percentage) || ($add && $smarty.post.pass_type != 2)} style="display:none"{/if}> equal to or greater than <input type="text" name="percent" id="percent" size="3" placeholder="Score" class="form-control" value="{if $edit && $testedit.pass_percentage}{$testedit.pass_percentage}{elseif $smarty.post.percent}{$smarty.post.percent}{else}80{/if}" />%</span>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <input type="submit" name="submit" id="submit1" value="Update Test" class="btn btn-success mx-auto" />
+                </div>
             </div>
         </div>
         {if $edit}
-            <div class="text-center"><input type="submit" name="submit" id="submit1" value="Update Test" class="btn btn-success btn-lg" /></div>
-            <h3>Questions</h3>
-            <hr />
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-bold">Questions</div>
+                <div class="card-body">
             {foreach $testedit.questions as $question}
-                <div class="row">
-                    <div class="col-md-12">
-                <div class="float-right">
-                    <a href="/student/learning/{$courseInfo.url}/tests/question/{$question.question_id}/edit" title="Edit Page" class="text-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> &nbsp; <a href="/student/learning/{$courseInfo.url}/tests/question/{$question.question_id}/delete" title="Delete Page" class="text-danger"><span class="fa fa-trash fa-fw"></span> Delete</a>
-                </div>
-                    </div>
+                <div class="col-12 text-right mt-2">
+                    <a href="/student/learning/{$courseInfo.url}/tests/question/{$question.question_id}/edit" title="Edit Page" class="btn btn-warning"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a> &nbsp; <a href="/student/learning/{$courseInfo.url}/tests/question/{$question.question_id}/delete" title="Delete Page" class="btn btn-danger"><span class="fa fa-trash fa-fw"></span> Delete</a>
                 </div>
                 <div class="form-group row">
                     <div class="col-md-3 text-right"><strong>Question {$question.question_order}:</strong></div>
@@ -103,81 +107,83 @@
                     </div>
                 </div>
                 {/if}
-                <hr />
+                <hr class="mb-0" />
                 {assign var="questionnum" value=$question.question_order + 1}
             {/foreach}
         {/if}
         {if $add}
-        <h3>Questions</h3>
-        <hr />
-        <div class="form-group row">
-            <label class="col-md-3 control-label"><span class="text-danger">*</span> Question 1</label>
-            <div class="col-md-9">
-                <textarea name="questions[1][q]" id="test_q" rows="3" class="form-control" placeholder="Question 1"></textarea>
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-bold">
+                Questions
             </div>
-        </div>
-        <div class="form-group row form-inline">
-            <label for="score" class="col-md-3 control-label"><span class="text-danger">*</span> Max. Question Score</label>
-            <div class="col-md-9">
-                <input type="text" name="questions[1][score]" id="score" value="1" placeholder="Score" size="3" maxlength="3" class="form-control" />
-            </div>
-        </div>
-        <div class="form-group row form-inline" id="question_partial_1" style="display:none">
-            <label for="partial" class="col-md-3 control-label"><span class="text-danger">*</span> Allow partial points<br /><small>The user will be awarded a percetage of the points based on the amount of correct answers they give</small></label>
-            <div class="col-md-9">
-                <select name="questions[1][partial]" id="partial" class="form-control">
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-md-3 control-label"><span class="text-danger">*</span> Answer Type</label>
-            <div class="col-md-9">
-                <div class="radio">
-                    <label><input type="radio" name="questions[1][type]" class="question_type" data-question="1" value="1" checked="checked" /> Textbox</label>
-                    <label><input type="radio" name="questions[1][type]" class="question_type" data-question="1" value="2" /> Multiple Choice</label>
+            <div class="card-body">
+                <div class="form-group row">
+                    <label class="col-md-3 control-label"><span class="text-danger">*</span> Question 1</label>
+                    <div class="col-md-9">
+                        <textarea name="questions[1][q]" id="test_q" rows="3" class="form-control" placeholder="Question 1"></textarea>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="form-group row" id="question_self_assess_1" style="display:none">
-            <label class="col-md-3 control-label"> Question 1 Answer</label>
-            <div class="col-md-9">
-                 <textarea name="questions[1][answer]" id="test_answer" rows="5" class="form-control" placeholder="Question 1 Answer"></textarea>
-            </div>
-        </div>
-        <div class="form-group row" id="question_options_1" style="display:none">
-            <label class="col-md-3 control-label"> Question 1 Options</label>
-            <div class="col-md-9">
-                <div class="row">
-                    <div class="form-group row">
-                        <div class="col-md-9"><input type="text" name="questions[1][answers][1][answer]" value="" class="form-control" placeholder="Answer 1" /></div>
-                        <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" name="questions[1][answers][1][correct]" /> Correct</label></div>
+                <div class="form-group row form-inline">
+                    <label for="score" class="col-md-3 control-label"><span class="text-danger">*</span> Max. Question Score</label>
+                    <div class="col-md-9">
+                        <input type="text" name="questions[1][score]" id="score" value="1" placeholder="Score" size="3" maxlength="3" class="form-control" />
                     </div>
-                    <div class="form-group row">
-                        <div class="col-md-9"><input type="text" name="questions[1][answers][2][answer]" value="" class="form-control" placeholder="Answer 2" /></div>
-                        <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" name="questions[1][answers][2][correct]" /> Correct</label></div>
+                </div>
+                <div class="form-group row form-inline" id="question_partial_1" style="display:none">
+                    <label for="partial" class="col-md-3 control-label"><span class="text-danger">*</span> Allow partial points<br /><small>The user will be awarded a percetage of the points based on the amount of correct answers they give</small></label>
+                    <div class="col-md-9">
+                        <select name="questions[1][partial]" id="partial" class="form-control">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-md-9"><input type="text" name="questions[1][answers][3][answer]" value="" class="form-control" placeholder="Answer 3" /></div>
-                        <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" name="questions[1][answers][3][correct]" /> Correct</label></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-9"><input type="text" name="questions[1][answers][4][answer]" value="" class="form-control" placeholder="Answer 4" /></div>
-                        <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" value="1" name="questions[1][answers][4][correct]" /> Correct</label></div>
-                    </div>
-                    <div id="additional_options_1"></div>
-                    <div class="form-group">
-                        <div class="col-md-9">
-                        <button type="button" id="addOption" data-question="1" class="btn btn-info btn-block">Add another option</button>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 control-label"><span class="text-danger">*</span> Answer Type</label>
+                    <div class="col-md-9">
+                        <div class="radio">
+                            <label><input type="radio" name="questions[1][type]" class="question_type" data-question="1" value="1" checked="checked" /> Textbox</label>
+                            <label><input type="radio" name="questions[1][type]" class="question_type" data-question="1" value="2" /> Multiple Choice</label>
                         </div>
                     </div>
                 </div>
-            </div>
-            <label class="col-md-3 control-label"> Explanation</label>
-            <div class="col-md-9"><textarea name="questions[1][explanation]" id="explanation" rows="3" class="form-control" placeholder="Answer explanation"></textarea></div>
-        </div>
-        <hr />
+                <div class="form-group row" id="question_self_assess_1" style="display:none">
+                    <label class="col-md-3 control-label"> Question 1 Answer</label>
+                    <div class="col-md-9">
+                         <textarea name="questions[1][answer]" id="test_answer" rows="5" class="form-control" placeholder="Question 1 Answer"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row" id="question_options_1" style="display:none">
+                    <label class="col-md-3 control-label"> Question 1 Options</label>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="form-group row">
+                                <div class="col-md-9"><input type="text" name="questions[1][answers][1][answer]" value="" class="form-control" placeholder="Answer 1" /></div>
+                                <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" name="questions[1][answers][1][correct]" /> Correct</label></div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-9"><input type="text" name="questions[1][answers][2][answer]" value="" class="form-control" placeholder="Answer 2" /></div>
+                                <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" name="questions[1][answers][2][correct]" /> Correct</label></div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-9"><input type="text" name="questions[1][answers][3][answer]" value="" class="form-control" placeholder="Answer 3" /></div>
+                                <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" name="questions[1][answers][3][correct]" /> Correct</label></div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-9"><input type="text" name="questions[1][answers][4][answer]" value="" class="form-control" placeholder="Answer 4" /></div>
+                                <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" value="1" name="questions[1][answers][4][correct]" /> Correct</label></div>
+                            </div>
+                            <div id="additional_options_1"></div>
+                            <div class="form-group">
+                                <div class="col-md-9">
+                                <button type="button" id="addOption" data-question="1" class="btn btn-info btn-block">Add another option</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="col-md-3 control-label"> Explanation</label>
+                    <div class="col-md-9"><textarea name="questions[1][explanation]" id="explanation" rows="3" class="form-control" placeholder="Answer explanation"></textarea></div>
+                </div>
         {/if}
         <div id="additionalQuestions"></div>
         <div class="form-group row">
@@ -186,6 +192,8 @@
             </div>
         </div>
         <div class="text-center"{if !$add} style="display:none" id="addNewQuestions"{/if}><input type="submit" name="submit" id="submit" value="{if $add}Create{else}Update{/if} Test" class="btn btn-success btn-lg" /></div>
+            </div>
+        </div>
         <script type="text/javascript">{literal}
 var current = {};
 current["question_1"] = 5;

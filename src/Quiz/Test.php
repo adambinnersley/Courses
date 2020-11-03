@@ -136,11 +136,11 @@ class Test extends Questions
     {
         $type = ['pass_mark' => null, 'pass_percentage' => null, 'self_assessed' => 0];
         if ($passType == 1) {
-                $type['pass_mark'] = intval($passMark);
+            $type['pass_mark'] = intval($passMark);
         } elseif ($passType == 2) {
             $type['pass_percentage'] = intval($passPercent);
         } elseif ($passType == 3) {
-            $type['pass_percentage'] = 1;
+            $type['self_assessed'] = 1;
         }
         return $type;
     }
