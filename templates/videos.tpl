@@ -13,7 +13,6 @@
 {/if}
 <div class="row">
     <div class="col-12">
-    
     {include file="videos/listVideos.tpl"}
     </div>
 </div>

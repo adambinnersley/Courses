@@ -6,7 +6,7 @@
 {/if}
 {assign var="title" value=$headerSection scope="global"}
 {include file="assets/page-header.tpl"}
-{assign var="backURL" value="/student/learning/{$courseInfo.url}/videos/" scope="global"}
+{assign var="backURL" value="videos/" scope="global"}
 {assign var="backText" value="Back to Videos" scope="global"}
 {include file="assets/back-button.tpl"}
 <div class="row">
@@ -35,4 +35,5 @@
         </div>
     </div>
 </div>
+{include file="assets/back-button.tpl"}
 {/strip}
