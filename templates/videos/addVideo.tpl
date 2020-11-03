@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col-lg-6">
         <div class="card border-primary">
-            <div class="card-header bg-primary"><span class="fas fa-film"></span> Add Video</div>
+            <div class="card-header bg-primary"><span class="fas fa-film"></span> {$headerSection}</div>
             <div class="card-body pb-0">
                 <form method="post" action="" class="form-horizontal">
                     <div class="form-group row">
