@@ -15,6 +15,10 @@
 {/foreach}
 </div>
 {else}
-
+<div class="row">
+    <div class="col text-center text-bold">
+        There are currently no videos in this course
+    </div>
+</div>
 {/if}
 {/strip}
