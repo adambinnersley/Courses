@@ -1,4 +1,14 @@
 {strip}
+{if isset($editVideo)}
+{assign var="headerSection" value="Edit Video" scope="global"}
+{else}
+{assign var="headerSection" value="Add Video" scope="global"}
+{/if}
+{assign var="title" value=$headerSection scope="global"}
+{include file="assets/page-header.tpl"}
+{assign var="backURL" value="/student/learning/{$courseInfo.url}/videos/" scope="global"}
+{assign var="backText" value="Back to Videos" scope="global"}
+{include file="assets/back-button.tpl"}
 <div class="row">
     <div class="col-lg-6">
         <div class="card border-primary">
@@ -18,7 +28,7 @@
                         <div class="col-md-9"><textarea name="video[description]" id="description" class="form-control" placeholder="Description">{if $smarty.post.video.description}{$smarty.post.video.description}{else}{$item.description}{/if}</textarea></div>
                     </div>
                     <div class="form-group row text-center">
-                        <input name="submit" id="submit" type="submit" class="btn btn-success mx-auto" value="{if $edit}Edit{else}Add{/if} Video" />
+                        <input name="submit" id="submit" type="submit" class="btn btn-success mx-auto" value="{$headerSection}" />
                     </div>
                 </form>
             </div>
