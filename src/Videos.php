@@ -105,10 +105,11 @@ class Videos
     public function editVideo($videoID, $information = [])
     {
         if ($information['video_url']) {
+            $youtubeID = $this->getVideoIDFromURL($information['video_url']);
             $information = array_filter(
                 array_merge(
                     $information,
-                    ['information' => serialize($this->getYouTubeInfo($information['video_url']))]
+                    ['video_url' => $youtubeID, 'information' => serialize($this->getYouTubeInfo($youtubeID))]
                 )
             );
         }

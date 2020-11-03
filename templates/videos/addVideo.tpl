@@ -17,7 +17,7 @@
                 <form method="post" action="" class="form-horizontal">
                     <div class="form-group row">
                         <label for="url" class="col-md-3 control-label">YouTube URL: <span class="text-danger">*</span></label>
-                        <div class="col-md-9"><input name="url" id="url" type="text" size="100" class="form-control" placeholder="URL" value="{if $smarty.post.url}{$smarty.post.url}{else}{$item.url}{/if}" /></div>
+                        <div class="col-md-9"><input name="{if isset($editVideo)}video[video_url]{else}url{/if}" id="url" type="text" size="100" class="form-control" placeholder="URL" value="{if !isset($editVideo)}{$smarty.post.url}{else}https://www.youtube.com/watch?v={$item.video_url}{/if}" /></div>
                     </div>
                     <div class="form-group row{if $msgerror && !$smarty.post.video.title} has-error{/if}">
                         <label for="title" class="col-md-3 control-label">Title: <span class="text-danger">*</span></label>
@@ -35,5 +35,6 @@
         </div>
     </div>
 </div>
+{assign var="footerBtn" value="true" scope="global"}
 {include file="assets/back-button.tpl"}
 {/strip}

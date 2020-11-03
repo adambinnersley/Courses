@@ -1,5 +1,6 @@
 {strip}
 {assign var="title" value="Course Videos" scope="global"}
+{if is_array($videos)}
 <div class="list-group">
 {foreach $videos as $video}
     <{if $userDetails.isHeadOffice}div{else}a href="https://www.youtube.com/watch?v={$video.information->id}"{/if} class="list-group-item list-group-item-action flex-column align-items-start">
@@ -13,4 +14,7 @@
     </{if $userDetails.isHeadOffice}div{else}a{/if}>
 {/foreach}
 </div>
+{else}
+
+{/if}
 {/strip}
