@@ -1,18 +1,18 @@
 {strip}
 {assign var="headerSection" value="Course Documents" scope="global"}
 {include file="assets/page-header.tpl"}
-{if $userDetails.isHeadOffice && !$add && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}
-    <div class="row">
-        <div class="col-12">
-            <a href="/student/learning/{$courseInfo.url}/course-documents/add" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new document</a>
-        </div>
-    </div>
-{/if}
 {if $add || $edit || $delete || $smarty.get.editgroup || $smarty.get.deletegroup}
     {assign var="backURL" value="course-documents/" scope="global"}
     {assign var="backText" value="Back to documents" scope="global"}
 {/if}
 {include file="assets/back-button.tpl"}
+{if $userDetails.isHeadOffice && !$add && !$delete && !$smarty.get.editgroup && !$smarty.get.deletegroup}
+    <div class="row">
+        <div class="col-12">
+            <a href="/student/learning/{$courseInfo.url}/course-documents/groups/" title="Add new item" class="btn btn-info float-right"><span class="fa fa-plus fa-fw"></span> Edit Groups</a><a href="/student/learning/{$courseInfo.url}/course-documents/add" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new document</a>
+        </div>
+    </div>
+{/if}
 {if $add || $edit || $smarty.get.editgroup || $smarty.get.deletegroup}
     <div class="row">
         {if $doc_groups}
