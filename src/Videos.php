@@ -109,7 +109,7 @@ class Videos
             $information = array_filter(
                 array_merge(
                     $information,
-                    ['video_url' => $youtubeID, 'information' => serialize($this->getYouTubeInfo($youtubeID))]
+                    ($youtubeID !== false ? ['video_url' => $youtubeID, 'information' => serialize($this->getYouTubeInfo($youtubeID))] : [])
                 )
             );
         }
