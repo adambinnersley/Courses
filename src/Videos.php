@@ -104,7 +104,7 @@ class Videos
      */
     public function editVideo($videoID, $information = [])
     {
-        if ($information['video_url']) {
+        if (!empty($information['video_url'])) {
             $youtubeID = $this->getVideoIDFromURL($information['video_url']);
             $information = array_filter(
                 array_merge(
