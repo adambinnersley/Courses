@@ -7,7 +7,7 @@
                 <h4>Confirm Delete</h4>
                 <p>Are you sure that you want to delete the <strong>{$group.name}</strong> group?</p>
                 <form method="post" action="" class="text-center">
-                    <a href="/student/learning/{$courseInfo.url}/course-documents/" title="No, leave it as is" class="btn btn-success">No, leave it as is</a> &nbsp; 
+                    <a href="/student/learning/{$courseInfo.url}/course-documents/groups/" title="No, leave it as is" class="btn btn-success">No, leave it as is</a> &nbsp; 
                     <input type="submit" name="confirmdelete" id="confirmdelete" class="btn btn-danger" value="Yes, delete document group" />
                 </form>
             </div>
