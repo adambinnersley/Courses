@@ -1,9 +1,11 @@
 {strip}
+{if $testdetails}
 {assign var="backURL" value="tests/" scope="global"}
 {assign var="backText" value="Back to Tests" scope="global"}
-{include file="assets/back-button.tpl"}
+{/if}
 {if $userDetails.isHeadOffice}
     <div class="row"><div class="col-12"><a href="/student/learning/{$courseInfo.url}/tests/add" title="Add new test" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new test</a></div></div>{/if}
+{include file="assets/back-button.tpl"}
 <div class="row">
     <div class="col-12">
         {if $tests}

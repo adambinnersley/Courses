@@ -184,7 +184,7 @@ class Test extends Questions
     public function countSubmissionsByTest($testID)
     {
         $submission = [];
-        $submission['total'] = intval($this->db->query("SELECT count(*) as `count` FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` >= ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`test_id` = ?;", [1, $testID])[0]['count']);
+        $submission['total'] = intval($this->db->query("SELECT count(*) as `count` FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` >= ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`test_id` = ?;", [0, $testID])[0]['count']);
         $submission['unmarked'] = intval($this->db->query("SELECT count(*) as `count` FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` = ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`test_id` = ? AND `{$this->config->table_course_tests}`.`self_assessed` = 0;", [1, $testID])[0]['count']);
         return $submission;
     }

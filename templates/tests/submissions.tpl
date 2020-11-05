@@ -6,7 +6,7 @@
     {if $unmarked}
         <div class="card">
             <div class="card-header"><span class="fa fa-pencil-alt fa-fw"></span> Unmarked test submissions</div>
-            <table class="table table-bordered table-hover">
+            <table class="table table-striped table-hover mb-0">
                 <tr>
                     <th></th>
                     <th class="text-center">Name</th>
@@ -16,9 +16,9 @@
                 {foreach $unmarked as $i => $utest}
                     <tr>
                         <td class="text-center">{$i+1}</td>
-                        <td class="text-center">{$utest.user_details.title} {$utest.user_details.firstname} {$utest.user_details.surname}</td>
+                        <td class="text-center">{$utest.user_details.title} {$utest.user_details.firstname} {$utest.user_details.lastname}</td>
                         <td class="text-center">{$utest.num_unmarked}</td>
-                        <td class="text-center"><a href="/student/learning/{$courseInfo.url}/tests/submissions/{$smarty.get.submissions}/mark/{$utest.id}" title="Mark Test" class="btn btn-success">Mark Test</a></td>
+                        <td class="text-center"><a href="/student/learning/{$courseInfo.url}/tests/submissions/{$utest.test_id}/mark/{$utest.id}" title="Mark Test" class="btn btn-success btn-sm">Mark Test</a></td>
                     </tr>
                 {/foreach}
             </table>
@@ -27,7 +27,7 @@
     {if $testSubmissions}
         <div class="card">
             <div class="card-header"><span class="fa fa-check fa-fw"></span> Test submissions</div>
-            <table class="table table-bordered table-hover">
+            <table class="table table-striped table-hover mb-0">
                 <tr>
                     <th></th>
                     <th class="text-center">Name</th>
