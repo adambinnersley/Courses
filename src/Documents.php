@@ -76,13 +76,13 @@ class Documents extends FileUploadDBAL
      */
     public function updateDocument($documentID, $groupID, $text, $file = null, $information = [])
     {
+        foreach($information as $key => $value){
+            $information[$key] = Modifier::setNullOnEmpty($value);
+        }
         if ($file !== null && !empty($file['name']) && $this->checkMimeTypes($file) && $this->fileExtCheck($file) && $this->fileSizeCheck($file)) {
-            foreach($information as $key => $value){
-                $information[$key] = Modifier::setNullOnEmpty($value);
-            }
             $information = array_merge(['file' => $this->makeURLSafe($file['name']), 'type' => $file['type'], 'size' => $file['size'], 'content' => file_get_contents($file['tmp_name'])], $information);
         }
-        return $this->db->update($this->upload_database, array_merge(['group_id' => intval($groupID), 'link_text' => trim($text)], array_filter($information)), ['id' => $documentID]);
+        return $this->db->update($this->upload_database, array_merge(['group_id' => intval($groupID), 'link_text' => trim($text)], $information), ['id' => $documentID]);
     }
     
     /**
