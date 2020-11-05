@@ -1,3 +1,7 @@
+{strip}
+{assign var="backURL" value="tests/" scope="global"}
+{assign var="backText" value="Back to Tests" scope="global"}
+{include file="assets/back-button.tpl"}
 {if $unmarked || $testSubmissions}
     {if $unmarked}
         <div class="card">
@@ -82,3 +86,6 @@
     <h3 class="text-center">Currently no submissions</h3>
     <p class="text-center">There are currently no submissions for this test</p>
 {/if}
+{assign var="footerBtn" value="true" scope="global"}
+{include file="assets/back-button.tpl"}
+{/strip}
