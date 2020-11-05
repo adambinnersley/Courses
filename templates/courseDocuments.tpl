@@ -2,6 +2,7 @@
 {assign var="headerSection" value="Course Documents" scope="global"}
 {include file="assets/page-header.tpl"}
 {include file="assets/back-button.tpl"}
+{assign var="title" value=$headerSection scope="global"}
 {if $userDetails.isHeadOffice}
     <div class="row">
         <div class="col-12 text-right">

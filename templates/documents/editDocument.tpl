@@ -6,6 +6,9 @@
 {/if}
 {assign var="title" value=$headerSection scope="global"}
 {include file="assets/page-header.tpl"}
+{assign var="backURL" value="course-documents/" scope="global"}
+{assign var="backText" value="Back to documents" scope="global"}
+{include file="assets/back-button.tpl"}
 <div class="card border-primary" id="editgroup">
     <div class="card-header bg-primary">{$headerSection}</div>
     <div class="card-body pb-0">
@@ -33,10 +36,10 @@
                 </div>
                 <div class="form-group row">
                     <label for="doc_desc" class="col-md-3 control-label">Description:</label>
-                    <div class="col-md-9"><textarea name="doc_desc" id="doc_desc" cols="3" placeholder="Document description" class="form-control">{if $smarty.post.doc_desc}{$smarty.post.doc_desc}{else}{$item.description}{/if}</textarea></div>
+                    <div class="col-md-9"><textarea name="additional[description]" id="doc_desc" cols="3" placeholder="Document description" class="form-control">{if $smarty.post.doc_desc}{$smarty.post.doc_desc}{else}{$item.description}{/if}</textarea></div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-9 offset-md-3"><label class="sr-only" for="submitbtn">Submit</label><input name="submitform" id="submitbtn" class="btn btn-success" type="submit" value="{if $edit}Edit{else}Add{/if} Document" /></div>
+                    <div class="col-md-9 offset-md-3"><label class="sr-only" for="submitbtn">Submit</label><input name="submitform" id="submitbtn" class="btn btn-success" type="submit" value="{$headerSection}" /></div>
                 </div>
             </form>
         {else}
@@ -44,4 +47,6 @@
         {/if}
     </div>
 </div>
+{assign var="footerBtn" value="true" scope="global"}
+{include file="assets/back-button.tpl"}
 {/strip}
