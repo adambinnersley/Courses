@@ -7,7 +7,7 @@
 {assign var="title" value=$headerSection scope="global"}
 {include file="assets/page-header.tpl"}
 {assign var="backURL" value="pupils/" scope="global"}
-{assign var="backText" value="Back to documents" scope="global"}
+{assign var="backText" value="Back to pupils" scope="global"}
 {include file="assets/back-button.tpl"}
 
 
