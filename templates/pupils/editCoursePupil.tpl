@@ -14,8 +14,8 @@
     <div class="card-body">
         <form method="post" action="" class="form-horizontal">
             <div class="form-group row">
-                <label for="title" class="col-md-3 col-form-label"><em class="text-danger">*</em> Title:</label>
-                <div class="col-md-9"><select name="required[title]" id="title" class="form-control">{foreach $titles as $title}<option value="{$title}"{if $pupilInfo.title == $title} selected="selected"{/if}>{$title}</option>{/foreach}</select></div>
+                <label for="title" class="col-md-3 control-label"><em class="text-danger">*</em> Title:</label>
+                <div class="col-md-9 form-inline"><select name="required[title]" id="title" class="form-control">{foreach $titles as $title}<option value="{$title}"{if $pupilInfo.title == $title} selected="selected"{/if}>{$title}</option>{/foreach}</select></div>
             </div>
             <div class="form-group row">
                 <label for="firstname" class="col-md-3 control-label"><span class="text-danger">*</span> First Name:</label>
