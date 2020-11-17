@@ -120,11 +120,12 @@ class Pupils
     /**
      * Counts the number of pupils on the course
      * @param int $courseID This should be the course ID you want to count the pupils for
+     * @param string $search This should be either the name or email you are searching for
      * @return int The number of pupils on the course
      */
-    public function countPupilsOnCourse($courseID)
+    public function countPupilsOnCourse($courseID, $search = '')
     {
-        return $this->db->query("SELECT count(*) as `count` FROM ((SELECT CONCAT(`{$this->config->table_users}`.`firstname`, ' ', `{$this->config->table_users}`.`lastname`) as `name`, `{$this->config->table_users}`.`email`, `{$this->config->table_users}`.`id`, 0 as `is_instructor` FROM `{$this->config->table_users}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`user_id` = `{$this->config->table_users}`.`id`) UNION (SELECT `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email`, `{$this->instructors_table}`.`id`, 1 as `is_instructor` FROM `{$this->instructors_table}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`instructor_id` = `{$this->instructors_table}`.`id`)) as `a` ORDER BY `name` ASC", [':courseid' => intval($courseID)])[0]['count'];
+        return count($this->getPupilsOnCourse($courseID, 0, 0, $search));
     }
     
     /**
@@ -132,11 +133,12 @@ class Pupils
      * @param int $courseID This should be the course ID you want to list all of the pupils for
      * @param int $start If limiting the number of returned results this is the start number of where you want the results from
      * @param int $limit The maximum number of results to return
+     * @param string $search This should be either the name or email you are searching for
      * @return array|boolean If any pupils exist the information will be returned as an array else will return false
      */
-    public function getPupilsOnCourse($courseID, $start = 0, $limit = 50)
+    public function getPupilsOnCourse($courseID, $start = 0, $limit = 50, $search = '')
     {
-        return $this->db->query("SELECT * FROM ((SELECT CONCAT(`{$this->config->table_users}`.`firstname`, ' ', `{$this->config->table_users}`.`lastname`) as `name`, `{$this->config->table_users}`.`email`, `{$this->config->table_users}`.`id`, 0 as `is_instructor` FROM `{$this->config->table_users}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`user_id` = `{$this->config->table_users}`.`id`) UNION (SELECT `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email`, `{$this->instructors_table}`.`id`, 1 as `is_instructor` FROM `{$this->instructors_table}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`instructor_id` = `{$this->instructors_table}`.`id`)) as `a` ORDER BY `name` ASC".($limit > 0 ? ' LIMIT '.intval($start).','.$limit.';' : ';'), [':courseid' => intval($courseID)]);
+        return $this->db->query("SELECT * FROM ((SELECT CONCAT(`{$this->config->table_users}`.`firstname`, ' ', `{$this->config->table_users}`.`lastname`) as `name`, `{$this->config->table_users}`.`email`, `{$this->config->table_users}`.`id`, 0 as `is_instructor` FROM `{$this->config->table_users}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`user_id` = `{$this->config->table_users}`.`id`".(!empty($search) ? " AND (`{$this->config->table_users}`.`firstname` LIKE :search OR `{$this->config->table_users}`.`lastname` LIKE :search OR `{$this->config->table_users}`.`email` LIKE :search)" : "").") UNION (SELECT `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email`, `{$this->instructors_table}`.`id`, 1 as `is_instructor` FROM `{$this->instructors_table}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`instructor_id` = `{$this->instructors_table}`.`id`".(!empty($search) ? " AND (`{$this->config->instructors_table}`.`name` LIKE :search OR `{$this->instructors_table}`.`email` LIKE :search)" : "").")) as `a` ORDER BY `name` ASC".($limit > 0 ? ' LIMIT '.intval($start).','.$limit.';' : ';'), array_merge([':courseid' => intval($courseID)], (!empty($search) ? [':search' => $search] : [])));
     }
     
     /**
