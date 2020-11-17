@@ -19,7 +19,7 @@
             <tr>
                 <td>{$pupil.name}</td>
                 <td class="d-none d-lg-table-cell">{$pupil.email}</td>
-                <td class="text-right"><a href="/student/learning/{$courseInfo.url}/pupils/{$pupil.id}-{$pupil.is_instructor}/edit" title="Edit Pupil" class="btn btn-warning btn-sm">Edit</a> <a href="/student/learning/{$courseInfo.url}/pupils/{$pupil.id}-{$pupil.is_instructor}/delete" title="Remove from course" class="btn btn-danger btn-sm"><span class="fas fa-trash"></span></a></td>
+                <td class="text-right">{if $pupil.is_instructor !== 1}<a href="/student/learning/{$courseInfo.url}/pupils/{$pupil.id}-{$pupil.is_instructor}/edit" title="Edit Pupil" class="btn btn-warning btn-sm">Edit</a> {/if}<a href="/student/learning/{$courseInfo.url}/pupils/{$pupil.id}-{$pupil.is_instructor}/delete" title="Remove from course" class="btn btn-danger btn-sm"><span class="fas fa-trash"></span></a></td>
             </tr>
         {/foreach}
         </table>
@@ -30,6 +30,6 @@
     {/if}
 </div>
 {if isset($pagination)}
-    {$pagination}
+    <div class="mt-3">{$pagination}</div>
 {/if}
 {/strip}

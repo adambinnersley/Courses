@@ -91,6 +91,17 @@ class Pupils
     }
     
     /**
+     * Get a pupils information if the user exists
+     * @param int $pupilID This should be the users unique ID
+     * @param int|boolean $isInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
+     * @return array|false
+     */
+    public function getPupilInfo($pupilID, $isInstructor)
+    {
+        return $this->db->select(($isInstructor ? $this->instructors_table : $this->config->table_users), ['id' => $pupilID]);
+    }
+    
+    /**
      * Remove a given pupil from the given course
      * @param int $pupilID This should be the users unique ID
      * @param int|boolean $isInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
