@@ -14,8 +14,16 @@
     <div class="card-body">
         <form method="post" action="" class="form-horizontal">
             <div class="form-group row">
-                <label for="name" class="col-md-3 control-label"><span class="text-danger">*</span> Name:</label>
-                <div class="col-md-9"><input type="text" name="required[name]" id="name" value="{$pupilInfo.name}" size="9" placeholder="Name" class="form-control" /></div>
+                <label for="title" class="col-md-3 col-form-label"><em class="text-danger">*</em> Title:</label>
+                <div class="col-md-9"><select name="required[title]" id="title" class="form-control">{foreach $titles as $title}<option value="{$title}"{if $pupilInfo.title == $title} selected="selected"{/if}>{$title}</option>{/foreach}</select></div>
+            </div>
+            <div class="form-group row">
+                <label for="firstname" class="col-md-3 control-label"><span class="text-danger">*</span> First Name:</label>
+                <div class="col-md-9"><input type="text" name="required[firstname]" id="firstname" value="{$pupilInfo.firstname}" size="9" placeholder="First Name" class="form-control" /></div>
+            </div>
+            <div class="form-group row">
+                <label for="lastname" class="col-md-3 control-label"><span class="text-danger">*</span> Last Name:</label>
+                <div class="col-md-9"><input type="text" name="required[lastname]" id="firstname" value="{$pupilInfo.lastname}" size="9" placeholder="Last Name" class="form-control" /></div>
             </div>
             <div class="form-group row">
                 <label for="email" class="col-md-3 control-label"><span class="text-danger">*</span> Email:</label>
