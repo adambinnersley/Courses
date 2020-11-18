@@ -12,14 +12,14 @@
 </form>
 </div>
 <div class="card border-primary">
-    <div class="card-header bg-primary">Course Pupils</div>
+    <div class="card-header bg-primary font-weight-bold">Course Pupils</div>
     {if is_array($pupils) && !empty($pupils)}
         <table class="table table-hover table-striped mb-0">
         {foreach $pupils as $pupil}
             <tr>
                 <td>{$pupil.name}</td>
                 <td class="d-none d-lg-table-cell">{$pupil.email}</td>
-                <td class="text-right">{if $pupil.is_instructor !== 1}<a href="/student/learning/{$courseInfo.url}/pupils/{$pupil.id}-{$pupil.is_instructor}/edit" title="Edit Pupil" class="btn btn-warning btn-sm">Edit</a> {/if}<a href="/student/learning/{$courseInfo.url}/pupils/{$pupil.id}-{$pupil.is_instructor}/delete" title="Remove from course" class="btn btn-danger btn-sm"><span class="fas fa-trash"></span></a></td>
+                <td class="text-right">{if $pupil.is_instructor != 1}<a href="/student/learning/{$courseInfo.url}/pupils/{$pupil.id}-{$pupil.is_instructor}/edit" title="Edit Pupil" class="btn btn-warning btn-sm">Edit</a> {/if}<a href="/student/learning/{$courseInfo.url}/pupils/{$pupil.id}-{$pupil.is_instructor}/delete" title="Remove from course" class="btn btn-danger btn-sm"><span class="fas fa-trash"></span></a></td>
             </tr>
         {/foreach}
         </table>

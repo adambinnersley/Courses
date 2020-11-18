@@ -1,5 +1,5 @@
 {strip}
-{if $addDoc}
+{if $addPupil}
 {assign var="headerSection" value="Add Pupil" scope="global"}
 {else}
 {assign var="headerSection" value="Edit Pupil" scope="global"}
@@ -10,7 +10,7 @@
 {assign var="backText" value="Back to pupils" scope="global"}
 {include file="assets/back-button.tpl"}
 <div class="card border-primary">
-    <div class="card-header bg-primary">{$headerSection}</div>
+    <div class="card-header bg-primary font-weight-bold">{$headerSection}</div>
     <div class="card-body">
         <form method="post" action="" class="form-horizontal">
             <div class="form-group row">
