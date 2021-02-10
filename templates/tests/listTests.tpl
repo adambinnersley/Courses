@@ -60,7 +60,22 @@
                     {if $question.question_type == 1}
                         {if $reviewInfo}
                         <p><strong>Your answer:</strong> {$reviewInfo[$i].answer}</p>
-                        {if $testdetails.self_assessed}<p class="text-info"><strong>Official answer:</strong> {$question.answers}</p>{/if}
+                        {if $testdetails.self_assessed}
+                            <p class="text-info"><strong>Official answer:</strong> {$question.answers}</p>
+                            {if $question.question_type != 2}
+                                <div class="form-group row">
+                                    <label for="score_{$i + 1}" class="col-md-2 control-label">Question Status</label>
+                                    <div class="col-md-10 form-inline">
+                                        <select name="score[{$question.question_id}]" id="score_{$question.question_id}" class="form-control">
+                                            <option value="unmarked"{if $question.marked == 0} selected="selected"{/if}>Unmarked</option>
+                                            {for $i=0 to $question.max_score}
+                                                <option value="{$i}"{if $question.score == $i && $question.marked == 1} selected="selected"{/if}>{if $i == 1}Correct{else}Incorrect{/if}</option>
+                                            {/for}
+                                        </select>
+                                    </div>
+                                </div>
+                            {/if}
+                        {/if}
                         {else}
                             <textarea name="question{$i + 1}" id="question{$i + 1}" rows="6" class="form-control"></textarea>
                         {/if}
@@ -78,7 +93,7 @@
                     {/if}
                     </li>
                 {/foreach}
-                {if !$reviewInfo}<div class="text-center"><input type="submit" name="submit" id="submit" value="Submit Test" class="btn btn-success btn-lg" /></div>{/if}
+                {if !$reviewInfo}<div class="text-center"><input type="submit" name="submit" id="submit" value="Submit Test" class="btn btn-success btn-lg my-3" /></div>{/if}
                     </div>
                 </form>
                 {if !$reviewInfo}<script type="text/javascript">{literal}

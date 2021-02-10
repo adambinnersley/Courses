@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="row text-center">
-                    <input type="submit" name="submit" id="submit1" value="Update Test" class="btn btn-success mx-auto" />
+                    <input type="submit" name="submit" id="submit1" value="Add Test" class="btn btn-success mx-auto" />
                 </div>
             </div>
         </div>

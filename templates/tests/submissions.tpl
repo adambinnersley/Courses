@@ -38,7 +38,7 @@
                 {foreach $testSubmissions as $i => $submission}
                     <tr>
                         <td class="text-center">{$i+1}</td>
-                        <td class="text-center">{$submission.user_details.title} {$submission.user_details.firstname} {$submission.user_details.surname}</td>
+                        <td class="text-center">{$submission.user_details.title} {$submission.user_details.firstname} {$submission.user_details.lastname}</td>
                         <td class="text-center">{$submission.last_modified|date_format:"%d/%m/%Y %I:%M %p"}</td>
                         <td class="text-center">{if $submission.status == 2}<strong class="text-danger">Failed</strong>{elseif $submission.status == 3}<strong class="text-success">Passed</strong>{/if}</td>
                         <td class="text-center"><a href="/student/learning/{$courseInfo.url}/tests/submissions/{$smarty.get.submissions}/review/{$submission.id}" title="Review Test" class="btn btn-success">Review Test</a></td>
