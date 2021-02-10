@@ -25,7 +25,7 @@
                     </tr>
                     {foreach $tests as $test}
                         <tr>
-                            <td>{$test.name}</td>
+                            <td>{$test.name}{if $test.active == 0}<strong class="text-danger">- Disabled</strong>{/if}</td>
                             <td class="text-center">{$test.no_questions}</td>
                             <td class="text-center">{if $test.pass_mark}{$test.pass_mark}/{$test.max_score}{elseif $test.pass_percentage}{$test.pass_percentage}%{elseif $test.self_assessed}Self assessed{/if}</td>
                             {if !$userDetails.isHeadOffice}<td class="text-center">{if $test.results.status == 0 || $test.results.status == 1}0{else}{$test.results.score}{/if}/{$test.max_score}</td>
@@ -72,7 +72,7 @@
                         <p class="text-danger" id="question{$i + 1}-mark" data-mark="{$correct}"><strong><em>Mark {$correct} answer{if $correct > 1}s{/if}</em></strong></p>{/if}
                         <div class="row">
                         {foreach $question.answers as $a => $answer}
-                            <div class="col-sm-6"><label class="question-label{if $reviewInfo} reviewing{if $reviewInfo[$i].answers[$a].correct && $reviewInfo[$i].answer == $a} label-correct{elseif $reviewInfo[$i].answer == $a} label-incorrect{/if}{/if}" for="question{$i + 1}_{$a}"><input type="{if $correct == 1}radio{else}checkbox{/if}" name="{if $correct == 1}question{$i + 1}{else}question{$i + 1}[{$a}]{/if}" id="question{$i + 1}_{$a}" data-question="question{$i + 1}" value="{if $correct == 1}{$a}{else}1{/if}" /> {$answer.answer}</label></div>
+                            <div class="col-sm-6"><label class="question-label{if $reviewInfo} reviewing{if $reviewInfo[$i].answers[$a].correct && $reviewInfo[$i].answer == $a} label-correct{elseif $reviewInfo[$i].answer == $a} label-incorrect{elseif $answer.correct == 1} label-selected{/if}{/if}" for="question{$i + 1}_{$a}"><input type="{if $correct == 1}radio{else}checkbox{/if}" name="{if $correct == 1}question{$i + 1}{else}question{$i + 1}[{$a}]{/if}" id="question{$i + 1}_{$a}" data-question="question{$i + 1}" value="{if $correct == 1}{$a}{else}1{/if}" />{$answer.answer}</label></div>
                         {/foreach}
                         </div>
                     {/if}
