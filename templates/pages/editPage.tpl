@@ -32,7 +32,7 @@
             </div>{/if}
             <div class="form-group row">
                 <label for="content" class="col-md-2 control-label">Content:</label>
-                <div class="col-md-10"><textarea name="content" id="content" class="form-control" rows="20">{$page.content}</textarea></div>
+                <div class="col-md-10"><textarea name="content" id="content" class="form-control wysiwyg" rows="20">{$page.content}</textarea></div>
             </div>
             <div class="text-center"><input type="submit" name="submit" id="submit" value="{$headerSection}" class="btn btn-success btn-lg" /></div>
         </form>
