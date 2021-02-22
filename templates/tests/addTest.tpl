@@ -12,7 +12,7 @@
 <form action="" method="post" class="form-horizontal">
     {if !$questionedit}
         <div class="card mb-3 border-primary">
-            <div class="card-header bg-primary text-bold">Test Information</div>
+            <div class="card-header bg-primary text-bold">{$headerSection} Information</div>
             <div class="card-body">
                 <div class="form-group row">
                     <label for="status" class="col-md-3 control-label">Status:</label>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="row text-center">
-                    <input type="submit" name="submit" id="submit1" value="Add Test" class="btn btn-success mx-auto" />
+                    <input type="submit" name="submit" id="submit1" value="{$headerSection}" class="btn btn-success mx-auto" />
                 </div>
             </div>
         </div>
