@@ -6,11 +6,11 @@
 {/if}
 {assign var="title" value=$headerSection scope="global"}
 {include file="assets/page-header.tpl"}
-{assign var="backURL" value="/student/learning/{$courseInfo.url}/reading-list/" scope="global"}
+{assign var="backURL" value="reading-list/" scope="global"}
 {assign var="backText" value="Back to Reading List" scope="global"}
 {include file="assets/back-button.tpl"}
 <div class="card border-primary">
-    <div class="card-header bg-primary">{$headerSection}</div>
+    <div class="card-header bg-primary font-weight-bold">{$headerSection}</div>
     <div class="card-body">
         <form method="post" action="" class="form-horizontal">
             <div class="form-group row">
