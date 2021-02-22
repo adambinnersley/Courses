@@ -10,7 +10,7 @@
 {assign var="backText" value="Back to Pages" scope="global"}
 {include file="assets/back-button.tpl"}
 <div class="card border-primary">
-    <div class="card-header bg-primary font-weight-bold">{if $addPage}Add{else}Edit{/if} Page</div>
+    <div class="card-header bg-primary font-weight-bold">{$headerSection}</div>
     <div class="card-body">
         <form method="post" action="" class="form-horizontal">
             <div class="form-group row">
@@ -34,7 +34,7 @@
                 <label for="content" class="col-md-2 control-label">Content:</label>
                 <div class="col-md-10"><textarea name="content" id="content" class="form-control" rows="20">{$page.content}</textarea></div>
             </div>
-            <div class="text-center"><input type="submit" name="submit" id="submit" value="{if $addPage}Add{else}Edit{/if} Page" class="btn btn-success btn-lg" /></div>
+            <div class="text-center"><input type="submit" name="submit" id="submit" value="{$headerSection}" class="btn btn-success btn-lg" /></div>
         </form>
     </div>
 </div>

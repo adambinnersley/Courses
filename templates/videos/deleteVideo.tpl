@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-6 mx-auto">
         <div class="card border-danger">
-            <div class="card-header bg-danger">Confirm Video Delete</div>
+            <div class="card-header bg-danger font-weight-bold">Confirm Video Delete</div>
             <div class="card-body">
                 <h4>Confirm Delete</h4>
                 <p>Are you sure you wish to delete the <strong>{$item.title}</strong> video?</p>

@@ -5,7 +5,7 @@
     {if $userDetails.isHeadOffice}
         <li class="list-group-item{if $page.subpages} has-sub-list{/if}">
     {/if}
-    <a href="/student/learning/{$courseInfo.url}/info/{$page.page_id}/" title="{$page.title}"{if !$userDetails.isHeadOffice} class="list-group-item{if $page.progress} list-group-item-success{/if}"{/if}>{$page.order}) {$page.title}</a>
+    <a href="/student/learning/{$courseInfo.url}/info/{$page.page_id}/" title="{$page.title}" class="{if !$userDetails.isHeadOffice}list-group-item{if $page.progress} list-group-item-success{/if}{else}pl-3{/if}">{$page.order}) {$page.title}</a>
     {if $userDetails.isHeadOffice}
         <div class="float-right">
             <a href="/student/learning/{$courseInfo.url}/info/{$page.page_id}/edit" title="Edit Page" class="btn btn-warning btn-sm"><span class="fa fa-pencil-alt fa-fw"></span> Edit</a>
@@ -16,7 +16,7 @@
     {/if}
     {if $page.subpages}{if $userDetails.isHeadOffice}<ul class="list-group">{/if}
         {foreach $page.subpages as $subpage}
-            {if $userDetails.isHeadOffice}<li class="list-group-item">{/if}
+            {if $userDetails.isHeadOffice}<li class="list-group-item p-2 pl-3">{/if}
                 <a href="/student/learning/{$courseInfo.url}/info/{$subpage.page_id}/" title="{$subpage.title}"{if !$userDetails.isHeadOffice} class="list-group-item"{/if}>{$subpage.order}) {$subpage.title}</a>
                 {if $userDetails.isHeadOffice}
                     <div class="float-right">
