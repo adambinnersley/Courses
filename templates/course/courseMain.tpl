@@ -7,7 +7,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
+    <div class="col-12 col-sm-4 col-lg-3 col-xl-2 text-center mb-3">
         <div class="card course-panel">
             <a href="/student/learning/{$courseInfo.url}/info/">
                 <span class="fa fa-fw fa-list fa-3x"></span><br />
@@ -15,7 +15,7 @@
             </a>
         </div>
     </div>
-    {if $readingList || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
+    {if $readingList || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-lg-3 col-xl-2 text-center mb-3">
         <div class="card course-panel">
             <a href="/student/learning/{$courseInfo.url}/reading-list/">
                 <span class="fa fa-fw fa-book fa-3x"></span><br />
@@ -23,7 +23,7 @@
             </a>
         </div>
     </div>{/if}
-    {if $courseVideos || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
+    {if $courseVideos || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-lg-3 col-xl-2 text-center mb-3">
         <div class="card course-panel">
             <a href="/student/learning/{$courseInfo.url}/videos/">
                 <span class="fa fa-fw fa-film fa-3x"></span><br />
@@ -31,15 +31,15 @@
             </a>
         </div>
     </div>{/if}
-    {if $courseDocs || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
+    {if $courseDocs || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-lg-3 col-xl-2 text-center mb-3">
         <div class="card course-panel">
             <a href="/student/learning/{$courseInfo.url}/course-documents/">
                 <span class="fa fa-fw fa-file-download fa-3x"></span><br />
-                Course Documents
+                Documents
             </a>
         </div>
     </div>{/if}
-    {if $courseTests || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
+    {if $courseTests || $userDetails.isHeadOffice}<div class="col-12 col-sm-4 col-lg-3 col-xl-2 text-center mb-3">
         <div class="card course-panel">
             <a href="/student/learning/{$courseInfo.url}/tests/">
                 <span class="fa fa-fw fa-pencil-alt fa-3x"></span><br />
@@ -48,11 +48,11 @@
         </div>
     </div>{/if}
     {if $userDetails.isHeadOffice}
-        <div class="col-12 col-sm-4 col-md-3 col-lg-2 text-center">
+        <div class="col-12 col-sm-4 col-lg-3 col-xl-2 text-center mb-3">
             <div class="card course-panel">
                 <a href="/student/learning/{$courseInfo.url}/pupils/">
                     <span class="fa fa-fw fa-users fa-3x"></span><br />
-                    Course Pupils
+                    Pupils
                 </a>
             </div>
         </div>
