@@ -75,10 +75,11 @@ class Pupils
      */
     public function getPupilAccess($pupilID, $type, $courseID)
     {
+        // Check pupil type is instructor or is student on access table
         return boolval(count($this->db->query("SELECT * FROM (
             SELECT * FROM `{$this->config->table_courses}` WHERE `enrol_{$this->typeField[$type]}s` = 1 AND `id` = ?
             UNION
-            SELECT `{$this->config->table_courses}`.* FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `` `{$this->config->table_courses}`.`enrol_individuals` = 1 AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_course_access}`.`course_id` = ? AND `{$this->config->table_course_access}`.`user_id` = ?
+            SELECT `{$this->config->table_courses}`.* FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_courses}`.`enrol_individuals` = 1 AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_course_access}`.`course_id` = ? AND `{$this->config->table_course_access}`.`user_id` = ?
 ) as A;", [$courseID, $courseID, $pupilID])));
     }
     
@@ -152,6 +153,7 @@ class Pupils
      */
     public function getPupilsCoursesList($pupilID, $type)
     {
+        // Check pupil type is instructor or is student on access table
         return $this->db->query("SELECT * FROM (
             SELECT * FROM `{$this->config->table_courses}` WHERE `enrol_{$this->typeField[$type]}s` = 1
             UNION
