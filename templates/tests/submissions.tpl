@@ -5,7 +5,7 @@
 {if $unmarked || $testSubmissions}
     {if $unmarked}
         <div class="card">
-            <div class="card-header"><span class="fa fa-pencil-alt fa-fw"></span> Unmarked test submissions</div>
+            <div class="card-header bg-primary font-weight-bold"><span class="fa fa-pencil-alt fa-fw"></span> Unmarked test submissions</div>
             <table class="table table-striped table-hover mb-0">
                 <tr>
                     <th></th>
@@ -26,7 +26,7 @@
     {/if}
     {if $testSubmissions}
         <div class="card">
-            <div class="card-header"><span class="fa fa-check fa-fw"></span> Test submissions</div>
+            <div class="card-header bg-primary font-weight-bold"><span class="fa fa-check fa-fw"></span> Test submissions</div>
             <table class="table table-striped table-hover mb-0">
                 <tr>
                     <th></th>

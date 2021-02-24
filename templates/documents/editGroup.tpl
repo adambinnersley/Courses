@@ -10,7 +10,7 @@
 {assign var="backText" value="Back to groups" scope="global"}
 {include file="assets/back-button.tpl"}
 <div class="card border-primary">
-    <div class="card-header bg-primary">{$headerSection}</div>
+    <div class="card-header bg-primary font-weight-bold">{$headerSection}</div>
     <div class="card-body pb-0">
         <form method="post" action="" class="form-horizontal">
             <div class="form-group row{if $error && !$smarty.post.group_name} has-error{/if}">

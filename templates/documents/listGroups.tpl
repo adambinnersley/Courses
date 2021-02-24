@@ -13,7 +13,7 @@
     </div>
 </div>
  <div class="card border-primary">
-    <div class="card-header bg-primary">Groups</div>
+    <div class="card-header bg-primary font-weight-bold">Groups</div>
     {if is_array($doc_groups)}
         <ul class="list-group">
         {foreach $doc_groups as $group}

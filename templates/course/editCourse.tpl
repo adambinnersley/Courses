@@ -7,7 +7,7 @@
 {assign var="title" value=$headerSection scope="global"}
 {include file="assets/page-header.tpl"}
 <div class="card border-primary">
-    <div class="card-header bg-primary">{if $addCourse}Add{else}Edit{/if} Course</div>
+    <div class="card-header bg-primary font-weight-bold">{if $addCourse}Add{else}Edit{/if} Course</div>
     <div class="card-body">
         <form method="post" action="" enctype="multipart/form-data" class="form-horizontal">
             <div class="form-group row">

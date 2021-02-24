@@ -12,7 +12,7 @@
 <form action="" method="post" class="form-horizontal">
     {if !$questionedit}
         <div class="card mb-3 border-primary">
-            <div class="card-header bg-primary text-bold">{$headerSection} Information</div>
+            <div class="card-header bg-primary font-weight-bold">{$headerSection} Information</div>
             <div class="card-body">
                 <div class="form-group row">
                     <label for="status" class="col-md-3 control-label">Status:</label>
@@ -54,7 +54,7 @@
         </div>
         {if $edit}
             <div class="card border-primary">
-                <div class="card-header bg-primary text-bold">Questions</div>
+                <div class="card-header bg-primary font-weight-bold">Questions</div>
                 <div class="card-body">
             {foreach $testedit.questions as $question}
                 <div class="col-12 text-right mt-2">
@@ -115,7 +115,7 @@
             {/foreach}
         {else}
         <div class="card border-primary">
-            <div class="card-header bg-primary text-bold">
+            <div class="card-header bg-primary font-weight-bold">
                 Questions
             </div>
             <div class="card-body">

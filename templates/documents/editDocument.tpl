@@ -10,7 +10,7 @@
 {assign var="backText" value="Back to documents" scope="global"}
 {include file="assets/back-button.tpl"}
 <div class="card border-primary" id="editgroup">
-    <div class="card-header bg-primary">{$headerSection}</div>
+    <div class="card-header bg-primary font-weight-bold">{$headerSection}</div>
     <div class="card-body pb-0">
         {if $doc_groups}
             <form method="post" action="" enctype="multipart/form-data" class="form-horizontal">

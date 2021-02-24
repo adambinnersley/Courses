@@ -1,8 +1,9 @@
 {strip}
+{assign var="title" value="Delete Group" scope="global"}
 <div class="row">
     <div class="col-lg-6 mx-auto">
         <div class="card border-danger" id="deletegroup">
-            <div class="card-header bg-danger">Delete Group?</div>
+            <div class="card-header bg-danger font-weight-bold">Delete Group?</div>
             <div class="card-body">
                 <h4>Confirm Delete</h4>
                 <p>Are you sure that you want to delete the <strong>{$group.name}</strong> group?</p>

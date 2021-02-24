@@ -52,7 +52,7 @@
             {else}
                 <form method="post" action="" class="form-horizontal">
                     <div class="card border-primary">
-                        <div class="card-header bg-primary">{$testdetails.name}</div>
+                        <div class="card-header bg-primary font-weight-bold">{$testdetails.name}</div>
                         <ul class="list-group list-group-flush">
                 {foreach $testdetails.questions as $i => $question}
                     <li class="list-group-item"><h5 class="card-title">Q{$i + 1}. {$question.question}</h5>
