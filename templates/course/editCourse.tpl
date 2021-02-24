@@ -28,7 +28,7 @@
             </div>
             <div class="form-group row">
                 <label for="name" class="col-md-2 control-label">Status:</label>
-                <div class="col-md-10">
+                <div class="col-md-10 form-inline">
                     <select name="active" id="active" class="form-control">
                         <option value="0"{if !$addCourse && $courseInfo.active != 1} selected="selected"{/if}>Disabled</option>
                         <option value="1"{if $addCourse || $courseInfo.active == 1} selected="selected"{/if}>Active</option>
@@ -38,40 +38,30 @@
             <div class="form-group">
                 <div class="col-md-9 col-md-offset-3">
                     <strong>Automatically enrol:</strong>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="additional[enrol_pdis]" value="1"{if $courseInfo.enrol_pdis == 1} checked="checked"{/if} />
-                            PDIs
-                        </label>
+                    <div class="form-check">
+                        <input type="checkbox" name="additional[enrol_pdis]" id="enrol_pdis" class="form-check-input" value="1"{if $courseInfo.enrol_pdis == 1} checked="checked"{/if} />
+                        <label for="enrol_pdis" class="form-check-label">PDIs</label>
                     </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="additional[enrol_learners]" value="1"{if $courseInfo.enrol_learners == 1} checked="checked"{/if} />
-                            Learner Drivers
-                        </label>
+                    <div class="form-check">
+                        <input type="checkbox" name="additional[enrol_learners]" id="enrol_learners" class="form-check-input" value="1"{if $courseInfo.enrol_learners == 1} checked="checked"{/if} />
+                        <label for="enrol_learners" class="form-check-label">Learner Drivers</label>
                     </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="additional[enrol_instructors]" value="1"{if $courseInfo.enrol_instructors == 1} checked="checked"{/if} />
-                            Instructors
-                        </label>
+                    <div class="form-check">
+                        <input type="checkbox" name="additional[enrol_instructors]" id="enrol_instructors" class="form-check-input" value="1"{if $courseInfo.enrol_instructors == 1} checked="checked"{/if} />
+                        <label for="enrol_instructors" class="form-check-label">Instructors</label>
                     </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="additional[enrol_tutors]" value="1"{if $courseInfo.enrol_tutors == 1} checked="checked"{/if} />
-                            Tutors
-                        </label>
+                    <div class="form-check">
+                        <input type="checkbox" name="additional[enrol_tutors]" id="enrol_tutors" class="form-check-input" value="1"{if $courseInfo.enrol_tutors == 1} checked="checked"{/if} />
+                        <label for="enrol_tutors" class="form-check-label">Tutors</label>
                     </div>
                     <strong>Manually enrol:</strong>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="additional[enrol_individuals]" value="1"{if $courseInfo.enrol_individuals == 1} checked="checked"{/if} />
-                            Individuals
-                        </label>
+                    <div class="form-check">
+                        <input type="checkbox" name="additional[enrol_individuals]" id="enrol_individuals" class="form-check-input" value="1"{if $courseInfo.enrol_individuals == 1} checked="checked"{/if} />
+                        <label for="enrol_individuals" class="form-check-label">Individuals</label>
                     </div>
                 </div>
             </div>
-            <div class="text-center"><input type="submit" name="submit" id="submit" value="{if $addCourse}Add{else}Edit{/if} Page" class="btn btn-success btn-lg" /></div>
+            <div class="text-center"><input type="submit" name="submit" id="submit" value="{if $addCourse}Add{else}Edit{/if} Course" class="btn btn-success btn-lg" /></div>
         </form>
     </div>
 </div>

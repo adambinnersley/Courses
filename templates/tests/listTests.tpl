@@ -1,4 +1,7 @@
 {strip}
+{assign var="headerSection" value="Tests" scope="global"}
+{assign var="title" value=$headerSection scope="global"}
+{include file="assets/page-header.tpl"}
 {if $testdetails}
 {assign var="backURL" value="tests/" scope="global"}
 {assign var="backText" value="Back to Tests" scope="global"}
