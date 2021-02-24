@@ -38,5 +38,6 @@
         </form>
     </div>
 </div>
+{assign var="footerBtn" value="true" scope="global"}
 {include file="assets/back-button.tpl"}
 {/strip}

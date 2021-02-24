@@ -2,6 +2,7 @@
 {assign var="headerSection" value="Course" scope="global"}
 {include file="assets/page-header.tpl"}
 {include file="assets/back-button.tpl"}
+{assign var="title" value=$headerSection scope="global"}
 <div class="row">
     <div class="col-12">
         {if $userDetails.isHeadOffice}<div class="row"><div class="col-12"><a href="/student/learning/{$courseInfo.url}/info/add" title="Add new item" class="btn btn-success float-right"><span class="fa fa-plus fa-fw"></span> Add new page</a></div><p>&nbsp;</p></div>{/if}

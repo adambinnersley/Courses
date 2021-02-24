@@ -1,6 +1,7 @@
 {strip}
 {assign var="headerSection" value="Course Page" scope="global"}
 {include file="assets/page-header.tpl"}
+{assign var="title" value=$headerSection scope="global"}
 {assign var="backURL" value="info/" scope="global"}
 {assign var="backText" value="Back to page list" scope="global"}
 {include file="assets/back-button.tpl"}
