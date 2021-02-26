@@ -16,7 +16,7 @@
 <div class="row" id="course-list">
     {if $courses}
         {foreach $courses as $course}
-            <div class="col-md-4 col-sm-6">
+            <div class="col-xl-4 col-lg-6">
                 <div class="card course-module">
                     <div class="card-body">
                         <img src="{if $course.image}/student/learning/images/{$course.url}{else}/images/courses/course-default.png{/if}" alt="{$course.name}" class="d-block mx-auto img-fluid" />

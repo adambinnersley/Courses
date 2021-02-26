@@ -54,13 +54,18 @@ class Pupils
     protected function getUsersByType($type, $limit = 0)
     {
         if ($type == 1 || $type == 2) {
-            return $this->db->query("SELECT `id`, 0 as `is_instructor` FROM `{$this->config->table_users}` WHERE `student` = 1 AND `student_type` = ?;", [$type]);
+            return $this->db->query("SELECT `id`, 0 as `is_instructor`, CONCAT(`firstname`, ' ', `lastname`) as `name`, `email` FROM `{$this->config->table_users}` WHERE `student` = 1 AND `student_type` = ?;", [($type - 1)]);
         } else {
-            return $this->db->query("SELECT `id`, 1 as `is_instructor` FROM `{$this->instructors_table}` WHERE `isactive` >= 1".($type == 4 ? " AND `tutor` = 1" : "").";");
+            return $this->db->query("SELECT `id`, 1 as `is_instructor`, `name`, `email` FROM `{$this->instructors_table}` WHERE `isactive` >= 1".($type == 4 ? " AND `tutor` = 1" : "").";");
         }
         return false;
     }
     
+    /**
+     * Count the users by user type
+     * @param int $type This should be the user type
+     * @return int The total number of users by type
+     */
     public function countUsersByType($type)
     {
         return count($this->getUsersByType($type, 0));
@@ -144,23 +149,54 @@ class Pupils
      */
     public function getPupilsOnCourse($courseID, $start = 0, $limit = 50, $search = '')
     {
-        /*return $this->db->query("SELECT * FROM ((SELECT CONCAT(`{$this->config->table_users}`.`firstname`, ' ', `{$this->config->table_users}`.`lastname`) as `name`, `{$this->config->table_users}`.`email`, `{$this->config->table_users}`.`id`, 0 as `is_instructor` FROM `{$this->config->table_users}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`user_id` = `{$this->config->table_users}`.`id`".(!empty($search) ? " AND (`{$this->config->table_users}`.`firstname` LIKE :search OR `{$this->config->table_users}`.`lastname` LIKE :search OR `{$this->config->table_users}`.`email` LIKE :search)" : "").") UNION (SELECT `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email`, `{$this->instructors_table}`.`id`, 1 as `is_instructor` FROM `{$this->instructors_table}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`instructor_id` = `{$this->instructors_table}`.`id`".(!empty($search) ? " AND (`{$this->config->instructors_table}`.`name` LIKE :search OR `{$this->instructors_table}`.`email` LIKE :search)" : "").")) as `a` ORDER BY `name` ASC".($limit > 0 ? ' LIMIT '.intval($start).','.$limit.';' : ';'), array_merge([':courseid' => intval($courseID)], (!empty($search) ? [':search' => '%'.$search.'%'] : [])));*/
+        
+        $courseInfo = $this->db->select($this->config->table_courses, ['id' => $courseID]);
+        return $this->db->query("SELECT * FROM (
+            ".($courseInfo['enrol_learners'] == 1 ? "SELECT `id`, 0 as `is_instructor`, CONCAT(`firstname`, ' ', `lastname`) as `name`, `email` FROM `{$this->config->table_users}` WHERE `student` = 1 AND `student_type` = 0".(!empty($search) ? " AND (`{$this->config->table_users}`.`firstname` LIKE :search OR `{$this->config->table_users}`.`lastname` LIKE :search OR `{$this->config->table_users}`.`email` LIKE :search)" : "")."
+                UNION " : "").
+            ($courseInfo['enrol_pdis'] == 1 ? "SELECT `id`, 0 as `is_instructor`, CONCAT(`firstname`, ' ', `lastname`) as `name`, `email` FROM `{$this->config->table_users}` WHERE `student` = 1 AND `student_type` = 1".(!empty($search) ? " AND (`{$this->config->table_users}`.`firstname` LIKE :search OR `{$this->config->table_users}`.`lastname` LIKE :search OR `{$this->config->table_users}`.`email` LIKE :search)" : "")."
+                UNION " : "").
+            ($courseInfo['enrol_instructors'] == 1 ? "SELECT `id`, 1 as `is_instructor`, `name`, `email` FROM `{$this->instructors_table}` WHERE `isactive` >= 1".(!empty($search) ? " AND (`{$this->instructors_table}`.`name` LIKE :search OR `{$this->instructors_table}`.`email` LIKE :search)" : "")."
+                UNION " : "").
+            ($courseInfo['enrol_tutors'] == 1 ? "SELECT `id`, 1 as `is_instructor`, `name`, `email` FROM `{$this->instructors_table}` WHERE `isactive` >= 1 AND `tutor` = 1".(!empty($search) ? " AND (`{$this->instructors_table}`.`name` LIKE :search OR `{$this->instructors_table}`.`email` LIKE :search)" : "")."
+                UNION " : "").
+            "SELECT * FROM (
+                (SELECT `{$this->config->table_users}`.`id`, 0 as `is_instructor`, CONCAT(`{$this->config->table_users}`.`firstname`, ' ', `{$this->config->table_users}`.`lastname`) as `name`, `{$this->config->table_users}`.`email` FROM `{$this->config->table_users}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`user_id` = `{$this->config->table_users}`.`id`".(!empty($search) ? " AND (`{$this->config->table_users}`.`firstname` LIKE :search OR `{$this->config->table_users}`.`lastname` LIKE :search OR `{$this->config->table_users}`.`email` LIKE :search)" : "").")
+                UNION
+                (SELECT `{$this->instructors_table}`.`id`, 1 as `is_instructor`, `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email` FROM `{$this->instructors_table}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`instructor_id` = `{$this->instructors_table}`.`id`".(!empty($search) ? " AND (`{$this->instructors_table}`.`name` LIKE :search OR `{$this->instructors_table}`.`email` LIKE :search)" : "").")
+                ) as `a`
+        ) as `b` ORDER BY `name` ASC".($limit > 0 ? ' LIMIT '.intval($start).','.$limit.';' : ';'), array_merge([':courseid' => intval($courseID)], (!empty($search) ? [':search' => '%'.$search.'%'] : [])));
     }
     
     /**
      * Lists all of the course IDs that the pupil given is enrolled onto
      * @param int $pupilID This should be the pupils ID
      * @param int $type The type of user that the current pupil is
+     * @param int $isInstructor If the user is an instructor or not
      * @return array|false If the pupil is list on any courses will return an array of the enrolled course ID else will return false
      */
-    public function getPupilsCoursesList($pupilID, $type)
+    public function getPupilsCoursesList($pupilID, $type, $isInstructor)
     {
         if(is_numeric($type) && $type >= 1){
             return $this->db->query("SELECT * FROM (
                 SELECT * FROM `{$this->config->table_courses}` WHERE `enrol_{$this->typeField[$type]}s` = 1
                 UNION
-                SELECT `{$this->config->table_courses}`.* FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_courses}`.`enrol_individuals` = 1 AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_course_access}`.`user_id` = ?
+                SELECT `{$this->config->table_courses}`.* FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_courses}`.`enrol_individuals` = 1 AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_course_access}`.`".($isInstructor ? 'instructor' : 'user')."_id` = ?
     ) as A;", [$pupilID]);
+        }
+        return false;
+    }
+    
+    /**
+     * Checks to see if a group of user types is automatically enrolled on the course
+     * @param int $courseID The unique course ID
+     * @param int $type The type of the user group
+     * @return boolean If enrolled returns true else return false
+     */
+    protected function isGroupEnrolled($courseID, $type)
+    {
+        if($this->db->select($this->config->table_courses, ['id' => $courseID, 'enrol_'.$this->typeField[$type].'s' => 1])){
+            return true;
         }
         return false;
     }
