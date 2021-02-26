@@ -179,7 +179,7 @@ class Pupils
     {
         if(is_numeric($type) && $type >= 1){
             return $this->db->query("SELECT * FROM (
-                SELECT * FROM `{$this->config->table_courses}` WHERE `enrol_{$this->typeField[$type]}s` = 1
+                SELECT * FROM `{$this->config->table_courses}` WHERE `enrol_{$this->typeField[$type]}s` = 1".($type == 4 ? " OR `enrol_{$this->typeField[($type - 1)]}s` = 1" : "")."
                 UNION
                 SELECT `{$this->config->table_courses}`.* FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_courses}`.`enrol_individuals` = 1 AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_course_access}`.`".($isInstructor ? 'instructor' : 'user')."_id` = ?
     ) as A;", [$pupilID]);
