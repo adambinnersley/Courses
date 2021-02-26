@@ -79,7 +79,7 @@ class Course extends Pages
         if (is_numeric($courseID) && !empty($title) && !empty($url)) {
             $additional = array_merge($additional, $this->checkImageUpload($image));
             $additional['enrol_learners'] = Modifier::setZeroOnEmpty($additional['enrol_learners']);
-            $additional['enrol_psis'] = Modifier::setZeroOnEmpty($additional['enrol_psis']);
+            $additional['enrol_pdis'] = Modifier::setZeroOnEmpty($additional['enrol_pdis']);
             $additional['enrol_instructors'] = Modifier::setZeroOnEmpty($additional['enrol_instructors']);
             $additional['enrol_tutors'] = Modifier::setZeroOnEmpty($additional['enrol_tutors']);
             $additional['enrol_individuals'] = Modifier::setZeroOnEmpty($additional['enrol_individuals']);
