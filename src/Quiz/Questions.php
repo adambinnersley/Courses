@@ -132,7 +132,8 @@ class Questions
      * @param int $currentQuestion The current question order number
      * @return int|boolean If a next question id will be return if a next question exists else will return false
      */
-    public function getNextQuestionID($testID, $currentQuestion){
+    public function getNextQuestionID($testID, $currentQuestion)
+    {
         return $this->getNextID($testID, $currentQuestion);
     }
     
@@ -142,7 +143,8 @@ class Questions
      * @param int $currentQuestion The current question order number
      * @return int|boolean If a next question id will be return if a previous question exists else will return false
      */
-    public function getPrevQuestionID($testID, $currentQuestion){
+    public function getPrevQuestionID($testID, $currentQuestion)
+    {
         return $this->getNextID($testID, $currentQuestion, 'prev');
     }
     
@@ -150,11 +152,12 @@ class Questions
      * Gets the ID of the next question
      * @param int $testID The test ID that you are getting the next question for
      * @param int $currentQuestion The current question order number
-     * @param string $dir The direction you want to get the next question for 'next' or 'prev' 
+     * @param string $dir The direction you want to get the next question for 'next' or 'prev'
      * @return int|boolean If a next question id will be return if a next question exists else will return false
      */
-    protected function getNextID($testID, $currentQuestion, $dir = 'next'){
-        if(is_numeric($testID) && is_numeric($currentQuestion)){
+    protected function getNextID($testID, $currentQuestion, $dir = 'next')
+    {
+        if (is_numeric($testID) && is_numeric($currentQuestion)) {
             $questionInfo = $this->db->select($this->config->table_course_test_questions, ['test_id' => $testID, 'question_order' => ($dir === 'next' ? ($currentQuestion + 1) : ($currentQuestion - 1))]);
             return $questionInfo['question_id'];
         }
@@ -170,7 +173,7 @@ class Questions
     public function changeQuestionOrder($questionID, $moveUp = true)
     {
         $questionInfo = $this->getQuestionInfo($questionID);
-        if(is_array($questionInfo)){
+        if (is_array($questionInfo)) {
             $prevID = ($moveUp === true ? $this->getPrevQuestionID($questionInfo['test_id'], $questionInfo['question_order']) : $this->getNextQuestionID($questionInfo['test_id'], $questionInfo['question_order']));
             return $this->db->query("SET @lastOrder=(SELECT `question_order` FROM `course_test_questions` WHERE `course_test_questions`.`question_id` = ?); UPDATE `course_test_questions` SET `question_order` = ? WHERE `course_test_questions`.`question_id` = ? LIMIT 1; UPDATE `course_test_questions` SET `question_order` = ? WHERE `course_test_questions`.`question_id` = ? LIMIT 1; UPDATE `course_test_questions` SET `question_order` = @lastOrder WHERE `course_test_questions`.`question_id` = ? LIMIT 1;", [$prevID, $this->getNextAvailableOrder($questionInfo['test_id']), $questionID, $questionInfo['question_order'], $prevID, $questionID]);
         }

@@ -20,15 +20,12 @@
                         {if $testdetails.self_assessed}
                             <p class="text-info"><strong>Official answer:</strong> {$question.answers}</p>
                             {if $question.question_type != 2}
-                                <div class="form-group row">
-                                    <label for="score_{$i + 1}" class="col-md-2 control-label">Question Status</label>
-                                    <div class="col-md-10 form-inline">
-                                        <select name="score[{$question.question_id}]" id="score_{$question.question_id}" class="form-control">
-                                            <option value="unmarked"{if $question.marked == 0} selected="selected"{/if}>Unmarked</option>
-                                            {for $option=0 to $question.max_score}
-                                                <option value="{$option}"{if $reviewInfo[$i].score == $option && $reviewInfo[$i].marked == 1} selected="selected"{/if}>{if $option == 1}Correct{else}Incorrect{/if}</option>
-                                            {/for}
-                                        </select>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="btn btn-success btn-block markanswer" data-question-id="{$reviewInfo[$i].question_id}" data-answer-id="{$reviewInfo[$i].id}">Mark Correct</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="btn btn-danger btn-block markanswer" data-question-id="{$reviewInfo[$i].question_id}" data-answer-id="{$reviewInfo[$i].id}">Mark Incorrect</div>
                                     </div>
                                 </div>
                             {/if}
@@ -60,8 +57,9 @@
         {/if}
     </div>
 </form>
+<script type="text/javascript">
 {if !$reviewInfo}
-<script type="text/javascript">{literal}
+    {literal}
 var checked = {};
 $("input[type='radio']").click(function(){
 if($(this).parent('.question-label').hasClass('label-selected')){
@@ -96,6 +94,18 @@ else{
     }
 }
 });
-{/literal}</script>
+    {/literal}
+{else}
+    {literal}
+$(".markanswer").click(function() {
+    $.get( "/student/learning/markanswer/"+ $(this).data('question-id') + '/' + $(this).data('answer-id') + '/' + ($(this).hasClass('btn-success') ? 'true' : 'false'), function() {
+        alert( "Updated" );
+    })
+    .fail(function() {
+        alert("ERROR: Failed to update the answer, please try again!");
+    });
+});
+    {/literal}
 {/if}
+</script>
 {/strip}

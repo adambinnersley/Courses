@@ -238,9 +238,23 @@ class Submission extends Test
         return 0;
     }
     
-    public function selfAssessAnswer($questionID, $correct)
+    /**
+     * Function for the user to self assess the answer
+     * @param int $questionID The unique question ID
+     * @param int $answerID The ID of the users answer
+     * @param int $userID The users unique ID
+     * @param boolean $correct If to mark as correct set to true else set to false for incorrect
+     * @param boolean $isInstructor If the user is an instructor set to true else set to false
+     */
+    public function selfAssessAnswer($questionID, $answerID, $userID, $correct, $isInstructor)
     {
         $questionInfo = $this->getQuestionInfo($questionID);
+        if ($correct == true) {
+            $scores = [$answerID => $questionInfo['max_score']];
+        } else {
+            $scores = [$answerID => 0];
+        }
+        $this->markAnswer($scores, false, $questionInfo['test_id'], $userID, $isInstructor);
     }
     
     /**
@@ -249,8 +263,9 @@ class Submission extends Test
      * @param array $feedback This should be any feedback that have been given to answers
      * @param int $testID This should be the test ID that you are updating scores for
      * @param int $userID This should be the users ID that you are updating scores for
+     * @param boolean $isInstructor If the user is an instructor set to true else set to false
      */
-    public function markAnswer($scores, $feedback, $testID, $userID)
+    public function markAnswer($scores, $feedback, $testID, $userID, $isInstructor)
     {
         if (is_array($scores)) {
             foreach ($scores as $i => $score) {
@@ -258,7 +273,7 @@ class Submission extends Test
                     $this->db->update($this->config->table_course_test_answers, ['score' => $score, 'marked' => 1, 'feedback' => Modifier::setNullOnEmpty($feedback[$i])], ['id' => $i]);
                 }
             }
-            $this->updateTestStatus($testID, $userID, $isInstructor = false);
+            $this->updateTestStatus($testID, $userID, $isInstructor);
         }
     }
 }

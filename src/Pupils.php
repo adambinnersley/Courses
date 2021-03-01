@@ -80,7 +80,7 @@ class Pupils
      */
     public function getPupilAccess($pupilID, $type, $courseID)
     {
-        if(is_numeric($type) && $type >= 1){
+        if (is_numeric($type) && $type >= 1) {
             return boolval(count($this->db->query("SELECT * FROM (
                 SELECT * FROM `{$this->config->table_courses}` WHERE `enrol_{$this->typeField[$type]}s` = 1 AND `id` = ?
                 UNION
@@ -177,7 +177,7 @@ class Pupils
      */
     public function getPupilsCoursesList($pupilID, $type, $isInstructor)
     {
-        if(is_numeric($type) && $type >= 1){
+        if (is_numeric($type) && $type >= 1) {
             return $this->db->query("SELECT * FROM (
                 SELECT * FROM `{$this->config->table_courses}` WHERE `enrol_{$this->typeField[$type]}s` = 1".($type == 4 ? " OR `enrol_{$this->typeField[($type - 1)]}s` = 1" : "")."
                 UNION
@@ -195,7 +195,7 @@ class Pupils
      */
     protected function isGroupEnrolled($courseID, $type)
     {
-        if($this->db->select($this->config->table_courses, ['id' => $courseID, 'enrol_'.$this->typeField[$type].'s' => 1])){
+        if ($this->db->select($this->config->table_courses, ['id' => $courseID, 'enrol_'.$this->typeField[$type].'s' => 1])) {
             return true;
         }
         return false;

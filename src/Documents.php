@@ -57,7 +57,7 @@ class Documents extends FileUploadDBAL
     public function addDocument($courseID, $groupID, $text, $file, $information = [])
     {
         if ($file['name'] && $this->checkMimeTypes($file) && $this->fileExtCheck($file) && $this->fileSizeCheck($file)) {
-            foreach($information as $key => $value){
+            foreach ($information as $key => $value) {
                 $information[$key] = Modifier::setNullOnEmpty($value);
             }
             $insert = array_filter(array_merge(['course_id' => intval($courseID), 'group_id' => intval($groupID), 'link_text' => trim($text), 'file' => $this->makeURLSafe($file['name']), 'type' => $file['type'], 'size' => $file['size'], 'content' => file_get_contents($file['tmp_name'])], array_filter($information)));
@@ -76,7 +76,7 @@ class Documents extends FileUploadDBAL
      */
     public function updateDocument($documentID, $groupID, $text, $file = null, $information = [])
     {
-        foreach($information as $key => $value){
+        foreach ($information as $key => $value) {
             $information[$key] = Modifier::setNullOnEmpty($value);
         }
         if ($file !== null && !empty($file['name']) && $this->checkMimeTypes($file) && $this->fileExtCheck($file) && $this->fileSizeCheck($file)) {
