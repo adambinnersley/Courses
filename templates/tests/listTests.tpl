@@ -39,7 +39,7 @@
                                 {elseif $test.results.status == 3}<strong class="text-success">Passed</strong>
                                 {/if}
                             </td>
-                            <td class="text-center">{if $test.results.status >= 2 || ($test.self_assessed && $test.results.status == 1)}<a href="?review={$test.test_id}" title="Review" class="btn btn-info">Review Test</a>{/if}{if $test.results.status == 0 || $test.results.status == 2}<a href="?take={$test.test_id}" title="Take {$test.name}" class="btn btn-success">{if $test.results.status == 2}Retake{else}Start{/if} Test</a>{/if}</td>
+                            <td class="text-center">{if $test.results.status >= 2 || ($test.self_assessed && $test.results.status == 1)}<a href="?review={$test.test_id}" title="Review" class="btn btn-info">Review Test</a>{/if}{if $test.results.status == 0 || $test.results.status == 2} <a href="?take={$test.test_id}" title="Take {$test.name}" class="btn btn-success">{if $test.results.status == 2}Retake{else}Start{/if} Test</a>{/if}</td>
                             {else}
                             <td class="text-center">{if $test.submissions.total > 0}{$test.submissions.total} Total{else}None{/if}{if $test.submissions.unmarked >= 1} <div class="badge">{$test.submissions.unmarked} Unmarked</div>{/if}</td>
                             <td class="text-center">{if $test.submissions.total >= 1}<a href="/student/learning/{$courseInfo.url}/tests/submissions/{$test.test_id}" title="Submissions" class="btn btn-info">View Submissions</a>{/if}</td>

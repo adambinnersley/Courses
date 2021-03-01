@@ -78,7 +78,7 @@ class Submission extends Test
     {
         $submission = [];
         $submission['total'] = $this->db->query("SELECT count(*) FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` >= ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`course_id` = ?;", [0, $courseID]);
-        $submission['unmarked'] = $this->db->query("SELECT count(*) FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` = ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`course_id` = ?;"/* AND `{$this->config->table_course_tests}`.`self_assessed` = 0;"*/, [1, $courseID]);
+        $submission['unmarked'] = $this->db->query("SELECT count(*) FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_test_status}`.`status` = ? AND `{$this->config->table_course_test_status}`.`test_id` = `{$this->config->table_course_tests}`.`test_id` AND `{$this->config->table_course_tests}`.`course_id` = ?;", [1, $courseID]);
         return $submission;
     }
     
@@ -91,7 +91,7 @@ class Submission extends Test
      */
     public function getTestSubmissions($userObject, $testID, $marked = true)
     {
-        $submissions = $this->db->query("SELECT `{$this->config->table_course_test_status}`.* FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE "./*`{$this->config->table_course_tests}`.`self_assessed` = 0 AND */"`{$this->config->table_course_tests}`.`test_id` = `{$this->config->table_course_test_status}`.`test_id` AND `{$this->config->table_course_test_status}`.`status` ".($marked === true ? ">= 2" : "= 1")." AND `{$this->config->table_course_test_status}`.`test_id` = ? ORDER BY `last_modified` ".($marked === true ? "DESC" : "ASC").";", [$testID]);
+        $submissions = $this->db->query("SELECT `{$this->config->table_course_test_status}`.* FROM `{$this->config->table_course_test_status}`, `{$this->config->table_course_tests}` WHERE `{$this->config->table_course_tests}`.`test_id` = `{$this->config->table_course_test_status}`.`test_id` AND `{$this->config->table_course_test_status}`.`status` ".($marked === true ? ">= 2" : "= 1")." AND `{$this->config->table_course_test_status}`.`test_id` = ? ORDER BY `last_modified` ".($marked === true ? "DESC" : "ASC").";", [$testID]);
         if (is_array($submissions)) {
             foreach ($submissions as $i => $status) {
                 $submissions[$i]['user_details'] = $userObject->getUserInfo($status['user_id']);
@@ -236,6 +236,11 @@ class Submission extends Test
             return intval($score);
         }
         return 0;
+    }
+    
+    public function selfAssessAnswer($questionID, $correct)
+    {
+        $questionInfo = $this->getQuestionInfo($questionID);
     }
     
     /**

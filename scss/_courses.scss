@@ -21,21 +21,21 @@
         }
         &:not(.label-selected){
             &:hover{
-                @include gradient-vertical(#EFEFEF, darken(#EFEFEF, 10%));
+                background-color: #EFEFEF;
             }
         }
     }
     &.label-selected{
-        border-color: darken(#99CDE6, 12%);
-        @include gradient-vertical(#99CDE6, darken(#99CDE6, 6%));
+        @extend .border-primary;
+        @extend .bg-primary;
     }
     &.label-correct{
-        border-color: darken(#cdeb8e, 12%);
-        @include gradient-vertical(#cdeb8e, darken(#cdeb8e, 6%));
+        @extend .border-success;
+        @extend .bg-success;
     }
     &.label-incorrect{
-        border-color: darken(#f69894, 12%);
-        @include gradient-vertical(#f69894, darken(#f69894, 6%));
+        @extend .border-danger;
+        @extend .bg-danger;
     }
     input[type=checkbox], input[type=radio]{
         display:none !important;

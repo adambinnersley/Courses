@@ -1,3 +1,4 @@
+{strip}
 <form method="post" action="" class="form-horizontal">
     <div class="card border-primary">
         <div class="card-header bg-primary font-weight-bold">{$testdetails.name}</div>
@@ -6,7 +7,7 @@
             <li class="list-group-item">
                 <h5 class="card-title">Q{$i + 1}. {$question.question}</h5>
                 {if $reviewInfo && $reviewInfo[$i].marked}
-                    <div class="alert alert-info">
+                    <div class="alert alert-warning">
                         <strong>Score:</strong> {$reviewInfo[$i].score} out of a possible {$reviewInfo[$i].max_score}
                         {if $reviewInfo[$i].feedback}<br /><strong>Feedback:</strong> {$reviewInfo[$i].feedback}{/if}
                     </div>
@@ -97,3 +98,4 @@ else{
 });
 {/literal}</script>
 {/if}
+{/strip}
