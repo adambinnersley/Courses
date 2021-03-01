@@ -200,6 +200,9 @@ class Submission extends Test
             } elseif (!$testInfo['pass_mark'] && !$testInfo['pass_percentage'] && $testStatus == 1) {
                 $status = 1; // Unmarked
             }
+            else{
+                $status = 5;
+            }
         } elseif ($testStatus == 1) {
             $status = 1; // Unmarked
         }
