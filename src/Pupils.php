@@ -46,6 +46,19 @@ class Pupils
     }
     
     /**
+     * Updates a pupil expiry information
+     * @param int $pupilID This should be the users unique ID
+     * @param int|boolean $isInstructor If the pupil is a instructor should set to 1/true or is just a standard pupil need to set to 0/false
+     * @param int $courseID This need to be the course that you are updating the pupil on
+     * @param datetime The date in which the user will have access until, If set to NULL no expiry is set
+     * @return boolean If the information has been successfully updated will return true else will return false
+     */
+    public function editPupilAccess($pupilID, $isInstructor, $courseID, $expiry = null)
+    {
+        return $this->db->update($this->config->table_course_access, ['expiry_date' => Modifier::setNullOnEmpty($expiry)], ['course_id' => $courseID, (boolval($isInstructor) === false ? 'user_id' : 'instructor_id') => $pupilID], 1);
+    }
+    
+    /**
      * Returns an array of users by type (see bulkUserTypes array)
      * @param int $type This should be the type ID
      * @param int|array $limit This should be a limit of the number of results shown
@@ -110,10 +123,10 @@ class Pupils
      */
     public function removePupilAccess($pupilID, $isInstructor, $courseID)
     {
-//        if (is_numeric($pupilID) && is_numeric($courseID)) {
-//            return $this->db->delete($this->config->table_course_access, array_merge($this->getUserWhere($pupilID, $isInstructor), ['course_id' => $courseID]));
-//        }
-//        return false;
+        if (is_numeric($pupilID) && is_numeric($courseID)) {
+            return $this->db->delete($this->config->table_course_access, ['course_id' => $courseID, (boolval($isInstructor) === false ? 'user_id' : 'instructor_id') => $pupilID], 1);
+        }
+        return false;
     }
     
     /**
