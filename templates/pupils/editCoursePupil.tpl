@@ -30,6 +30,10 @@
                 <div class="col-md-9"><input type="text" name="required[email]" id="email" value="{$pupilInfo.email}" size="9" placeholder="Email Address" class="form-control" /></div>
             </div>
             <div class="form-group row">
+                <label for="expiry_date" class="col-md-3 control-label">Access Expires:</label>
+                <div class="col-md-9"><input type="text" name="additional[expiry_date]" id="expiry_date" value="{$pupilInfo.expiry_date}" size="9" placeholder="Access Expiry Date" class="form-control datepicker" /></div>
+            </div>
+            <div class="form-group row">
                 <div class="col-md-9 col-md-offset-3"><label class="sr-only" for="submitbtn">{$headerSection}</label><button id="submitbtn" class="btn btn-success" type="submit">{$headerSection}</button></div>
             </div>
         </form>

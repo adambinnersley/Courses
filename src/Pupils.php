@@ -84,8 +84,8 @@ class Pupils
             return boolval(count($this->db->query("SELECT * FROM (
                 SELECT * FROM `{$this->config->table_courses}` WHERE `enrol_{$this->typeField[$type]}s` = 1 AND `id` = ?
                 UNION
-                SELECT `{$this->config->table_courses}`.* FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_courses}`.`enrol_individuals` = 1 AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_course_access}`.`course_id` = ? AND `{$this->config->table_course_access}`.`user_id` = ?
-    ) as A;", [$courseID, $courseID, $pupilID])));
+                SELECT `{$this->config->table_courses}`.* FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_courses}`.`enrol_individuals` = 1 AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_course_access}`.`course_id` = ? AND `{$this->config->table_course_access}`.`user_id` = ? AND (`{$this->config->table_course_access}`.`expiry_date` = NULL OR `{$this->config->table_course_access}`.`expiry_date` >= ?)
+    ) as A;", [$courseID, $courseID, $pupilID, date('Y-m-d H:i:s')])));
         }
         return false;
     }
@@ -161,11 +161,11 @@ class Pupils
             ($courseInfo['enrol_tutors'] == 1 ? "SELECT `id`, 1 as `is_instructor`, `name`, `email` FROM `{$this->instructors_table}` WHERE `isactive` >= 1 AND `tutor` = 1".(!empty($search) ? " AND (`{$this->instructors_table}`.`name` LIKE :search OR `{$this->instructors_table}`.`email` LIKE :search)" : "")."
                 UNION " : "").
             "SELECT * FROM (
-                (SELECT `{$this->config->table_users}`.`id`, 0 as `is_instructor`, CONCAT(`{$this->config->table_users}`.`firstname`, ' ', `{$this->config->table_users}`.`lastname`) as `name`, `{$this->config->table_users}`.`email` FROM `{$this->config->table_users}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`user_id` = `{$this->config->table_users}`.`id`".(!empty($search) ? " AND (`{$this->config->table_users}`.`firstname` LIKE :search OR `{$this->config->table_users}`.`lastname` LIKE :search OR `{$this->config->table_users}`.`email` LIKE :search)" : "").")
+                (SELECT `{$this->config->table_users}`.`id`, 0 as `is_instructor`, CONCAT(`{$this->config->table_users}`.`firstname`, ' ', `{$this->config->table_users}`.`lastname`) as `name`, `{$this->config->table_users}`.`email` FROM `{$this->config->table_users}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`user_id` = `{$this->config->table_users}`.`id` AND (`{$this->config->table_course_access}`.`expiry_date` = NULL OR `{$this->config->table_course_access}`.`expiry_date` >= :date)".(!empty($search) ? " AND (`{$this->config->table_users}`.`firstname` LIKE :search OR `{$this->config->table_users}`.`lastname` LIKE :search OR `{$this->config->table_users}`.`email` LIKE :search)" : "").")
                 UNION
-                (SELECT `{$this->instructors_table}`.`id`, 1 as `is_instructor`, `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email` FROM `{$this->instructors_table}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`instructor_id` = `{$this->instructors_table}`.`id`".(!empty($search) ? " AND (`{$this->instructors_table}`.`name` LIKE :search OR `{$this->instructors_table}`.`email` LIKE :search)" : "").")
+                (SELECT `{$this->instructors_table}`.`id`, 1 as `is_instructor`, `{$this->instructors_table}`.`name`, `{$this->instructors_table}`.`email` FROM `{$this->instructors_table}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_course_access}`.`course_id` = :courseid AND `{$this->config->table_course_access}`.`instructor_id` = `{$this->instructors_table}`.`id` AND (`{$this->config->table_course_access}`.`expiry_date` = NULL OR `{$this->config->table_course_access}`.`expiry_date` >= :date)".(!empty($search) ? " AND (`{$this->instructors_table}`.`name` LIKE :search OR `{$this->instructors_table}`.`email` LIKE :search)" : "").")
                 ) as `a`
-        ) as `b` ORDER BY `name` ASC".($limit > 0 ? ' LIMIT '.intval($start).','.$limit.';' : ';'), array_merge([':courseid' => intval($courseID)], (!empty($search) ? [':search' => '%'.$search.'%'] : [])));
+        ) as `b` ORDER BY `name` ASC".($limit > 0 ? ' LIMIT '.intval($start).','.$limit.';' : ';'), array_merge([':courseid' => intval($courseID), ':date' => date('Y-m-d H:i:s')], (!empty($search) ? [':search' => '%'.$search.'%'] : [])));
     }
     
     /**
@@ -181,8 +181,8 @@ class Pupils
             return $this->db->query("SELECT * FROM (
                 SELECT * FROM `{$this->config->table_courses}` WHERE `enrol_{$this->typeField[$type]}s` = 1".($type == 4 ? " OR `enrol_{$this->typeField[($type - 1)]}s` = 1" : "")."
                 UNION
-                SELECT `{$this->config->table_courses}`.* FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_courses}`.`enrol_individuals` = 1 AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND `{$this->config->table_course_access}`.`".($isInstructor ? 'instructor' : 'user')."_id` = ?
-    ) as A;", [$pupilID]);
+                SELECT `{$this->config->table_courses}`.* FROM `{$this->config->table_courses}`, `{$this->config->table_course_access}` WHERE `{$this->config->table_courses}`.`enrol_individuals` = 1 AND `{$this->config->table_courses}`.`id` = `{$this->config->table_course_access}`.`course_id` AND (`{$this->config->table_course_access}`.`expiry_date` = NULL OR `{$this->config->table_course_access}`.`expiry_date` >= ?) AND `{$this->config->table_course_access}`.`".($isInstructor ? 'instructor' : 'user')."_id` = ?
+    ) as A;", [date('Y-m-d H:i:s'), $pupilID]);
         }
         return false;
     }
