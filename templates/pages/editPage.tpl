@@ -24,7 +24,7 @@
                         <option value="0">None</option>
                         <optgroup label="Select Page">
                         {foreach $subpages as $pages}
-                            <option value="{$pages.page_id}"{if $page.subpage == $pages.page_id} selected="selected"{/if}>{$pages.order}) {$pages.title}</option>
+                            <option value="{$pages.page_id}"{if $page.subof == $pages.page_id} selected="selected"{/if}>{$pages.order}) {$pages.title}</option>
                         {/foreach}
                         </optgroup>
                     </select>
