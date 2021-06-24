@@ -28,37 +28,7 @@
         {if $page.next_page}<a href="/student/learning/{$courseInfo.url}/info/{$page.next_page}/" title="Next Page" class="btn btn-info float-right">Next<span class="hidden-xs"> Page</span> <span class="fa fa-angle-right fa-fw"></span></a>{/if}
     </div>
 </div>
-{if !$userDetails.isHeadOffice}<script type="text/javascript">
-    {literal}
-    var start = {/literal}{if $userPageProgress.time_spent}{$userPageProgress.time_spent}{else}0{/if}{literal};
-
-    timer = setInterval(function(){
-        start++;
-    }, 1000);
-
-    $(window).blur(function(){
-        clearInterval(timer);
-        timer = false;
-    });
-
-    $(window).focus(function(){
-        if(!timer){
-            timer = setInterval(function(){
-                start++;
-            }, 1000);
-        }
-    });
-
-    $(window).unload(function(){
-        $.ajax({
-            type: 'POST',
-            url: 'pagetime',
-            async: false,
-            data: {pageID: {/literal}{$page.page_id}{literal},timeSpent: start}
-        });
-    });
-    {/literal}
-</script>{/if}
+{if !$userDetails.isHeadOffice}<script type="text/javascript">{literal}var start = {/literal}{if $userPageProgress.time_spent}{$userPageProgress.time_spent}{else}0{/if}{literal};timer = setInterval(function(){start++;}, 1000);$(window).blur(function(){clearInterval(timer);timer = false;});$(window).focus(function(){if(!timer){timer = setInterval(function(){start++;}, 1000);}});$('body').bind('copy paste', function(e){e.preventDefault(); return false;});$(window).unload(function(){$.ajax({type: 'POST',url: 'pagetime',async: false,data: {pageID: {/literal}{$page.page_id}{literal},timeSpent: start}});});{/literal}</script>{/if}
 {assign var="footerBtn" value="true" scope="global"}
 {include file="assets/back-button.tpl"}
 {/strip}
